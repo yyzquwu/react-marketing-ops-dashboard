@@ -7,6 +7,15 @@ A polished React/Vite paid media analytics dashboard that reads generated CSV/JS
 
 This is an independent portfolio project and is not affiliated with or endorsed by Paramount.
 
+![Dashboard preview](docs/dashboard-preview.png)
+
+## What It Shows
+
+- Paramount-style paid media command center with a dark header, left filter rail, KPI cards, daily trend chart, platform donut, CPA bars, analyst takeaways, and campaign leaderboard.
+- Dataset selector that switches between the portfolio multi-platform sample and the real public Facebook ads export.
+- Reproducible CSV/JSON data artifacts in `public/data`.
+- Local SVG logo assets, not remote hotlinks.
+
 ## Run Locally
 
 ```bash
@@ -23,6 +32,26 @@ The real dataset is `public/data/raw_real_facebook_ads.csv`, transformed by `scr
 
 The real public CSV contains mixed row shapes where some later rows omit campaign identifiers. The transform preserves those rows as unmapped Facebook audience segments instead of inventing private campaign IDs.
 
-Source: https://github.com/Zayd1602/Facebook-Ad-Campaign-Analysis
+Logo assets are local SVG files sourced from Wikimedia Commons:
+
+- `public/paramount-mountain-logo.svg`
+- `public/paramount-wordmark-logo.svg`
+
+Dataset source: https://github.com/Zayd1602/Facebook-Ad-Campaign-Analysis
 
 Original dataset listing: https://www.kaggle.com/datasets/madislemsalu/facebook-ad-campaign
+
+Logo source pages:
+
+- https://commons.wikimedia.org/wiki/File:Paramount-Mountain-Logo.svg
+- https://commons.wikimedia.org/wiki/File:Paramount_Pictures_Wordmark.svg
+
+## Verification
+
+Validated locally on May 6, 2026:
+
+```bash
+npm run build
+```
+
+Additional local QA used Codex Browser Use DOM inspection plus Playwright screenshots for the default dashboard, real-data mode, mobile rendering, chart axis spacing, CPA panel overflow, KPI/card counts, logo assets, and leaderboard rendering.

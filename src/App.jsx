@@ -209,9 +209,9 @@ function KpiCard({ accent, delta, iconKey, label, value, suffix }) {
 }
 
 function LineComboChart({ data }) {
-  const width = 760;
+  const width = 620;
   const height = 330;
-  const pad = { top: 28, right: 62, bottom: 42, left: 62 };
+  const pad = { top: 28, right: 72, bottom: 44, left: 98 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const maxSpend = Math.max(...data.map((day) => day.spend), 1);
@@ -232,23 +232,23 @@ function LineComboChart({ data }) {
         return (
           <g key={tick}>
             <line x1={pad.left} x2={width - pad.right} y1={y} y2={y} className="grid-line" />
-            <text x={pad.left - 12} y={y + 4} textAnchor="end" className="axis-label">
+            <text x={pad.left - 14} y={y + 4} textAnchor="end" className="axis-label">
               {formatCurrency(maxSpend * tick).replace(".00", "")}
             </text>
-            <text x={width - pad.right + 12} y={y + 4} className="axis-label">
+            <text x={width - pad.right + 14} y={y + 4} className="axis-label">
               {formatNumber(maxConversions * tick)}
             </text>
           </g>
         );
       })}
-      <text x={18} y={height / 2} className="axis-title" transform={`rotate(-90 18 ${height / 2})`}>
+      <text x={14} y={height / 2} className="axis-title" transform={`rotate(-90 14 ${height / 2})`}>
         Spend (USD)
       </text>
       <text
-        x={width - 18}
+        x={width - 14}
         y={height / 2}
         className="axis-title conversions"
-        transform={`rotate(90 ${width - 18} ${height / 2})`}
+        transform={`rotate(90 ${width - 14} ${height / 2})`}
       >
         Conversions
       </text>
@@ -668,8 +668,10 @@ export default function App() {
     <main className="dashboard-shell">
       <header className="topbar">
         <div className="brand-lockup">
-          <div className="brand-mark">P</div>
-          <div className="brand-word">Paramount.</div>
+          <div className="paramount-header-logo" aria-label="Paramount">
+            <img className="paramount-mountain-logo" src="/paramount-mountain-logo.svg" alt="" />
+            <img className="paramount-wordmark-logo" src="/paramount-wordmark-logo.svg" alt="Paramount" />
+          </div>
           <div className="brand-divider" />
           <div>
             <h1>Marketing Data Ops</h1>
