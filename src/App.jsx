@@ -65,7 +65,34 @@ const DEFAULT_FILTERS = Object.freeze({
 
 const CHART_GRANULARITIES = ["day", "week", "month"];
 
-const MEDIUM_OPTIONS = ["Paid Search", "Paid Social", "Paid Video", "Display"];
+const MEDIUM_LABELS = {
+  cpc: "Paid Search",
+  paid_search: "Paid Search",
+  search: "Paid Search",
+  paid_social: "Paid Social",
+  social: "Paid Social",
+  paid_video: "Paid Video",
+  video: "Paid Video",
+  display: "Display",
+  uploaded: "Uploaded",
+};
+
+const SOURCE_MEDIUM_LABELS = {
+  google_ads: "Paid Search",
+  "Google Ads": "Paid Search",
+  meta: "Paid Social",
+  Meta: "Paid Social",
+  microsoft_ads: "Paid Search",
+  "Microsoft Ads": "Paid Search",
+  other: "Display",
+  Other: "Display",
+  tiktok: "Paid Social",
+  TikTok: "Paid Social",
+  youtube: "Paid Video",
+  YouTube: "Paid Video",
+};
+
+const TEST_CAMPAIGN_PATTERN = /(^|[^a-z])test([^a-z]|$)/i;
 
 const CSV_HEADERS = [
   "date",
@@ -93,6 +120,18 @@ function formatCurrency(value, digits = 0) {
 
 function formatNumber(value) {
   return new Intl.NumberFormat("en-US").format(Math.round(value || 0));
+}
+
+function formatCompactNumber(value) {
+  const number = Number(value) || 0;
+  if (Math.abs(number) >= 1000) return `${Math.round(number / 1000)}K`;
+  return formatNumber(number);
+}
+
+function formatCompactCurrency(value) {
+  const number = Number(value) || 0;
+  if (Math.abs(number) >= 1000) return `$${Math.round(number / 1000)}K`;
+  return formatCurrency(number);
 }
 
 function formatPercent(value, digits = 2) {
@@ -141,6 +180,15 @@ function labelBucket(value, granularity) {
 
 function daysBetween(start, end) {
   return Math.max(1, Math.round((parseDate(end) - parseDate(start)) / 86400000) + 1);
+}
+
+function niceAxisMax(value) {
+  const number = Number(value) || 1;
+  const exponent = Math.floor(Math.log10(number));
+  const base = 10 ** exponent;
+  const normalized = number / base;
+  const multiplier = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10;
+  return multiplier * base;
 }
 
 function summarize(rows) {
@@ -236,8 +284,15 @@ function normalizeRecords(records, dataset = "uploaded") {
         Number(record.conversions ?? record.approved_conversion ?? record.Total_Conversion ?? record.total_conversion) || 0;
       const source = record.source || record.source_label || "uploaded";
       const sourceLabel = record.source_label || record.platform || record.source || "Uploaded";
-      const medium = record.medium || "uploaded";
-      const mediumLabel = record.medium_label || record.medium || "Uploaded";
+      const rawMedium = record.medium || record.medium_label || "";
+      const mediumKey = String(rawMedium).trim().toLowerCase();
+      const sourceMediumLabel = SOURCE_MEDIUM_LABELS[source] || SOURCE_MEDIUM_LABELS[sourceLabel] || "";
+      const mediumLabel =
+        record.medium_label ||
+        (rawMedium ? MEDIUM_LABELS[mediumKey] || rawMedium : "") ||
+        sourceMediumLabel ||
+        "Uploaded";
+      const medium = rawMedium || mediumLabel.toLowerCase().replace(/\s+/g, "_");
       const campaignId = record.campaign_id || record.campaign || record.fb_campaign_id || `UP-${index + 1}`;
       const campaignName = record.campaign_name || record.campaign || record.campaign_id || `Uploaded Campaign ${index + 1}`;
 
@@ -290,6 +345,14 @@ function bucketDate(dateValue, granularity) {
     return toIsoDate(date);
   }
   return dateValue;
+}
+
+function getAvailableGranularities(rows) {
+  if (!rows.length) return ["day"];
+  return CHART_GRANULARITIES.filter((item) => {
+    if (item === "day") return true;
+    return new Set(rows.map((row) => bucketDate(row.date, item))).size > 1;
+  });
 }
 
 function buildTimeSeries(rows, granularity) {
@@ -352,13 +415,13 @@ const KpiCard = memo(function KpiCard({ accent, delta, iconKey, label, value, su
 });
 
 const LineComboChart = memo(function LineComboChart({ data, granularity }) {
-  const width = 620;
-  const height = 330;
-  const pad = { top: 28, right: 72, bottom: 44, left: 98 };
+  const width = 760;
+  const height = 320;
+  const pad = { top: 22, right: 86, bottom: 42, left: 100 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
-  const maxSpend = Math.max(...data.map((day) => day.spend), 1);
-  const maxConversions = Math.max(...data.map((day) => day.conversions), 1);
+  const maxSpend = niceAxisMax(Math.max(...data.map((day) => day.spend), 1));
+  const maxConversions = niceAxisMax(Math.max(...data.map((day) => day.conversions), 1));
   const x = (index) => pad.left + (index / Math.max(1, data.length - 1)) * innerW;
   const ySpend = (value) => pad.top + innerH - (value / maxSpend) * innerH;
   const yConversions = (value) => pad.top + innerH - (value / maxConversions) * innerH;
@@ -366,32 +429,33 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
   const conversionPoints = data
     .map((day, index) => `${x(index)},${yConversions(day.conversions)}`)
     .join(" ");
-  const labels = data.filter((_, index) => index % Math.ceil(data.length / 5) === 0);
+  const labelStep = Math.max(1, Math.ceil(data.length / 7));
+  const labels = data.filter((_, index) => index % labelStep === 0 || index === data.length - 1);
 
   return (
-    <svg className="trend-chart" viewBox={`0 0 ${width} ${height}`} role="img">
+    <svg className="trend-chart" viewBox={`0 0 ${width} ${height}`} role="img" preserveAspectRatio="xMidYMid meet">
       {[0, 0.25, 0.5, 0.75, 1].map((tick) => {
         const y = pad.top + innerH - tick * innerH;
         return (
           <g key={tick}>
             <line x1={pad.left} x2={width - pad.right} y1={y} y2={y} className="grid-line" />
-            <text x={pad.left - 14} y={y + 4} textAnchor="end" className="axis-label">
-              {formatCurrency(maxSpend * tick).replace(".00", "")}
+            <text x={pad.left - 16} y={y + 4} textAnchor="end" className="axis-label">
+              {formatCompactCurrency(maxSpend * tick)}
             </text>
-            <text x={width - pad.right + 14} y={y + 4} className="axis-label">
-              {formatNumber(maxConversions * tick)}
+            <text x={width - pad.right + 16} y={y + 4} className="axis-label">
+              {formatCompactNumber(maxConversions * tick)}
             </text>
           </g>
         );
       })}
-      <text x={14} y={height / 2} className="axis-title" transform={`rotate(-90 14 ${height / 2})`}>
+      <text x={18} y={height / 2} className="axis-title" transform={`rotate(-90 18 ${height / 2})`}>
         Spend (USD)
       </text>
       <text
-        x={width - 14}
+        x={width - 18}
         y={height / 2}
         className="axis-title conversions"
-        transform={`rotate(90 ${width - 14} ${height / 2})`}
+        transform={`rotate(90 ${width - 18} ${height / 2})`}
       >
         Conversions
       </text>
@@ -636,8 +700,10 @@ const Sidebar = memo(function Sidebar({
   onDragState,
   onFilterChange,
   onUploadFile,
+  mediumOptions,
   platforms,
   setDateRange,
+  testCampaignCount,
 }) {
   const dataset = datasets[datasetId];
   return (
@@ -717,17 +783,18 @@ const Sidebar = memo(function Sidebar({
         <label className="field-label">Source / Medium</label>
         <select value={filters.medium} onChange={(event) => onFilterChange("medium", event.target.value)}>
           <option>All</option>
-          {MEDIUM_OPTIONS.map((medium) => (
+          {mediumOptions.map((medium) => (
             <option key={medium}>{medium}</option>
           ))}
         </select>
         <label className="checkbox-row">
           <input
             type="checkbox"
-            checked={filters.includeTest}
+            disabled={!testCampaignCount}
+            checked={testCampaignCount > 0 && filters.includeTest}
             onChange={(event) => onFilterChange("includeTest", event.target.checked)}
           />
-          Include Test Campaigns
+          {testCampaignCount ? `Include Test Campaigns (${formatNumber(testCampaignCount)} rows)` : "No Test Campaigns Detected"}
         </label>
         <a className="download-button" href={csvHref} download="filtered_campaign_daily.csv">
           <Download size={18} />
@@ -821,6 +888,14 @@ export default function App() {
     () => [...new Set(rows.map((row) => row.campaign_name).filter(Boolean))].sort(),
     [rows],
   );
+  const mediumOptions = useMemo(
+    () => [...new Set(rows.map((row) => row.medium_label).filter(Boolean))].sort(),
+    [rows],
+  );
+  const testCampaignCount = useMemo(
+    () => rows.filter((row) => TEST_CAMPAIGN_PATTERN.test(row.campaign_name || "")).length,
+    [rows],
+  );
 
   const filteredRows = useMemo(() => {
     return rows.filter((row) => {
@@ -829,11 +904,12 @@ export default function App() {
       if (filters.platform !== "All Platforms" && row.source_label !== filters.platform) return false;
       if (filters.campaign !== "All Campaigns" && row.campaign_name !== filters.campaign) return false;
       if (filters.medium !== "All" && row.medium_label !== filters.medium) return false;
-      if (!filters.includeTest && /test/i.test(row.campaign_name || "")) return false;
+      if (!filters.includeTest && TEST_CAMPAIGN_PATTERN.test(row.campaign_name || "")) return false;
       return true;
     });
   }, [rows, dateRange, filters]);
 
+  const availableGranularities = useMemo(() => getAvailableGranularities(filteredRows), [filteredRows]);
   const daily = useMemo(() => buildTimeSeries(filteredRows, granularity), [filteredRows, granularity]);
   const campaigns = useMemo(() => buildCampaigns(filteredRows), [filteredRows]);
   const platformSpend = useMemo(() => buildPlatforms(filteredRows), [filteredRows]);
@@ -850,6 +926,17 @@ export default function App() {
     [filteredRows],
   );
   const dataset = datasets[datasetId] ?? DATASETS.portfolio;
+
+  useEffect(() => {
+    if (filters.medium !== "All" && !mediumOptions.includes(filters.medium)) {
+      setFilters((current) => ({ ...current, medium: "All" }));
+    }
+  }, [filters.medium, mediumOptions]);
+
+  useEffect(() => {
+    if (availableGranularities.includes(granularity)) return;
+    setGranularity(availableGranularities[0] ?? "day");
+  }, [availableGranularities, granularity]);
 
   useEffect(() => {
     setPage(1);
@@ -995,8 +1082,10 @@ export default function App() {
           onDropFile={handleDropFile}
           onFilterChange={onFilterChange}
           onUploadFile={handleUploadFile}
+          mediumOptions={mediumOptions}
           platforms={platforms}
           setDateRange={setDateRange}
+          testCampaignCount={testCampaignCount}
         />
         <section className="content">
           <div className="dataset-note">
@@ -1055,7 +1144,7 @@ export default function App() {
                   </div>
                 </div>
                 <div className="segmented">
-                  {CHART_GRANULARITIES.map((item) => (
+                  {availableGranularities.map((item) => (
                     <button
                       className={granularity === item ? "active" : ""}
                       key={item}

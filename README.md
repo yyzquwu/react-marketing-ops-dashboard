@@ -13,7 +13,8 @@ This is an independent portfolio project and is not affiliated with or endorsed 
 
 - Paramount-style paid media command center with a dark header, left filter rail, KPI cards, daily trend chart, platform donut, CPA bars, analyst takeaways, and campaign leaderboard.
 - Dataset selector that switches between the portfolio multi-platform sample and the real public Facebook ads export.
-- Interactive controls for CSV upload, drag/drop import, refresh, Day/Week/Month chart aggregation, filters, generated CSV download, pagination, rows per page, and the data dictionary disclosure.
+- Interactive controls for CSV upload, drag/drop import, refresh, Day/Week/Month chart aggregation when enough time buckets exist, filters, generated CSV download, pagination, rows per page, and the data dictionary disclosure.
+- Data-aware filter behavior: Source / Medium options are derived from loaded rows, one-bucket Month views are hidden, and the test-campaign toggle disables when no test rows are present.
 - Subtle motion polish on KPI cards, chart lines, CPA bars, hover states, drag/drop, and refresh, with reduced-motion support.
 - React optimization pass with memoized dashboard sections, stable callbacks, transition-wrapped non-urgent updates, hoisted constants, and stale dataset request protection.
 - Reproducible CSV/JSON data artifacts in `public/data`.
@@ -35,6 +36,8 @@ The real dataset is `public/data/raw_real_facebook_ads.csv`, transformed by `scr
 
 The real public CSV contains mixed row shapes where some later rows omit campaign identifiers. The transform preserves those rows as unmapped Facebook audience segments instead of inventing private campaign IDs.
 
+The real public Facebook export spans August 2017 only, so the dashboard shows Day and Week aggregation for that dataset and hides Month because it would produce a single non-trend point.
+
 Logo assets are local SVG files sourced from Wikimedia Commons:
 
 - `public/paramount-mountain-logo.svg`
@@ -55,6 +58,8 @@ Validated locally on May 6, 2026:
 
 ```bash
 npm run build
+python .tmp/verify_interactions.py
+python .tmp/verify_final_dashboard.py
 ```
 
-Additional local QA used Codex Browser Use DOM/click inspection plus Playwright screenshots for the default dashboard, real-data mode, mobile rendering, CSV upload, Day/Week/Month controls, refresh, pagination, rows-per-page, chart axis spacing, CPA panel overflow, KPI/card counts, logo assets, download link, data dictionary, leaderboard rendering, and the React optimization pass.
+Additional local QA used Codex Browser Use DOM/click inspection plus Playwright screenshots for the default dashboard, real-data mode, mobile rendering, CSV upload, Day/Week/Month controls, Month hiding on one-month data, Source / Medium filtering, disabled no-test-campaign state, refresh, pagination, rows-per-page, chart axis spacing, CPA panel overflow, KPI/card counts, logo assets, download link, data dictionary, leaderboard rendering, and the React optimization pass.

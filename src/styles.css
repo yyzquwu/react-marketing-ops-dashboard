@@ -330,6 +330,10 @@ button:disabled {
   height: 17px;
 }
 
+.checkbox-row:has(input:disabled) {
+  color: #7c8a9e;
+}
+
 .download-button {
   height: 38px;
   display: flex;
@@ -560,8 +564,10 @@ button:disabled {
 
 .trend-chart {
   width: 100%;
-  height: 286px;
+  height: auto;
+  aspect-ratio: 760 / 320;
   margin-top: 8px;
+  display: block;
 }
 
 .grid-line {
