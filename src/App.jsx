@@ -1513,6 +1513,28 @@ export default function App() {
           </div>
         </div>
         <div className="topbar-meta">
+          <label className="topbar-control">
+            <span>Dataset:</span>
+            <select value={datasetId} onChange={(event) => handleDatasetChange(event.target.value)}>
+              {Object.entries(datasets).map(([id, item]) => (
+                <option value={id} key={id}>{item.label}</option>
+              ))}
+            </select>
+          </label>
+          <label className="topbar-control date-control">
+            <CalendarDays size={17} />
+            <input
+              type="date"
+              value={dateRange.start}
+              onChange={(event) => setDateRange((range) => ({ ...range, start: event.target.value }))}
+            />
+            <span>-</span>
+            <input
+              type="date"
+              value={dateRange.end}
+              onChange={(event) => setDateRange((range) => ({ ...range, end: event.target.value }))}
+            />
+          </label>
           <div>
             <Database size={20} />
             <span>Source:</span>
@@ -1672,6 +1694,7 @@ export default function App() {
               <RevenueTrendChart data={monthly} />
             </article>
             <EfficiencyQuadrant campaigns={campaigns} />
+            <OpportunityPanel campaigns={campaigns} summary={summary} />
           </section>
 
           <section className="breakdown-grid">
@@ -1680,7 +1703,6 @@ export default function App() {
             <BreakdownTable title="Performance by Campaign Type" rows={typeBreakdown} labelHeader="Type" />
           </section>
 
-          <OpportunityPanel campaigns={campaigns} summary={summary} />
           <CampaignDrilldown
             campaign={selectedCampaign}
             rows={selectedCampaignRows}

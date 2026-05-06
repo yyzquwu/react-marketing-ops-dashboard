@@ -76,13 +76,13 @@ button:disabled {
 }
 
 .topbar {
-  height: 73px;
+  height: 70px;
   background: linear-gradient(110deg, #001d44, #00285c 54%, #001833);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 26px;
+  padding: 0 18px;
   box-shadow: 0 12px 34px rgba(8, 35, 71, 0.22);
 }
 
@@ -151,7 +151,7 @@ button:disabled {
 }
 
 .topbar-meta {
-  gap: 24px;
+  gap: 12px;
   font-size: 14px;
 }
 
@@ -167,6 +167,44 @@ button:disabled {
   padding: 6px 10px;
   border-radius: 8px;
   white-space: nowrap;
+}
+
+.topbar-control {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  gap: 9px;
+  min-height: 38px;
+  padding: 0 10px;
+}
+
+.topbar-control span {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 850;
+  margin: 0;
+}
+
+.topbar-control select,
+.topbar-control input {
+  background: transparent;
+  border: 0;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 780;
+  height: 30px;
+  outline: 0;
+}
+
+.topbar-control option {
+  color: #0f172a;
+}
+
+.date-control input {
+  width: 114px;
 }
 
 .topbar-meta button {
@@ -185,12 +223,12 @@ button:disabled {
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-columns: 250px minmax(0, 1fr);
 }
 
 .sidebar {
   min-height: calc(100vh - 73px);
-  padding: 20px;
+  padding: 16px;
   border-right: 1px solid #dce4ef;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(245, 249, 253, 0.95)),
@@ -198,9 +236,9 @@ button:disabled {
 }
 
 .sidebar-section {
-  padding-bottom: 22px;
+  padding-bottom: 16px;
   border-bottom: 1px solid #d5dfeb;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .sidebar h3 {
@@ -210,10 +248,9 @@ button:disabled {
   color: #0c1a31;
 }
 
-.sidebar h4,
 .field-label {
   display: block;
-  margin: 17px 0 10px;
+  margin: 13px 0 8px;
   color: #15233b;
   font-weight: 800;
   font-size: 14px;
@@ -222,7 +259,7 @@ button:disabled {
 .sidebar select,
 .sidebar input[type="date"] {
   width: 100%;
-  height: 39px;
+  height: 34px;
   border: 1px solid #c9d4e2;
   background: #fff;
   color: #17223a;
@@ -257,7 +294,7 @@ button:disabled {
 }
 
 .upload-box {
-  min-height: 136px;
+  min-height: 104px;
   border: 1px dashed #9fb0c4;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.7);
@@ -390,7 +427,7 @@ button:disabled {
 }
 
 .content {
-  padding: 18px 20px 34px;
+  padding: 16px 16px 28px;
   min-width: 0;
 }
 
@@ -955,7 +992,7 @@ button:disabled {
 .analytics-grid {
   display: grid;
   gap: 16px;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(320px, 1.15fr) minmax(340px, 1.18fr) minmax(240px, 0.72fr);
   align-items: stretch;
 }
 
@@ -1047,14 +1084,10 @@ button:disabled {
   margin-top: 20px;
 }
 
-.opportunity-panel {
-  margin-top: 20px;
-}
-
 .opportunity-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 10px;
   margin-top: 14px;
 }
 
@@ -1062,14 +1095,14 @@ button:disabled {
   background: #f8fbff;
   border: 1px solid #dbe6f2;
   border-radius: 8px;
-  min-height: 118px;
-  padding: 15px;
+  min-height: 84px;
+  padding: 12px 13px;
 }
 
 .opportunity-card span {
   color: #2563eb;
   display: block;
-  font-size: clamp(13px, 0.86vw, 14px);
+  font-size: 12px;
   font-weight: 840;
   margin-bottom: 8px;
   text-transform: uppercase;
@@ -1078,14 +1111,14 @@ button:disabled {
 .opportunity-card strong {
   color: #101b31;
   display: block;
-  font-size: clamp(16px, 1vw, 18px);
+  font-size: 14px;
   line-height: 1.25;
   margin-bottom: 8px;
 }
 
 .opportunity-card p {
   color: #40516a;
-  font-size: clamp(14px, 0.92vw, 15px);
+  font-size: 12px;
   line-height: 1.4;
   margin: 0;
 }
