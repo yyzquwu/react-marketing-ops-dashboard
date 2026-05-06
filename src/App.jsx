@@ -579,7 +579,7 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
 const RevenueTrendChart = memo(function RevenueTrendChart({ data }) {
   const width = 760;
   const height = 220;
-  const pad = { top: 22, right: 40, bottom: 36, left: 84 };
+  const pad = { top: 22, right: 54, bottom: 38, left: 84 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const maxValue = niceAxisMax(Math.max(...data.flatMap((day) => [day.spend, day.revenue]), 1));
@@ -587,7 +587,7 @@ const RevenueTrendChart = memo(function RevenueTrendChart({ data }) {
   const y = (value) => pad.top + innerH - (value / maxValue) * innerH;
   const spendPoints = data.map((day, index) => `${x(index)},${y(day.spend)}`).join(" ");
   const revenuePoints = data.map((day, index) => `${x(index)},${y(day.revenue)}`).join(" ");
-  const labelStep = Math.max(1, Math.ceil(data.length / 6));
+  const labelStep = Math.max(1, Math.ceil(data.length / 5));
   const labels = data
     .map((day, index) => ({ ...day, index }))
     .filter((_, index) => index % labelStep === 0 || index === data.length - 1);
@@ -651,8 +651,8 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
     .sort((a, b) => b.spend - a.spend)
     .slice(0, 36);
   const width = 760;
-  const height = 230;
-  const pad = { top: 22, right: 156, bottom: 42, left: 68 };
+  const height = 238;
+  const pad = { top: 24, right: 158, bottom: 50, left: 72 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const maxCpa = niceAxisMax(Math.max(...candidates.map((campaign) => campaign.cpa), 1));
@@ -688,14 +688,14 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
         })}
         <line x1={thresholdX} x2={thresholdX} y1={pad.top} y2={height - pad.bottom} className="threshold-line" />
         <line x1={pad.left} x2={width - pad.right} y1={thresholdY} y2={thresholdY} className="threshold-line" />
-        <text x={pad.left + 12} y={pad.top + 16} className="quadrant-label">High ROAS</text>
-        <text x={pad.left + 12} y={pad.top + 31} className="quadrant-label">Low CPA</text>
+        <text x={pad.left + 14} y={pad.top + 18} className="quadrant-label">High ROAS</text>
+        <text x={pad.left + 14} y={pad.top + 33} className="quadrant-label">Low CPA</text>
         <text x={thresholdX + 14} y={pad.top + 16} className="quadrant-label">High ROAS</text>
         <text x={thresholdX + 14} y={pad.top + 31} className="quadrant-label">High CPA</text>
-        <text x={pad.left + 12} y={height - pad.bottom - 28} className="quadrant-label">Low ROAS</text>
-        <text x={pad.left + 12} y={height - pad.bottom - 13} className="quadrant-label">Low CPA</text>
-        <text x={thresholdX + 14} y={height - pad.bottom - 28} className="quadrant-label">Low ROAS</text>
-        <text x={thresholdX + 14} y={height - pad.bottom - 13} className="quadrant-label">High CPA</text>
+        <text x={pad.left + 14} y={height - pad.bottom - 33} className="quadrant-label">Low ROAS</text>
+        <text x={pad.left + 14} y={height - pad.bottom - 18} className="quadrant-label">Low CPA</text>
+        <text x={thresholdX + 18} y={height - pad.bottom - 33} className="quadrant-label">Low ROAS</text>
+        <text x={thresholdX + 18} y={height - pad.bottom - 18} className="quadrant-label">High CPA</text>
         <text x={18} y={pad.top + innerH / 2} className="axis-title" transform={`rotate(-90 18 ${pad.top + innerH / 2})`}>ROAS (x)</text>
         <text x={pad.left + innerW / 2} y={height - 2} className="axis-title">CPA (USD)</text>
         {candidates.map((campaign) => (
@@ -705,7 +705,7 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
             cy={y(campaign.roas)}
             fill={COLORS[campaign.platform] || COLORS.Other}
             key={`${campaign.campaign}-${campaign.platform}`}
-            r={4 + Math.sqrt(campaign.spend / maxSpend) * 11}
+            r={3 + Math.sqrt(campaign.spend / maxSpend) * 7}
           >
             <title>{`${campaign.campaign} (${campaign.platform})\nCPA ${formatCurrency(campaign.cpa, 2)} | ROAS ${campaign.roas.toFixed(2)}x | Spend ${formatCurrency(campaign.spend)}`}</title>
           </circle>
@@ -718,7 +718,7 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
             </g>
           ))}
         </g>
-        <text x={width - 132} y={height - 14} className="quadrant-note">Bubble size = Spend</text>
+        <text x={width - 132} y={height - 20} className="quadrant-note">Bubble size = Spend</text>
       </svg>
     </section>
   );
