@@ -451,6 +451,7 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
     .map((day, index) => `${x(index)},${yConversions(day.conversions)}`)
     .join(" ");
   const labelStep = Math.max(1, Math.ceil(data.length / 7));
+  const dotStep = data.length > 180 ? 14 : data.length > 90 ? 7 : data.length > 45 ? 3 : 1;
   const labelIndexes = data.reduce((indexes, _, index) => {
     if (index % labelStep === 0) indexes.push(index);
     return indexes;
@@ -503,22 +504,25 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
         </text>
         <polyline points={spendPoints} fill="none" className="spend-line" pathLength="1" />
         <polyline points={conversionPoints} fill="none" className="conversion-line" pathLength="1" />
-        {data.map((day, index) => (
-          <g
-            className="trend-hover-target"
-            key={`${day.date}-${index}`}
-            onMouseMove={(event) => showTooltip(event, day, index)}
-            onFocus={(event) => showTooltip(event, day, index)}
-            onBlur={() => setTooltip(null)}
-            tabIndex="0"
-          >
-            <line x1={x(index)} x2={x(index)} y1={pad.top} y2={height - pad.bottom} className="trend-hover-line" />
-            <circle cx={x(index)} cy={ySpend(day.spend)} r="4" className="spend-dot" />
-            <circle cx={x(index)} cy={yConversions(day.conversions)} r="3.5" className="conversion-dot" />
-            <circle cx={x(index)} cy={ySpend(day.spend)} r="11" className="trend-hit-dot" />
-            <circle cx={x(index)} cy={yConversions(day.conversions)} r="11" className="trend-hit-dot" />
-          </g>
-        ))}
+        {data.map((day, index) => {
+          const showDot = dotStep === 1 || index % dotStep === 0 || index === data.length - 1;
+          return (
+            <g
+              className="trend-hover-target"
+              key={`${day.date}-${index}`}
+              onMouseMove={(event) => showTooltip(event, day, index)}
+              onFocus={(event) => showTooltip(event, day, index)}
+              onBlur={() => setTooltip(null)}
+              tabIndex="0"
+            >
+              <line x1={x(index)} x2={x(index)} y1={pad.top} y2={height - pad.bottom} className="trend-hover-line" />
+              <circle cx={x(index)} cy={ySpend(day.spend)} r="4" className={showDot ? "spend-dot" : "spend-dot trend-dot-muted"} />
+              <circle cx={x(index)} cy={yConversions(day.conversions)} r="3.5" className={showDot ? "conversion-dot" : "conversion-dot trend-dot-muted"} />
+              <circle cx={x(index)} cy={ySpend(day.spend)} r="12" className="trend-hit-dot" />
+              <circle cx={x(index)} cy={yConversions(day.conversions)} r="12" className="trend-hit-dot" />
+            </g>
+          );
+        })}
         {labels.map((day) => {
           const index = day.index;
           return (
@@ -1168,6 +1172,12 @@ export default function App() {
     if (availableGranularities.includes(granularity)) return;
     setGranularity(availableGranularities[0] ?? "day");
   }, [availableGranularities, granularity]);
+
+  useEffect(() => {
+    if (!availableGranularities.includes("week")) return;
+    if (daysBetween(dateRange.start, dateRange.end) <= 90) return;
+    setGranularity((current) => (current === "day" ? "week" : current));
+  }, [availableGranularities, dateRange]);
 
   useEffect(() => {
     setPage(1);

@@ -642,6 +642,10 @@ button:disabled {
   stroke-width: 2;
 }
 
+.trend-dot-muted {
+  opacity: 0;
+}
+
 .trend-hover-target {
   cursor: crosshair;
   outline: none;
