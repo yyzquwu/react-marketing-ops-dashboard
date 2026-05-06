@@ -430,7 +430,15 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
     .map((day, index) => `${x(index)},${yConversions(day.conversions)}`)
     .join(" ");
   const labelStep = Math.max(1, Math.ceil(data.length / 7));
-  const labels = data.filter((_, index) => index % labelStep === 0 || index === data.length - 1);
+  const labelIndexes = data.reduce((indexes, _, index) => {
+    if (index % labelStep === 0) indexes.push(index);
+    return indexes;
+  }, []);
+  const lastIndex = data.length - 1;
+  if (lastIndex > 0 && lastIndex - labelIndexes.at(-1) >= Math.ceil(labelStep * 0.75)) {
+    labelIndexes.push(lastIndex);
+  }
+  const labels = labelIndexes.map((index) => ({ ...data[index], index }));
 
   return (
     <svg className="trend-chart" viewBox={`0 0 ${width} ${height}`} role="img" preserveAspectRatio="xMidYMid meet">
@@ -468,7 +476,7 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
         </g>
       ))}
       {labels.map((day) => {
-        const index = data.findIndex((item) => item.date === day.date);
+        const index = day.index;
         return (
           <text key={day.date} x={x(index)} y={height - 10} textAnchor="middle" className="axis-label">
             {labelBucket(day.date, granularity)}
@@ -548,9 +556,13 @@ const CpaBars = memo(function CpaBars({ campaigns }) {
         </div>
       ))}
       <div className="bar-axis">
-        <span>$0</span>
-        <span>{formatCurrency(maxCpa / 2)}</span>
-        <span>{formatCurrency(maxCpa)}</span>
+        <span />
+        <div>
+          <span>$0</span>
+          <span>{formatCurrency(maxCpa / 2)}</span>
+          <span>{formatCurrency(maxCpa)}</span>
+        </div>
+        <span />
       </div>
     </div>
   );
