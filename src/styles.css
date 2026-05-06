@@ -389,13 +389,7 @@ button:disabled {
 }
 
 .dataset-note {
-  min-height: 32px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #4c5f77;
-  font-size: 13px;
-  margin-bottom: 14px;
+  display: none;
 }
 
 .dataset-note b {
@@ -421,6 +415,7 @@ button:disabled {
 }
 
 .kpi-card {
+  height: 118px;
   min-height: 118px;
   border-radius: 8px;
   padding: 18px;
@@ -458,7 +453,7 @@ button:disabled {
 }
 
 .kpi-copy p {
-  margin: 15px 0 0;
+  margin: 12px 0 0;
   color: #27354d;
   font-size: 13px;
   line-height: 1.35;
@@ -482,6 +477,10 @@ button:disabled {
   grid-template-columns: minmax(430px, 2fr) minmax(210px, 0.78fr) minmax(280px, 1.12fr);
   gap: 16px;
   align-items: stretch;
+}
+
+.chart-grid > .panel {
+  min-height: 360px;
 }
 
 .panel {
@@ -559,13 +558,15 @@ button:disabled {
 }
 
 .trend-panel {
-  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .trend-chart {
   width: 100%;
   height: auto;
-  aspect-ratio: 860 / 360;
+  aspect-ratio: 760 / 350;
   margin-top: 8px;
   display: block;
 }
@@ -577,13 +578,13 @@ button:disabled {
 
 .axis-label {
   fill: #283950;
-  font-size: 12px;
-  font-weight: 750;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .axis-title {
   fill: #1d61d9;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 850;
 }
 
@@ -625,13 +626,13 @@ button:disabled {
 
 .donut-layout {
   display: grid;
-  gap: 8px;
+  gap: 6px;
   place-items: center;
 }
 
 .donut {
-  width: 176px;
-  height: 176px;
+  width: clamp(122px, 9.7vw, 150px);
+  height: clamp(122px, 9.7vw, 150px);
   transform: rotate(-90deg);
   overflow: visible;
 }
@@ -639,12 +640,12 @@ button:disabled {
 .donut-track {
   fill: none;
   stroke: #e6edf5;
-  stroke-width: 26;
+  stroke-width: 28;
 }
 
 .donut-segment {
   fill: none;
-  stroke-width: 26;
+  stroke-width: 28;
   transition: stroke-dasharray 420ms ease, stroke-dashoffset 420ms ease;
 }
 
@@ -656,16 +657,16 @@ button:disabled {
 
 .legend-row {
   display: grid;
-  grid-template-columns: 14px minmax(70px, 1fr) minmax(76px, auto) 42px;
-  gap: 6px;
+  grid-template-columns: 12px minmax(54px, 1fr) minmax(58px, auto) 32px;
+  gap: 5px;
   align-items: center;
   color: #1f2d43;
   font-size: 11px;
 }
 
 .legend-dot {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
 }
 
@@ -687,9 +688,9 @@ button:disabled {
 }
 
 .bar-list {
-  margin-top: 22px;
+  margin-top: 18px;
   display: grid;
-  gap: 14px;
+  gap: 10px;
 }
 
 .bar-row {
@@ -697,7 +698,7 @@ button:disabled {
   grid-template-columns: minmax(112px, 1.05fr) minmax(96px, 1.55fr) 58px;
   gap: 10px;
   align-items: center;
-  font-size: 11px;
+  font-size: 12px;
   color: #1b2940;
 }
 
@@ -723,7 +724,7 @@ button:disabled {
 
 .bar-row b {
   color: #26344b;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .bar-axis {
@@ -1036,6 +1037,7 @@ tr:last-child td {
   }
 
   .kpi-card {
+    height: auto;
     min-height: 112px;
   }
 

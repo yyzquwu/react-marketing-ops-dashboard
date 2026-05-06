@@ -415,13 +415,14 @@ const KpiCard = memo(function KpiCard({ accent, delta, iconKey, label, value, su
 });
 
 const LineComboChart = memo(function LineComboChart({ data, granularity }) {
-  const width = 860;
-  const height = 360;
-  const pad = { top: 24, right: 80, bottom: 46, left: 90 };
+  const width = 760;
+  const height = 350;
+  const pad = { top: 24, right: 62, bottom: 44, left: 78 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const maxSpend = niceAxisMax(Math.max(...data.map((day) => day.spend), 1));
   const maxConversions = niceAxisMax(Math.max(...data.map((day) => day.conversions), 1));
+  const plotCenterY = pad.top + innerH / 2;
   const x = (index) => pad.left + (index / Math.max(1, data.length - 1)) * innerW;
   const ySpend = (value) => pad.top + innerH - (value / maxSpend) * innerH;
   const yConversions = (value) => pad.top + innerH - (value / maxConversions) * innerH;
@@ -456,14 +457,14 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
           </g>
         );
       })}
-      <text x={18} y={height / 2} className="axis-title" transform={`rotate(-90 18 ${height / 2})`}>
+      <text x={18} y={plotCenterY} className="axis-title" transform={`rotate(-90 18 ${plotCenterY})`}>
         Spend (USD)
       </text>
       <text
         x={width - 18}
-        y={height / 2}
+        y={plotCenterY}
         className="axis-title conversions"
-        transform={`rotate(90 ${width - 18} ${height / 2})`}
+        transform={`rotate(90 ${width - 18} ${plotCenterY})`}
       >
         Conversions
       </text>
@@ -1108,78 +1109,78 @@ export default function App() {
           </div>
 
           <div className="kpi-grid">
-            <KpiCard
-              accent="linear-gradient(135deg,#246bff,#1555df)"
-              delta={deltas.spend}
-              iconKey="spend"
-              label="Total Spend"
-              value={formatCurrency(summary.spend)}
-            />
-            <KpiCard
-              accent="linear-gradient(135deg,#0db9af,#079b9a)"
-              delta={deltas.conversions}
-              iconKey="conversions"
-              label="Conversions"
-              value={formatNumber(summary.conversions)}
-            />
-            <KpiCard
-              accent="linear-gradient(135deg,#e12a8a,#c91c71)"
-              delta={deltas.cpa}
-              iconKey="cpa"
-              label="CPA"
-              value={formatCurrency(summary.cpa, 2)}
-            />
-            <KpiCard
-              accent="linear-gradient(135deg,#f5a300,#ef8400)"
-              delta={deltas.ctr}
-              iconKey="ctr"
-              label="CTR"
-              value={formatPercent(summary.ctr)}
-            />
-            <KpiCard
-              accent="linear-gradient(135deg,#8057e8,#6338d2)"
-              delta={deltas.cpc}
-              iconKey="cpc"
-              label="CPC"
-              value={formatCurrency(summary.cpc, 2)}
-            />
+              <KpiCard
+                accent="linear-gradient(135deg,#246bff,#1555df)"
+                delta={deltas.spend}
+                iconKey="spend"
+                label="Total Spend"
+                value={formatCurrency(summary.spend)}
+              />
+              <KpiCard
+                accent="linear-gradient(135deg,#0db9af,#079b9a)"
+                delta={deltas.conversions}
+                iconKey="conversions"
+                label="Conversions"
+                value={formatNumber(summary.conversions)}
+              />
+              <KpiCard
+                accent="linear-gradient(135deg,#e12a8a,#c91c71)"
+                delta={deltas.cpa}
+                iconKey="cpa"
+                label="CPA"
+                value={formatCurrency(summary.cpa, 2)}
+              />
+              <KpiCard
+                accent="linear-gradient(135deg,#f5a300,#ef8400)"
+                delta={deltas.ctr}
+                iconKey="ctr"
+                label="CTR"
+                value={formatPercent(summary.ctr)}
+              />
+              <KpiCard
+                accent="linear-gradient(135deg,#8057e8,#6338d2)"
+                delta={deltas.cpc}
+                iconKey="cpc"
+                label="CPC"
+                value={formatCurrency(summary.cpc, 2)}
+              />
           </div>
 
           <section className="chart-grid">
-            <article className="panel trend-panel">
-              <div className="panel-title-row">
-                <div>
-                  <h2>Spend & Conversions Over Time</h2>
-                  <div className="legend-inline">
-                    <span><i className="blue" /> Spend</span>
-                    <span><i className="teal" /> Conversions</span>
+              <article className="panel trend-panel">
+                <div className="panel-title-row">
+                  <div>
+                    <h2>Spend & Conversions Over Time</h2>
+                    <div className="legend-inline">
+                      <span><i className="blue" /> Spend</span>
+                      <span><i className="teal" /> Conversions</span>
+                    </div>
+                  </div>
+                  <div className="segmented">
+                    {availableGranularities.map((item) => (
+                      <button
+                        className={granularity === item ? "active" : ""}
+                        key={item}
+                        onClick={() => handleGranularityChange(item)}
+                        aria-pressed={granularity === item}
+                      >
+                        {item[0].toUpperCase() + item.slice(1)}
+                      </button>
+                    ))}
                   </div>
                 </div>
-                <div className="segmented">
-                  {availableGranularities.map((item) => (
-                    <button
-                      className={granularity === item ? "active" : ""}
-                      key={item}
-                      onClick={() => handleGranularityChange(item)}
-                      aria-pressed={granularity === item}
-                    >
-                      {item[0].toUpperCase() + item.slice(1)}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <LineComboChart data={daily} granularity={granularity} />
-            </article>
+                <LineComboChart data={daily} granularity={granularity} />
+              </article>
 
-            <article className="panel platform-panel">
-              <h2>Spend by Platform</h2>
-              <DonutChart data={platformSpend} />
-            </article>
+              <article className="panel platform-panel">
+                <h2>Spend by Platform</h2>
+                <DonutChart data={platformSpend} />
+              </article>
 
-            <article className="panel cpa-panel">
-              <h2>CPA by Campaign</h2>
-              <CpaBars campaigns={campaigns} />
-            </article>
+              <article className="panel cpa-panel">
+                <h2>CPA by Campaign</h2>
+                <CpaBars campaigns={campaigns} />
+              </article>
           </section>
 
           <Takeaways summary={summary} campaigns={campaigns} platforms={platformSpend} deltas={deltas} />
