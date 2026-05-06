@@ -999,12 +999,12 @@ button:disabled {
 .analytics-grid {
   display: grid;
   gap: 16px;
-  grid-template-columns: minmax(360px, 1.18fr) minmax(390px, 1.18fr) minmax(260px, 0.72fr);
+  grid-template-columns: minmax(420px, 1.34fr) minmax(450px, 1.4fr) minmax(280px, 0.84fr);
   align-items: stretch;
 }
 
 .analytics-grid > .panel {
-  min-height: 310px;
+  min-height: 248px;
 }
 
 .mini-trend-chart,
@@ -1016,11 +1016,11 @@ button:disabled {
 }
 
 .mini-trend-chart {
-  aspect-ratio: 760 / 220;
+  aspect-ratio: 760 / 205;
 }
 
 .quadrant-chart {
-  aspect-ratio: 760 / 272;
+  aspect-ratio: 760 / 230;
 }
 
 .chart-note {
@@ -1047,7 +1047,7 @@ button:disabled {
 
 .quadrant-label {
   fill: #71829a;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 760;
 }
 
@@ -1065,7 +1065,7 @@ button:disabled {
 .quadrant-legend text,
 .quadrant-note {
   fill: #23334a;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 760;
 }
 
@@ -1151,8 +1151,8 @@ button:disabled {
 .opportunity-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
-  margin-top: 14px;
+  gap: 8px;
+  margin-top: 13px;
 }
 
 .opportunity-card {
@@ -1161,10 +1161,10 @@ button:disabled {
   border: 1px solid transparent;
   border-radius: 8px;
   display: grid;
-  gap: 14px;
-  grid-template-columns: 54px minmax(0, 1fr);
-  min-height: 82px;
-  padding: 12px 13px;
+  gap: 11px;
+  grid-template-columns: 46px minmax(0, 1fr);
+  min-height: 56px;
+  padding: 8px 11px;
 }
 
 .opportunity-card.green {
@@ -1183,9 +1183,9 @@ button:disabled {
   border-radius: 50%;
   color: #ffffff;
   display: grid;
-  height: 52px;
+  height: 44px;
   place-items: center;
-  width: 52px;
+  width: 44px;
 }
 
 .opportunity-card.green .opportunity-icon {
@@ -1203,15 +1203,15 @@ button:disabled {
 .opportunity-card strong {
   color: #101b31;
   display: block;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.25;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .opportunity-card p {
   color: #40516a;
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 11px;
+  line-height: 1.32;
   margin: 0;
 }
 
@@ -1256,7 +1256,7 @@ button:disabled {
   font-weight: 850;
   gap: 7px;
   justify-content: center;
-  margin: 12px auto 0;
+  margin: 10px auto 0;
   padding: 4px 6px;
 }
 

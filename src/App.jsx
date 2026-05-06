@@ -651,8 +651,8 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
     .sort((a, b) => b.spend - a.spend)
     .slice(0, 36);
   const width = 760;
-  const height = 272;
-  const pad = { top: 26, right: 176, bottom: 48, left: 68 };
+  const height = 230;
+  const pad = { top: 22, right: 156, bottom: 42, left: 68 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const maxCpa = niceAxisMax(Math.max(...candidates.map((campaign) => campaign.cpa), 1));
@@ -705,12 +705,12 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
             cy={y(campaign.roas)}
             fill={COLORS[campaign.platform] || COLORS.Other}
             key={`${campaign.campaign}-${campaign.platform}`}
-            r={5 + Math.sqrt(campaign.spend / maxSpend) * 12}
+            r={4 + Math.sqrt(campaign.spend / maxSpend) * 11}
           >
             <title>{`${campaign.campaign} (${campaign.platform})\nCPA ${formatCurrency(campaign.cpa, 2)} | ROAS ${campaign.roas.toFixed(2)}x | Spend ${formatCurrency(campaign.spend)}`}</title>
           </circle>
         ))}
-        <g className="quadrant-legend" transform={`translate(${width - 150} 50)`}>
+        <g className="quadrant-legend" transform={`translate(${width - 132} 48)`}>
           {legendPlatforms.map((platform, index) => (
             <g key={platform} transform={`translate(0 ${index * 22})`}>
               <circle cx="0" cy="0" r="5" fill={COLORS[platform] || COLORS.Other} />
@@ -718,7 +718,7 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
             </g>
           ))}
         </g>
-        <text x={width - 150} y={height - 16} className="quadrant-note">Bubble size = Spend</text>
+        <text x={width - 132} y={height - 14} className="quadrant-note">Bubble size = Spend</text>
       </svg>
     </section>
   );
@@ -866,21 +866,21 @@ const OpportunityPanel = memo(function OpportunityPanel({ campaigns, summary }) 
       Icon: ArrowUpRight,
       tone: "green",
       label: "Scale high ROAS campaigns",
-      detail: `${formatNumber(scaleList.length)} campaigns have ROAS above target with room to absorb incremental budget.`,
+      detail: `${formatNumber(scaleList.length)} campaigns have ROAS > 5x with low spend. Consider increasing budget.`,
       rows: scaleList,
     },
     {
       Icon: AlertTriangle,
       tone: "amber",
       label: "Improve low ROAS campaigns",
-      detail: `${formatNumber(improveList.length)} campaigns have low ROAS with meaningful spend. Review targeting and creatives.`,
+      detail: `${formatNumber(improveList.length)} campaigns have ROAS < 2x with high spend. Review targeting and creatives.`,
       rows: improveList,
     },
     {
       Icon: Target,
       tone: "purple",
       label: "Balance CPA & ROAS",
-      detail: `${formatNumber(balanceList.length)} campaigns have efficient CPA but weaker ROAS. Check conversion quality.`,
+      detail: "Some campaigns have low CPA but low ROAS. Check conversion quality.",
       rows: balanceList,
     },
   ];
