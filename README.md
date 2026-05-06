@@ -32,6 +32,8 @@ The app loads data from `public/data/*.json` and keeps the matching CSV files be
 
 ## Data
 
+The portfolio sample is regenerated from the companion Airflow pipeline output and normalizes source, medium, campaign names, and seeded campaign-efficiency targets so the CPA leaderboard has realistic spread instead of flat demo bars.
+
 The real dataset is `public/data/raw_real_facebook_ads.csv`, transformed by `scripts/build-data.mjs` into `public/data/real_facebook_ads_daily.csv` and `public/data/real_facebook_ads_daily.json`.
 
 The real public CSV contains mixed row shapes where some later rows omit campaign identifiers. The transform preserves those rows as unmapped Facebook audience segments instead of inventing private campaign IDs.

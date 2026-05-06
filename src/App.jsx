@@ -415,9 +415,9 @@ const KpiCard = memo(function KpiCard({ accent, delta, iconKey, label, value, su
 });
 
 const LineComboChart = memo(function LineComboChart({ data, granularity }) {
-  const width = 760;
-  const height = 320;
-  const pad = { top: 22, right: 86, bottom: 42, left: 100 };
+  const width = 860;
+  const height = 360;
+  const pad = { top: 24, right: 80, bottom: 46, left: 90 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const maxSpend = niceAxisMax(Math.max(...data.map((day) => day.spend), 1));

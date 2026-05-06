@@ -565,7 +565,7 @@ button:disabled {
 .trend-chart {
   width: 100%;
   height: auto;
-  aspect-ratio: 760 / 320;
+  aspect-ratio: 860 / 360;
   margin-top: 8px;
   display: block;
 }
