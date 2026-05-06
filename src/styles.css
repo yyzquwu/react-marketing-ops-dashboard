@@ -408,8 +408,8 @@ button:disabled {
 
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(150px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(7, minmax(124px, 1fr));
+  gap: 10px;
   margin-bottom: 18px;
 }
 
@@ -421,20 +421,20 @@ button:disabled {
 }
 
 .kpi-card {
-  height: 118px;
-  min-height: 118px;
+  height: 112px;
+  min-height: 112px;
   border-radius: 8px;
-  padding: 18px;
+  padding: 14px;
   display: grid;
-  grid-template-columns: 52px 1fr;
-  gap: 15px;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
   align-items: center;
   animation: surfaceIn 420ms ease both;
 }
 
 .kpi-icon {
-  width: 52px;
-  height: 52px;
+  width: 44px;
+  height: 44px;
   border-radius: 7px;
   display: grid;
   place-items: center;
@@ -445,7 +445,7 @@ button:disabled {
 .kpi-copy span {
   display: block;
   color: #17223a;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 850;
 }
 
@@ -453,15 +453,15 @@ button:disabled {
   display: block;
   margin-top: 7px;
   color: #0f172a;
-  font-size: clamp(20px, 1.5vw, 27px);
+  font-size: clamp(18px, 1.28vw, 24px);
   line-height: 1.05;
   letter-spacing: 0;
 }
 
 .kpi-copy p {
-  margin: 12px 0 0;
+  margin: 10px 0 0;
   color: #27354d;
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1.35;
 }
 

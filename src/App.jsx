@@ -4,10 +4,13 @@ import {
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
+  DollarSign,
   Database,
   Download,
   FileUp,
+  BarChart3,
   MousePointer2,
+  Percent,
   RefreshCw,
   Search,
   Settings2,
@@ -15,7 +18,6 @@ import {
   Target,
   TrendingUp,
   Users,
-  Zap,
 } from "lucide-react";
 
 const DATASETS = {
@@ -58,17 +60,21 @@ const COLORS = {
 };
 
 const KPI_ICONS = {
-  spend: Zap,
+  spend: DollarSign,
   conversions: Users,
   cpa: Target,
-  ctr: MousePointer2,
+  ctr: Percent,
   cpc: MousePointer2,
+  revenue: BarChart3,
+  roas: TrendingUp,
 };
 
 const DEFAULT_FILTERS = Object.freeze({
   platform: "All Platforms",
   campaign: "All Campaigns",
-  medium: "All",
+  country: "All Countries",
+  industry: "All Industries",
+  medium: "All Types",
   includeTest: false,
 });
 
@@ -1060,6 +1066,8 @@ const Sidebar = memo(function Sidebar({
   onDragState,
   onFilterChange,
   onUploadFile,
+  countryOptions,
+  industryOptions,
   mediumOptions,
   platforms,
   setDateRange,
@@ -1131,6 +1139,31 @@ const Sidebar = memo(function Sidebar({
             </option>
           ))}
         </select>
+        <label className="field-label">Country</label>
+        <select value={filters.country} onChange={(event) => onFilterChange("country", event.target.value)}>
+          <option>All Countries</option>
+          {countryOptions.map((country) => (
+            <option value={country} key={country}>
+              {country}
+            </option>
+          ))}
+        </select>
+        <label className="field-label">Industry</label>
+        <select value={filters.industry} onChange={(event) => onFilterChange("industry", event.target.value)}>
+          <option>All Industries</option>
+          {industryOptions.map((industry) => (
+            <option value={industry} key={industry}>
+              {industry}
+            </option>
+          ))}
+        </select>
+        <label className="field-label">Campaign Type</label>
+        <select value={filters.medium} onChange={(event) => onFilterChange("medium", event.target.value)}>
+          <option>All Types</option>
+          {mediumOptions.map((medium) => (
+            <option key={medium}>{medium}</option>
+          ))}
+        </select>
         <label className="field-label">Campaign</label>
         <select value={filters.campaign} onChange={(event) => onFilterChange("campaign", event.target.value)}>
           <option>All Campaigns</option>
@@ -1138,13 +1171,6 @@ const Sidebar = memo(function Sidebar({
             <option value={campaign} key={campaign}>
               {campaign}
             </option>
-          ))}
-        </select>
-        <label className="field-label">Source / Medium</label>
-        <select value={filters.medium} onChange={(event) => onFilterChange("medium", event.target.value)}>
-          <option>All</option>
-          {mediumOptions.map((medium) => (
-            <option key={medium}>{medium}</option>
           ))}
         </select>
         <label className="checkbox-row">
@@ -1250,6 +1276,14 @@ export default function App() {
     () => [...new Set(rows.map((row) => row.campaign_name).filter(Boolean))].sort(),
     [rows],
   );
+  const countryOptions = useMemo(
+    () => [...new Set(rows.map((row) => row.segment).filter(Boolean))].sort(),
+    [rows],
+  );
+  const industryOptions = useMemo(
+    () => [...new Set(rows.map((row) => row.campaign_name?.split(" ")?.[0]).filter(Boolean))].sort(),
+    [rows],
+  );
   const mediumOptions = useMemo(
     () => [...new Set(rows.map((row) => row.medium_label).filter(Boolean))].sort(),
     [rows],
@@ -1265,7 +1299,9 @@ export default function App() {
       if (dateRange.end && row.date > dateRange.end) return false;
       if (filters.platform !== "All Platforms" && row.source_label !== filters.platform) return false;
       if (filters.campaign !== "All Campaigns" && row.campaign_name !== filters.campaign) return false;
-      if (filters.medium !== "All" && row.medium_label !== filters.medium) return false;
+      if (filters.country !== "All Countries" && row.segment !== filters.country) return false;
+      if (filters.industry !== "All Industries" && row.campaign_name?.split(" ")?.[0] !== filters.industry) return false;
+      if (filters.medium !== "All Types" && filters.medium !== "All" && row.medium_label !== filters.medium) return false;
       if (!filters.includeTest && TEST_CAMPAIGN_PATTERN.test(row.campaign_name || "")) return false;
       return true;
     });
@@ -1317,10 +1353,20 @@ export default function App() {
   const dataset = datasets[datasetId] ?? DATASETS.portfolio;
 
   useEffect(() => {
-    if (filters.medium !== "All" && !mediumOptions.includes(filters.medium)) {
-      setFilters((current) => ({ ...current, medium: "All" }));
+    if (filters.medium !== "All Types" && filters.medium !== "All" && !mediumOptions.includes(filters.medium)) {
+      setFilters((current) => ({ ...current, medium: "All Types" }));
     }
   }, [filters.medium, mediumOptions]);
+
+  useEffect(() => {
+    if (filters.country === "All Countries" || countryOptions.includes(filters.country)) return;
+    setFilters((current) => ({ ...current, country: "All Countries" }));
+  }, [countryOptions, filters.country]);
+
+  useEffect(() => {
+    if (filters.industry === "All Industries" || industryOptions.includes(filters.industry)) return;
+    setFilters((current) => ({ ...current, industry: "All Industries" }));
+  }, [industryOptions, filters.industry]);
 
   useEffect(() => {
     if (availableGranularities.includes(granularity)) return;
@@ -1493,6 +1539,8 @@ export default function App() {
           dragActive={dragActive}
           fileInputRef={fileInputRef}
           filters={filters}
+          countryOptions={countryOptions}
+          industryOptions={industryOptions}
           onBrowseFiles={handleBrowseFiles}
           onDatasetChange={handleDatasetChange}
           onDragState={setDragActive}
@@ -1551,14 +1599,14 @@ export default function App() {
               <KpiCard
                 accent="linear-gradient(135deg,#14b8a6,#0f766e)"
                 delta={deltas.revenue}
-                iconKey="spend"
+                iconKey="revenue"
                 label="Revenue"
                 value={formatCurrency(summary.revenue)}
               />
               <KpiCard
                 accent="linear-gradient(135deg,#f43f5e,#b91c1c)"
                 delta={deltas.roas}
-                iconKey="ctr"
+                iconKey="roas"
                 label="ROAS"
                 value={`${summary.roas.toFixed(2)}x`}
               />
