@@ -1086,28 +1086,35 @@ button:disabled {
   margin-top: 0;
 }
 
-.bottom-grid .breakdown-card,
+.bottom-grid .breakdown-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 288px;
+  padding: 13px 14px;
+}
+
 .bottom-grid .leaderboard {
   min-height: 288px;
 }
 
 .breakdown-table {
   display: grid;
-  gap: 8px;
-  margin-top: 14px;
+  flex: 1;
+  gap: 0;
+  margin-top: 10px;
 }
 
 .breakdown-head,
 .breakdown-row {
   display: grid;
-  gap: 8px;
-  grid-template-columns: minmax(80px, 1.25fr) repeat(3, minmax(58px, 0.8fr));
+  gap: 7px;
+  grid-template-columns: minmax(76px, 1.2fr) repeat(3, minmax(52px, 0.8fr));
   align-items: center;
 }
 
 .breakdown-head {
   color: #607189;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 850;
   text-transform: uppercase;
 }
@@ -1115,7 +1122,8 @@ button:disabled {
 .breakdown-row {
   border-top: 1px solid #dbe6f2;
   color: #17233a;
-  font-size: 13px;
+  font-size: 11px;
+  min-height: 31px;
   padding-top: 8px;
 }
 
@@ -1137,10 +1145,10 @@ button:disabled {
   cursor: pointer;
   display: flex;
   font-family: inherit;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 850;
   gap: 7px;
-  margin-top: 16px;
+  margin-top: auto;
   padding: 0;
 }
 
