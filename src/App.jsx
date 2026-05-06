@@ -624,8 +624,10 @@ const DonutChart = memo(function DonutChart({ data, onPlatformSelect, selectedPl
 });
 
 const CpaBars = memo(function CpaBars({ campaigns, onCampaignSelect, selectedCampaignKey }) {
+  const conversionThreshold = Math.max(1, campaigns.reduce((sum, campaign) => sum + campaign.conversions, 0) * 0.0025);
   const ranked = campaigns
     .filter((campaign) => campaign.conversions > 0)
+    .filter((campaign) => campaign.conversions >= conversionThreshold || campaigns.length <= 20)
     .sort((a, b) => a.cpa - b.cpa)
     .slice(0, 9);
   const maxCpa = Math.max(...ranked.map((campaign) => campaign.cpa), 1);
@@ -655,6 +657,9 @@ const CpaBars = memo(function CpaBars({ campaigns, onCampaignSelect, selectedCam
         </div>
         <span />
       </div>
+      <p className="bar-footnote">
+        Ranked by lowest CPA among campaigns with at least {formatNumber(conversionThreshold)} conversions.
+      </p>
     </div>
   );
 });
@@ -755,7 +760,10 @@ const CampaignDrilldown = memo(function CampaignDrilldown({ campaign, rows, onCl
 
 const Takeaways = memo(function Takeaways({ summary, campaigns, platforms, deltas }) {
   const bestPlatform = platforms[0]?.platform ?? "top platform";
-  const bestCpa = campaigns.filter((item) => item.conversions > 0).sort((a, b) => a.cpa - b.cpa)[0];
+  const conversionThreshold = Math.max(1, campaigns.reduce((sum, campaign) => sum + campaign.conversions, 0) * 0.0025);
+  const bestCpa = campaigns
+    .filter((item) => item.conversions >= conversionThreshold || campaigns.length <= 20)
+    .sort((a, b) => a.cpa - b.cpa)[0];
   const inefficient = campaigns.filter((item) => item.conversions > 0).sort((a, b) => b.cpa - a.cpa)[0];
 
   return (

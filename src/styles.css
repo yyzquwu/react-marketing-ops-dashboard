@@ -921,6 +921,14 @@ button:disabled {
   justify-content: space-between;
 }
 
+.bar-footnote {
+  color: #607189;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 2px 0 0;
+}
+
 .takeaways {
   margin-top: 20px;
 }
