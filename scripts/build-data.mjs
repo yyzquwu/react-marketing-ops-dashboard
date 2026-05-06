@@ -298,6 +298,7 @@ function normalizeGlobalAds(rows) {
       const clicks = asNumber(row.clicks);
       const spend = asNumber(row.ad_spend);
       const conversions = asNumber(row.conversions);
+      const revenue = asNumber(row.revenue);
       const campaignName = `${industry} ${campaignType} ${country}`;
 
       return {
@@ -314,9 +315,11 @@ function normalizeGlobalAds(rows) {
         spend: round(spend, 2),
         conversions,
         total_conversion: conversions,
+        revenue: round(revenue, 2),
         ctr: impressions ? round(clicks / impressions, 6) : 0,
         cpc: clicks ? round(spend / clicks, 4) : 0,
         cpa: conversions ? round(spend / conversions, 4) : 0,
+        roas: spend ? round(revenue / spend, 4) : 0,
         dataset: "global_ads_performance",
       };
     })
@@ -338,9 +341,11 @@ async function writeDataset(name, records) {
     "spend",
     "conversions",
     "total_conversion",
+    "revenue",
     "ctr",
     "cpc",
     "cpa",
+    "roas",
     "dataset",
   ];
 

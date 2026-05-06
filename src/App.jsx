@@ -116,9 +116,11 @@ const CSV_HEADERS = [
   "clicks",
   "spend",
   "conversions",
+  "revenue",
   "ctr",
   "cpc",
   "cpa",
+  "roas",
 ];
 
 function formatCurrency(value, digits = 0) {
@@ -215,11 +217,12 @@ function summarize(rows) {
     (acc, row) => {
       acc.spend += Number(row.spend) || 0;
       acc.conversions += Number(row.conversions) || 0;
+      acc.revenue += Number(row.revenue) || 0;
       acc.impressions += Number(row.impressions) || 0;
       acc.clicks += Number(row.clicks) || 0;
       return acc;
     },
-    { spend: 0, conversions: 0, impressions: 0, clicks: 0 },
+    { spend: 0, conversions: 0, revenue: 0, impressions: 0, clicks: 0 },
   );
 
   return {
@@ -228,6 +231,7 @@ function summarize(rows) {
     ctr: totals.impressions ? totals.clicks / totals.impressions : 0,
     cpc: totals.clicks ? totals.spend / totals.clicks : 0,
     cvr: totals.clicks ? totals.conversions / totals.clicks : 0,
+    roas: totals.spend ? totals.revenue / totals.spend : 0,
   };
 }
 
@@ -301,6 +305,7 @@ function normalizeRecords(records, dataset = "uploaded") {
       const spend = Number(record.spend ?? record.spent ?? record.Spent) || 0;
       const conversions =
         Number(record.conversions ?? record.approved_conversion ?? record.Total_Conversion ?? record.total_conversion) || 0;
+      const revenue = Number(record.revenue ?? record.Revenue) || 0;
       const source = record.source || record.source_label || "uploaded";
       const sourceLabel = record.source_label || record.platform || record.source || "Uploaded";
       const rawMedium = record.medium || record.medium_label || "";
@@ -329,10 +334,12 @@ function normalizeRecords(records, dataset = "uploaded") {
         clicks,
         spend,
         conversions,
+        revenue,
         total_conversion: Number(record.total_conversion) || conversions,
         ctr: Number(record.ctr) || (impressions ? clicks / impressions : 0),
         cpc: Number(record.cpc) || (clicks ? spend / clicks : 0),
         cpa: Number(record.cpa) || (conversions ? spend / conversions : 0),
+        roas: Number(record.roas) || (spend ? revenue / spend : 0),
         dataset,
       };
     })
@@ -397,6 +404,16 @@ function buildCampaigns(rows) {
 function buildPlatforms(rows) {
   return [...groupBy(rows, (row) => row.source_label || "Other").entries()]
     .map(([platform, platformRows]) => ({ platform, ...summarize(platformRows) }))
+    .sort((a, b) => b.spend - a.spend);
+}
+
+function buildBreakdown(rows, keyFn, labelKey = "label") {
+  return [...groupBy(rows, keyFn).entries()]
+    .map(([label, groupRows]) => ({
+      [labelKey]: label || "Unknown",
+      ...summarize(groupRows),
+      rows: groupRows.length,
+    }))
     .sort((a, b) => b.spend - a.spend);
 }
 
@@ -543,6 +560,124 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
   );
 });
 
+const RevenueTrendChart = memo(function RevenueTrendChart({ data }) {
+  const width = 760;
+  const height = 250;
+  const pad = { top: 22, right: 40, bottom: 36, left: 84 };
+  const innerW = width - pad.left - pad.right;
+  const innerH = height - pad.top - pad.bottom;
+  const maxValue = niceAxisMax(Math.max(...data.flatMap((day) => [day.spend, day.revenue]), 1));
+  const x = (index) => pad.left + (index / Math.max(1, data.length - 1)) * innerW;
+  const y = (value) => pad.top + innerH - (value / maxValue) * innerH;
+  const spendPoints = data.map((day, index) => `${x(index)},${y(day.spend)}`).join(" ");
+  const revenuePoints = data.map((day, index) => `${x(index)},${y(day.revenue)}`).join(" ");
+  const labelStep = Math.max(1, Math.ceil(data.length / 6));
+  const labels = data
+    .map((day, index) => ({ ...day, index }))
+    .filter((_, index) => index % labelStep === 0 || index === data.length - 1);
+
+  return (
+    <svg className="mini-trend-chart" viewBox={`0 0 ${width} ${height}`} role="img" preserveAspectRatio="xMidYMid meet">
+      {[0, 0.5, 1].map((tick) => {
+        const tickY = pad.top + innerH - tick * innerH;
+        return (
+          <g key={tick}>
+            <line x1={pad.left} x2={width - pad.right} y1={tickY} y2={tickY} className="grid-line" />
+            <text x={pad.left - 14} y={tickY + 4} textAnchor="end" className="axis-label">
+              {formatCompactCurrency(maxValue * tick)}
+            </text>
+          </g>
+        );
+      })}
+      <polyline points={spendPoints} fill="none" className="spend-line" pathLength="1" />
+      <polyline points={revenuePoints} fill="none" className="revenue-line" pathLength="1" />
+      {labels.map((day) => (
+        <text key={day.date} x={x(day.index)} y={height - 8} textAnchor="middle" className="axis-label">
+          {labelBucket(day.date, "month")}
+        </text>
+      ))}
+    </svg>
+  );
+});
+
+const BreakdownTable = memo(function BreakdownTable({ title, rows, labelHeader }) {
+  return (
+    <section className="breakdown-card panel">
+      <h2>{title}</h2>
+      <div className="breakdown-table">
+        <div className="breakdown-head">
+          <span>{labelHeader}</span>
+          <span>Spend</span>
+          <span>CPA</span>
+          <span>ROAS</span>
+        </div>
+        {rows.slice(0, 6).map((row) => (
+          <div className="breakdown-row" key={row.label}>
+            <span>{row.label}</span>
+            <b>{formatCurrency(row.spend)}</b>
+            <b>{formatCurrency(row.cpa, 2)}</b>
+            <b>{row.roas.toFixed(2)}x</b>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+});
+
+const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
+  const candidates = campaigns
+    .filter((campaign) => campaign.spend > 0 && campaign.conversions > 0 && campaign.revenue > 0)
+    .sort((a, b) => b.spend - a.spend)
+    .slice(0, 36);
+  const width = 760;
+  const height = 330;
+  const pad = { top: 24, right: 28, bottom: 48, left: 68 };
+  const innerW = width - pad.left - pad.right;
+  const innerH = height - pad.top - pad.bottom;
+  const maxCpa = niceAxisMax(Math.max(...candidates.map((campaign) => campaign.cpa), 1));
+  const maxRoas = niceAxisMax(Math.max(...candidates.map((campaign) => campaign.roas), 1));
+  const maxSpend = Math.max(...candidates.map((campaign) => campaign.spend), 1);
+  const x = (value) => pad.left + (value / maxCpa) * innerW;
+  const y = (value) => pad.top + innerH - (value / maxRoas) * innerH;
+
+  return (
+    <section className="quadrant panel">
+      <div className="panel-title-row">
+        <h2>Efficiency Quadrant</h2>
+        <span className="chart-note">Bubble size = spend, color = platform</span>
+      </div>
+      <svg className="quadrant-chart" viewBox={`0 0 ${width} ${height}`} role="img" preserveAspectRatio="xMidYMid meet">
+        {[0, 0.5, 1].map((tick) => {
+          const gridY = pad.top + innerH - tick * innerH;
+          const gridX = pad.left + tick * innerW;
+          return (
+            <g key={tick}>
+              <line x1={pad.left} x2={width - pad.right} y1={gridY} y2={gridY} className="grid-line" />
+              <line x1={gridX} x2={gridX} y1={pad.top} y2={height - pad.bottom} className="grid-line faint" />
+              <text x={pad.left - 12} y={gridY + 4} textAnchor="end" className="axis-label">{(maxRoas * tick).toFixed(1)}x</text>
+              <text x={gridX} y={height - 15} textAnchor="middle" className="axis-label">{formatCurrency(maxCpa * tick, 0)}</text>
+            </g>
+          );
+        })}
+        <text x={18} y={height / 2} className="axis-title" transform={`rotate(-90 18 ${height / 2})`}>ROAS</text>
+        <text x={width / 2} y={height - 2} className="axis-title">CPA</text>
+        {candidates.map((campaign) => (
+          <circle
+            className="quadrant-dot"
+            cx={x(campaign.cpa)}
+            cy={y(campaign.roas)}
+            fill={COLORS[campaign.platform] || COLORS.Other}
+            key={`${campaign.campaign}-${campaign.platform}`}
+            r={5 + Math.sqrt(campaign.spend / maxSpend) * 12}
+          >
+            <title>{`${campaign.campaign} (${campaign.platform})\nCPA ${formatCurrency(campaign.cpa, 2)} | ROAS ${campaign.roas.toFixed(2)}x | Spend ${formatCurrency(campaign.spend)}`}</title>
+          </circle>
+        ))}
+      </svg>
+    </section>
+  );
+});
+
 const DonutChart = memo(function DonutChart({ data, onPlatformSelect, selectedPlatform }) {
   const [tooltip, setTooltip] = useState(null);
   const total = data.reduce((sum, row) => sum + row.spend, 0) || 1;
@@ -671,34 +806,34 @@ const CpaBars = memo(function CpaBars({ campaigns, onCampaignSelect, selectedCam
 const OpportunityPanel = memo(function OpportunityPanel({ campaigns, summary }) {
   const viable = campaigns.filter((campaign) => campaign.conversions > 0);
   const scale = viable
-    .filter((campaign) => campaign.cpa <= summary.cpa && campaign.spend >= summary.spend * 0.025)
-    .sort((a, b) => b.conversions - a.conversions)[0];
+    .filter((campaign) => campaign.roas >= summary.roas * 1.15 && campaign.spend <= summary.spend * 0.04)
+    .sort((a, b) => b.roas - a.roas)[0];
   const inspect = viable
-    .filter((campaign) => campaign.cpa > summary.cpa * 1.15 && campaign.spend >= summary.spend * 0.025)
+    .filter((campaign) => campaign.roas < summary.roas * 0.75 && campaign.spend >= summary.spend * 0.025)
     .sort((a, b) => b.spend - a.spend)[0];
   const creative = viable
-    .filter((campaign) => campaign.ctr >= summary.ctr * 1.08 && campaign.cvr < summary.cvr)
+    .filter((campaign) => campaign.cpa <= summary.cpa && campaign.roas < summary.roas)
     .sort((a, b) => b.clicks - a.clicks)[0];
   const opportunities = [
     scale
       ? {
           label: "Scale efficient spend",
           value: scale.campaign,
-          detail: `${scale.platform} is at ${formatCurrency(scale.cpa, 2)} CPA with ${formatNumber(scale.conversions)} conversions.`,
+          detail: `${scale.platform} is at ${scale.roas.toFixed(2)}x ROAS with only ${formatCurrency(scale.spend)} spend.`,
         }
       : null,
     inspect
       ? {
           label: "Inspect high CPA",
           value: inspect.campaign,
-          detail: `${formatCurrency(inspect.spend)} spend at ${formatCurrency(inspect.cpa, 2)} CPA is above the filtered average.`,
+          detail: `${formatCurrency(inspect.spend)} spend is returning ${inspect.roas.toFixed(2)}x ROAS, below the filtered average.`,
         }
       : null,
     creative
       ? {
-          label: "Fix post-click funnel",
+          label: "Check conversion quality",
           value: creative.campaign,
-          detail: `${formatPercent(creative.ctr)} CTR is strong, but ${formatPercent(creative.cvr)} CVR trails the filtered average.`,
+          detail: `${formatCurrency(creative.cpa, 2)} CPA is efficient, but ${creative.roas.toFixed(2)}x ROAS trails the filtered average.`,
         }
       : null,
   ].filter(Boolean);
@@ -845,6 +980,8 @@ const Leaderboard = memo(function Leaderboard({
               <th className="col-number">Spend (USD)</th>
               <th className="col-number">Conversions</th>
               <th className="col-number">CPA (USD)</th>
+              <th className="col-number">Revenue</th>
+              <th className="col-number">ROAS</th>
               <th className="col-number">CTR</th>
               <th className="col-number">CPC (USD)</th>
               <th className="col-number">CVR</th>
@@ -863,6 +1000,8 @@ const Leaderboard = memo(function Leaderboard({
                 <td className="col-number">{formatCurrency(campaign.spend)}</td>
                 <td className="col-number">{formatNumber(campaign.conversions)}</td>
                 <td className="col-number">{formatCurrency(campaign.cpa, 2)}</td>
+                <td className="col-number">{formatCurrency(campaign.revenue)}</td>
+                <td className="col-number">{campaign.roas.toFixed(2)}x</td>
                 <td className="col-number">{formatPercent(campaign.ctr)}</td>
                 <td className="col-number">{formatCurrency(campaign.cpc, 2)}</td>
                 <td className="col-number">{formatPercent(campaign.cvr)}</td>
@@ -1134,8 +1273,21 @@ export default function App() {
 
   const availableGranularities = useMemo(() => getAvailableGranularities(filteredRows), [filteredRows]);
   const daily = useMemo(() => buildTimeSeries(filteredRows, granularity), [filteredRows, granularity]);
+  const monthly = useMemo(() => buildTimeSeries(filteredRows, "month"), [filteredRows]);
   const campaigns = useMemo(() => buildCampaigns(filteredRows), [filteredRows]);
   const platformSpend = useMemo(() => buildPlatforms(filteredRows), [filteredRows]);
+  const countryBreakdown = useMemo(
+    () => buildBreakdown(filteredRows, (row) => row.segment || "Unknown"),
+    [filteredRows],
+  );
+  const industryBreakdown = useMemo(
+    () => buildBreakdown(filteredRows, (row) => row.campaign_name?.split(" ")?.[0] || "Unknown"),
+    [filteredRows],
+  );
+  const typeBreakdown = useMemo(
+    () => buildBreakdown(filteredRows, (row) => row.medium_label || "Unknown"),
+    [filteredRows],
+  );
   const summary = useMemo(() => summarize(filteredRows), [filteredRows]);
   const selectedCampaign = useMemo(
     () => campaigns.find((campaign) => `${campaign.campaign}|${campaign.platform}` === selectedCampaignKey) ?? null,
@@ -1157,6 +1309,8 @@ export default function App() {
       cpa: metricDelta(filteredRows, "cpa"),
       ctr: metricDelta(filteredRows, "ctr"),
       cpc: metricDelta(filteredRows, "cpc"),
+      revenue: metricDelta(filteredRows, "revenue"),
+      roas: metricDelta(filteredRows, "roas"),
     }),
     [filteredRows],
   );
@@ -1394,6 +1548,20 @@ export default function App() {
                 label="CPC"
                 value={formatCurrency(summary.cpc, 2)}
               />
+              <KpiCard
+                accent="linear-gradient(135deg,#14b8a6,#0f766e)"
+                delta={deltas.revenue}
+                iconKey="spend"
+                label="Revenue"
+                value={formatCurrency(summary.revenue)}
+              />
+              <KpiCard
+                accent="linear-gradient(135deg,#f43f5e,#b91c1c)"
+                delta={deltas.roas}
+                iconKey="ctr"
+                label="ROAS"
+                value={`${summary.roas.toFixed(2)}x`}
+              />
           </div>
 
           <section className="chart-grid">
@@ -1439,6 +1607,28 @@ export default function App() {
                   selectedCampaignKey={selectedCampaignKey}
                 />
               </article>
+          </section>
+
+          <section className="revenue-panel panel">
+            <div className="panel-title-row">
+              <div>
+                <h2>Spend vs Revenue Over Time</h2>
+                <div className="legend-inline">
+                  <span><i className="blue" /> Spend</span>
+                  <span><i className="green" /> Revenue</span>
+                </div>
+              </div>
+              <span className="chart-note">Monthly view</span>
+            </div>
+            <RevenueTrendChart data={monthly} />
+          </section>
+
+          <EfficiencyQuadrant campaigns={campaigns} />
+
+          <section className="breakdown-grid">
+            <BreakdownTable title="Performance by Country" rows={countryBreakdown} labelHeader="Country" />
+            <BreakdownTable title="Performance by Industry" rows={industryBreakdown} labelHeader="Industry" />
+            <BreakdownTable title="Performance by Campaign Type" rows={typeBreakdown} labelHeader="Type" />
           </section>
 
           <OpportunityPanel campaigns={campaigns} summary={summary} />

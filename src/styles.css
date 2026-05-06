@@ -533,6 +533,10 @@ button:disabled {
   background: #13b9bd;
 }
 
+.legend-inline .green {
+  background: #16a34a;
+}
+
 .segmented {
   display: flex;
   align-items: center;
@@ -622,6 +626,16 @@ button:disabled {
 
 .conversion-line {
   stroke: #13b9bd;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: drawLine 900ms 120ms ease forwards;
+}
+
+.revenue-line {
+  stroke: #16a34a;
   stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -931,6 +945,84 @@ button:disabled {
   font-weight: 700;
   line-height: 1.35;
   margin: 2px 0 0;
+}
+
+.revenue-panel,
+.quadrant,
+.breakdown-grid {
+  margin-top: 20px;
+}
+
+.mini-trend-chart,
+.quadrant-chart {
+  display: block;
+  height: auto;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.chart-note {
+  color: #607189;
+  font-size: 13px;
+  font-weight: 760;
+}
+
+.grid-line.faint {
+  opacity: 0.5;
+}
+
+.quadrant-dot {
+  opacity: 0.78;
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.quadrant-dot:hover {
+  opacity: 1;
+  stroke: #0f172a;
+}
+
+.breakdown-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.breakdown-table {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.breakdown-head,
+.breakdown-row {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(80px, 1.25fr) repeat(3, minmax(58px, 0.8fr));
+  align-items: center;
+}
+
+.breakdown-head {
+  color: #607189;
+  font-size: 12px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.breakdown-row {
+  border-top: 1px solid #dbe6f2;
+  color: #17233a;
+  font-size: 13px;
+  padding-top: 8px;
+}
+
+.breakdown-row > span {
+  font-weight: 820;
+}
+
+.breakdown-row b {
+  font-weight: 760;
+  text-align: right;
 }
 
 .takeaways {

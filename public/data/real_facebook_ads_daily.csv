@@ -1,187 +1,187 @@
-date,source,source_label,medium,medium_label,campaign_id,campaign_name,segment,impressions,clicks,spend,conversions,total_conversion,ctr,cpc,cpa,dataset
-2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 M,60873,9,12.08,4,10,0.000148,1.3422,3.02,real_facebook_ads
-2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,35-39 M,8554,2,2.61,1,2,0.000234,1.305,2.61,real_facebook_ads
-2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,45-49 M,51689,14,18.82,1,3,0.000271,1.3443,18.82,real_facebook_ads
-2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 F,61792,14,18.07,2,3,0.000227,1.2907,9.035,real_facebook_ads
-2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,677735,101,159.46,2,11,0.000149,1.5788,79.73,real_facebook_ads
-2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,4938869,921,1316.19,17,62,0.000186,1.4291,77.4229,real_facebook_ads
-2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,9337460,2156,3070.41,37,124,0.000231,1.4241,82.9841,real_facebook_ads
-2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,1303414,249,364.32,4,13,0.000191,1.4631,91.08,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,40-44 M,809605,130,212.92,3,10,0.000161,1.6378,70.9733,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,35-39 M,35714,6,9.09,3,5,0.000168,1.515,3.03,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,40-44 M,28076,7,8.47,2,3,0.000249,1.21,4.235,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 F,46831,9,12.02,1,3,0.000192,1.3356,12.02,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,45757,10,13.87,5,8,0.000219,1.387,2.774,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,437689,142,199.8,4,16,0.000324,1.407,49.95,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,70843,13,15.94,8,24,0.000184,1.2262,1.9925,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,39816,9,12.09,0,9,0.000226,1.3433,0,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,12397,3,4.49,1,2,0.000242,1.4967,4.49,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,10075,1,1.54,0,4,0.000099,1.54,0,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,175362,44,63.62,0,2,0.000251,1.4459,0,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,1898196,284,408.54,19,49,0.00015,1.4385,21.5021,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,5875617,1038,1533.2,19,67,0.000177,1.4771,80.6947,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,1369693,289,415.98,4,18,0.000211,1.4394,103.995,real_facebook_ads
-2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,2829873,580,929.04,4,23,0.000205,1.6018,232.26,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,1684730,231,407.7,9,33,0.000137,1.7649,45.3,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,40-44 M,3178602,559,852.51,7,23,0.000176,1.5251,121.7871,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,40-44 M,30089,6,7.21,1,2,0.000199,1.2017,7.21,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,162528,30,41.6,10,19,0.000185,1.3867,4.16,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,304455,85,117.94,5,13,0.000279,1.3875,23.588,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,291943,81,120.07,7,18,0.000277,1.4823,17.1529,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,47464,15,20.18,1,2,0.000316,1.3453,20.18,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,8598,0,0,2,6,0,0,0,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,11702,2,2.52,1,6,0.000171,1.26,2.52,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,4851,2,2.91,1,2,0.000412,1.455,2.91,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,4439385,849,1261.99,9,39,0.000191,1.4864,140.2211,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,986969,197,290.11,4,15,0.0002,1.4726,72.5275,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,5586509,1171,1670.17,18,64,0.00021,1.4263,92.7872,real_facebook_ads
-2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,1176516,241,382.84,4,12,0.000205,1.5885,95.71,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,1795937,217,386.39,7,38,0.000121,1.7806,55.1986,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,843893,127,235.09,6,10,0.00015,1.8511,39.1817,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,40-44 M,1242921,235,367.82,6,14,0.000189,1.5652,61.3033,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,45-49 M,1371328,218,376.18,4,10,0.000159,1.7256,94.045,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,121957,23,34.49,5,17,0.000189,1.4996,6.898,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,146215,37,48.88,5,10,0.000253,1.3211,9.776,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,1980,0,0,2,2,0,0,0,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,13299,4,5.56,2,7,0.000301,1.39,2.78,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,738028,190,272.48,3,10,0.000257,1.4341,90.8267,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,2936,0,0,0,1,0,0,0,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,20759,6,7.81,1,3,0.000289,1.3017,7.81,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,1911365,303,469.2,10,30,0.000159,1.5485,46.92,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,1019137,233,352.77,4,13,0.000229,1.514,88.1925,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,4725927,842,1218.55,17,55,0.000178,1.4472,71.6794,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-M,Unmapped Facebook Audience 40-44 M,40-44 M,627863,82,120.59,5,11,0.000131,1.4706,24.118,real_facebook_ads
-2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,1662891,326,473.28,7,23,0.000196,1.4518,67.6114,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,1378584,157,281.88,6,24,0.000114,1.7954,46.98,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,233404,43,70.41,1,2,0.000184,1.6374,70.41,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,40-44 M,1191889,213,355.21,8,14,0.000179,1.6677,44.4013,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,21663,5,6.96,0,3,0.000231,1.392,0,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,563071,175,257.1,6,22,0.000311,1.4691,42.85,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,86116,7,8.08,2,8,0.000081,1.1543,4.04,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,63729,10,14.01,4,9,0.000157,1.401,3.5025,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,22422,6,6,3,4,0.000268,1,2,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,55075,13,18.66,1,2,0.000236,1.4354,18.66,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,93637,10,12.91,5,15,0.000107,1.291,2.582,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,1107,0,0,0,1,0,0,0,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,5325829,1043,1494.89,20,67,0.000196,1.4333,74.7445,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-M,Unmapped Facebook Audience 35-39 M,35-39 M,1345665,158,226.01,5,21,0.000117,1.4304,45.202,real_facebook_ads
-2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-M,Unmapped Facebook Audience 40-44 M,40-44 M,585606,69,102.51,2,7,0.000118,1.4857,51.255,real_facebook_ads
-2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,3235201,395,684.27,20,57,0.000122,1.7323,34.2135,real_facebook_ads
-2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,136563,13,18.75,14,21,0.000095,1.4423,1.3393,real_facebook_ads
-2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,215288,72,104.18,2,5,0.000334,1.4469,52.09,real_facebook_ads
-2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,195225,29,38.51,4,13,0.000149,1.3279,9.6275,real_facebook_ads
-2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,50991,12,18.56,2,7,0.000235,1.5467,9.28,real_facebook_ads
-2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,156334,35,55.21,2,6,0.000224,1.5774,27.605,real_facebook_ads
-2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,16161,2,2.61,0,5,0.000124,1.305,0,real_facebook_ads
-2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,1030,0,0,1,1,0,0,0,real_facebook_ads
-2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,6664238,1037,1516.04,38,135,0.000156,1.4619,39.8958,real_facebook_ads
-2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-M,Unmapped Facebook Audience 40-44 M,40-44 M,86293,6,9.26,1,1,0.00007,1.5433,9.26,real_facebook_ads
-2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,397809,43,63.49,0,5,0.000108,1.4765,0,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,6482064,838,1447.75,47,137,0.000129,1.7276,30.8032,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,5375847,714,1241.83,33,72,0.000133,1.7393,37.6312,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,119068,26,40.03,2,3,0.000218,1.5396,20.015,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,155487,46,64.54,1,7,0.000296,1.403,64.54,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,90834,22,28.43,2,9,0.000242,1.2923,14.215,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,341920,72,119.3,1,7,0.000211,1.6569,119.3,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,52133,6,8.92,3,7,0.000115,1.4867,2.9733,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,96441,11,17.67,7,15,0.000114,1.6064,2.5243,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,4726,1,1.83,1,1,0.000212,1.83,1.83,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,42240,9,12.08,3,5,0.000213,1.3422,4.0267,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,3976212,608,953.33,20,52,0.000153,1.568,47.6665,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-M,Unmapped Facebook Audience 30-34 M,30-34 M,276762,22,32.09,1,5,0.000079,1.4586,32.09,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-M,Unmapped Facebook Audience 35-39 M,35-39 M,33534,2,2.96,1,1,0.00006,1.48,2.96,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,490748,131,169.52,1,6,0.000267,1.294,169.52,real_facebook_ads
-2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,1354883,184,268.69,7,24,0.000136,1.4603,38.3843,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,848141,114,193.08,5,15,0.000134,1.6937,38.616,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,1707807,229,407.95,9,27,0.000134,1.7814,45.3278,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,40-44 M,2639812,436,753.18,8,23,0.000165,1.7275,94.1475,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,79420,17,25.76,1,5,0.000214,1.5153,25.76,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,112554,22,32.67,7,15,0.000195,1.485,4.6671,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,35537,10,13.54,1,5,0.000281,1.354,13.54,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,21565,5,4.57,1,6,0.000232,0.914,4.57,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,19603,4,5.28,1,1,0.000204,1.32,5.28,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,21410,5,6.91,0,3,0.000234,1.382,0,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,560471,91,142.21,4,9,0.000162,1.5627,35.5525,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,761970,170,224.65,5,14,0.000223,1.3215,44.93,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,228988,54,80.96,1,2,0.000236,1.4993,80.96,real_facebook_ads
-2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,7038081,1797,2562.73,19,70,0.000255,1.4261,134.8805,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,3678193,412,724.81,29,65,0.000112,1.7592,24.9934,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,40-44 M,5553186,762,1328.78,21,61,0.000137,1.7438,63.2752,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,45-49 F,1448,0,0,1,1,0,0,0,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,15101,4,5.63,2,2,0.000265,1.4075,2.815,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,19198,3,4.01,2,5,0.000156,1.3367,2.005,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,102660,28,33.67,4,9,0.000273,1.2025,8.4175,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,1238,0,0,0,1,0,0,0,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,62296,16,25.44,1,2,0.000257,1.59,25.44,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,144969,42,64.89,3,6,0.00029,1.545,21.63,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,22628,8,11.81,0,3,0.000354,1.4762,0,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,3029,1,1.05,1,1,0.00033,1.05,1.05,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-M,Unmapped Facebook Audience 30-34 M,30-34 M,121927,7,10.22,5,6,0.000057,1.46,2.044,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,1043809,247,345.57,5,10,0.000237,1.3991,69.114,real_facebook_ads
-2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,3008113,816,1119.35,6,25,0.000271,1.3718,186.5583,real_facebook_ads
-2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,4843940,617,1072.49,36,82,0.000127,1.7382,29.7914,real_facebook_ads
-2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,45-49 M,1177535,221,365.66,3,15,0.000188,1.6546,121.8867,real_facebook_ads
-2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 F,14204,5,6.96,0,2,0.000352,1.392,0,real_facebook_ads
-2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,45-49 F,17864,7,9.38,0,2,0.000392,1.34,0,real_facebook_ads
-2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,22197,4,4.88,2,9,0.00018,1.22,2.44,real_facebook_ads
-2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,109945,26,33.76,1,4,0.000236,1.2985,33.76,real_facebook_ads
-2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,1062208,269,431.97,1,17,0.000253,1.6058,431.97,real_facebook_ads
-2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-M,Unmapped Facebook Audience 30-34 M,30-34 M,1493188,144,207.31,8,32,0.000096,1.4397,25.9137,real_facebook_ads
-2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,2159094,524,751.57,3,18,0.000243,1.4343,250.5233,real_facebook_ads
-2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,1201294,304,425.41,4,10,0.000253,1.3994,106.3525,real_facebook_ads
-2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,3075980,605,1064.81,9,24,0.000197,1.76,118.3122,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,990112,130,233.44,6,12,0.000131,1.7957,38.9067,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,1039034,163,278.41,4,11,0.000157,1.708,69.6025,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 F,22221,7,9.43,1,1,0.000315,1.3471,9.43,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,35-39 F,11155,4,5.62,1,3,0.000359,1.405,5.62,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,40-44 F,3812,1,1.13,1,2,0.000262,1.13,1.13,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,45-49 F,11199,4,5.73,1,1,0.000357,1.4325,5.73,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,31161,7,8.92,4,7,0.000225,1.2743,2.23,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,4423,1,1.46,1,1,0.000226,1.46,1.46,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,839,0,0,0,1,0,0,0,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,103821,25,33.88,0,2,0.000241,1.3552,0,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,128247,31,50.37,0,6,0.000242,1.6248,0,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,10090,2,2.65,1,1,0.000198,1.325,2.65,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,1040199,156,217.81,6,24,0.00015,1.3962,36.3017,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,6624679,1726,2459.95,21,62,0.000261,1.4252,117.1405,real_facebook_ads
-2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,3235619,546,904.26,21,44,0.000169,1.6562,43.06,real_facebook_ads
-2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,3781913,418,757.64,33,74,0.000111,1.8125,22.9588,real_facebook_ads
-2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,2094792,308,541.71,9,39,0.000147,1.7588,60.19,real_facebook_ads
-2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,34094,6,9.14,1,5,0.000176,1.5233,9.14,real_facebook_ads
-2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,10569,4,4.13,1,2,0.000378,1.0325,4.13,real_facebook_ads
-2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,12136,3,4.09,0,4,0.000247,1.3633,0,real_facebook_ads
-2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,98812,20,29.22,2,7,0.000202,1.461,14.61,real_facebook_ads
-2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,99890,22,34.33,2,7,0.00022,1.5605,17.165,real_facebook_ads
-2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,14670,7,9.41,0,1,0.000477,1.3443,0,real_facebook_ads
-2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,5875789,921,1439.31,24,86,0.000157,1.5628,59.9712,real_facebook_ads
-2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,7354944,1784,2514.41,7,32,0.000243,1.4094,359.2014,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,4349621,464,878.54,27,85,0.000107,1.8934,32.5385,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,3702928,513,890.72,14,49,0.000139,1.7363,63.6229,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 M,10972,0,0,0,3,0,0,0,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 F,6555,1,1.51,0,2,0.000153,1.51,0,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,50392,13,18.37,2,7,0.000258,1.4131,9.185,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,12123,2,1.32,0,3,0.000165,0.66,0,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,11165,4,5.39,0,2,0.000358,1.3475,0,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,13975,1,0.72,1,3,0.000072,0.72,0.72,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,228646,55,81.39,2,7,0.000241,1.4798,40.695,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,5403,1,0.95,0,2,0.000185,0.95,0,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,9142,1,0.89,0,2,0.000109,0.89,0,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,2077,1,1.51,1,1,0.000481,1.51,1.51,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,2229000,284,434.77,8,28,0.000127,1.5309,54.3462,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,530433,130,171.73,3,12,0.000245,1.321,57.2433,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,806469,191,261.77,2,8,0.000237,1.3705,130.885,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,699314,164,226.03,0,3,0.000235,1.3782,0,real_facebook_ads
-2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,2297347,421,706.27,10,26,0.000183,1.6776,70.627,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,696536,97,158.46,4,10,0.000139,1.6336,39.615,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,3974921,616,1072.33,13,38,0.000155,1.7408,82.4869,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 M,34224,12,15.26,3,7,0.000351,1.2717,5.0867,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,35-39 M,25653,5,6.32,1,3,0.000195,1.264,6.32,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,28780,8,13.11,1,2,0.000278,1.6387,13.11,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,24087,4,5.08,2,3,0.000166,1.27,2.54,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,5469,1,0.18,2,2,0.000183,0.18,0.09,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,35316,7,10.21,3,6,0.000198,1.4586,3.4033,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,47387,15,20.68,0,2,0.000317,1.3787,0,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,263515,49,74,1,7,0.000186,1.5102,74,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,2994657,588,877.41,15,40,0.000196,1.4922,58.494,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,1764547,419,584.82,7,19,0.000237,1.3958,83.5457,real_facebook_ads
-2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,7606815,1188,2002.23,20,55,0.000156,1.6854,100.1115,real_facebook_ads
+date,source,source_label,medium,medium_label,campaign_id,campaign_name,segment,impressions,clicks,spend,conversions,total_conversion,revenue,ctr,cpc,cpa,roas,dataset
+2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 M,60873,9,12.08,4,10,,0.000148,1.3422,3.02,,real_facebook_ads
+2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,35-39 M,8554,2,2.61,1,2,,0.000234,1.305,2.61,,real_facebook_ads
+2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,45-49 M,51689,14,18.82,1,3,,0.000271,1.3443,18.82,,real_facebook_ads
+2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 F,61792,14,18.07,2,3,,0.000227,1.2907,9.035,,real_facebook_ads
+2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,677735,101,159.46,2,11,,0.000149,1.5788,79.73,,real_facebook_ads
+2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,4938869,921,1316.19,17,62,,0.000186,1.4291,77.4229,,real_facebook_ads
+2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,9337460,2156,3070.41,37,124,,0.000231,1.4241,82.9841,,real_facebook_ads
+2017-08-17,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,1303414,249,364.32,4,13,,0.000191,1.4631,91.08,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,40-44 M,809605,130,212.92,3,10,,0.000161,1.6378,70.9733,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,35-39 M,35714,6,9.09,3,5,,0.000168,1.515,3.03,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,40-44 M,28076,7,8.47,2,3,,0.000249,1.21,4.235,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 F,46831,9,12.02,1,3,,0.000192,1.3356,12.02,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,45757,10,13.87,5,8,,0.000219,1.387,2.774,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,437689,142,199.8,4,16,,0.000324,1.407,49.95,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,70843,13,15.94,8,24,,0.000184,1.2262,1.9925,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,39816,9,12.09,0,9,,0.000226,1.3433,0,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,12397,3,4.49,1,2,,0.000242,1.4967,4.49,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,10075,1,1.54,0,4,,0.000099,1.54,0,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,175362,44,63.62,0,2,,0.000251,1.4459,0,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,1898196,284,408.54,19,49,,0.00015,1.4385,21.5021,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,5875617,1038,1533.2,19,67,,0.000177,1.4771,80.6947,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,1369693,289,415.98,4,18,,0.000211,1.4394,103.995,,real_facebook_ads
+2017-08-18,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,2829873,580,929.04,4,23,,0.000205,1.6018,232.26,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,1684730,231,407.7,9,33,,0.000137,1.7649,45.3,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,40-44 M,3178602,559,852.51,7,23,,0.000176,1.5251,121.7871,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,40-44 M,30089,6,7.21,1,2,,0.000199,1.2017,7.21,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,162528,30,41.6,10,19,,0.000185,1.3867,4.16,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,304455,85,117.94,5,13,,0.000279,1.3875,23.588,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,291943,81,120.07,7,18,,0.000277,1.4823,17.1529,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,47464,15,20.18,1,2,,0.000316,1.3453,20.18,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,8598,0,0,2,6,,0,0,0,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,11702,2,2.52,1,6,,0.000171,1.26,2.52,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,4851,2,2.91,1,2,,0.000412,1.455,2.91,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,4439385,849,1261.99,9,39,,0.000191,1.4864,140.2211,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,986969,197,290.11,4,15,,0.0002,1.4726,72.5275,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,5586509,1171,1670.17,18,64,,0.00021,1.4263,92.7872,,real_facebook_ads
+2017-08-19,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,1176516,241,382.84,4,12,,0.000205,1.5885,95.71,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,1795937,217,386.39,7,38,,0.000121,1.7806,55.1986,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,843893,127,235.09,6,10,,0.00015,1.8511,39.1817,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,40-44 M,1242921,235,367.82,6,14,,0.000189,1.5652,61.3033,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,45-49 M,1371328,218,376.18,4,10,,0.000159,1.7256,94.045,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,121957,23,34.49,5,17,,0.000189,1.4996,6.898,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,146215,37,48.88,5,10,,0.000253,1.3211,9.776,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,1980,0,0,2,2,,0,0,0,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,13299,4,5.56,2,7,,0.000301,1.39,2.78,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,738028,190,272.48,3,10,,0.000257,1.4341,90.8267,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,2936,0,0,0,1,,0,0,0,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,20759,6,7.81,1,3,,0.000289,1.3017,7.81,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,1911365,303,469.2,10,30,,0.000159,1.5485,46.92,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,1019137,233,352.77,4,13,,0.000229,1.514,88.1925,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,4725927,842,1218.55,17,55,,0.000178,1.4472,71.6794,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-M,Unmapped Facebook Audience 40-44 M,40-44 M,627863,82,120.59,5,11,,0.000131,1.4706,24.118,,real_facebook_ads
+2017-08-20,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,1662891,326,473.28,7,23,,0.000196,1.4518,67.6114,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,1378584,157,281.88,6,24,,0.000114,1.7954,46.98,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,233404,43,70.41,1,2,,0.000184,1.6374,70.41,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,40-44 M,1191889,213,355.21,8,14,,0.000179,1.6677,44.4013,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,21663,5,6.96,0,3,,0.000231,1.392,0,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,563071,175,257.1,6,22,,0.000311,1.4691,42.85,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,86116,7,8.08,2,8,,0.000081,1.1543,4.04,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,63729,10,14.01,4,9,,0.000157,1.401,3.5025,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,22422,6,6,3,4,,0.000268,1,2,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,55075,13,18.66,1,2,,0.000236,1.4354,18.66,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,93637,10,12.91,5,15,,0.000107,1.291,2.582,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,1107,0,0,0,1,,0,0,0,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,5325829,1043,1494.89,20,67,,0.000196,1.4333,74.7445,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-M,Unmapped Facebook Audience 35-39 M,35-39 M,1345665,158,226.01,5,21,,0.000117,1.4304,45.202,,real_facebook_ads
+2017-08-21,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-M,Unmapped Facebook Audience 40-44 M,40-44 M,585606,69,102.51,2,7,,0.000118,1.4857,51.255,,real_facebook_ads
+2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,3235201,395,684.27,20,57,,0.000122,1.7323,34.2135,,real_facebook_ads
+2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,136563,13,18.75,14,21,,0.000095,1.4423,1.3393,,real_facebook_ads
+2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,215288,72,104.18,2,5,,0.000334,1.4469,52.09,,real_facebook_ads
+2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,195225,29,38.51,4,13,,0.000149,1.3279,9.6275,,real_facebook_ads
+2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,50991,12,18.56,2,7,,0.000235,1.5467,9.28,,real_facebook_ads
+2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,156334,35,55.21,2,6,,0.000224,1.5774,27.605,,real_facebook_ads
+2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,16161,2,2.61,0,5,,0.000124,1.305,0,,real_facebook_ads
+2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,1030,0,0,1,1,,0,0,0,,real_facebook_ads
+2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,6664238,1037,1516.04,38,135,,0.000156,1.4619,39.8958,,real_facebook_ads
+2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-M,Unmapped Facebook Audience 40-44 M,40-44 M,86293,6,9.26,1,1,,0.00007,1.5433,9.26,,real_facebook_ads
+2017-08-22,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,397809,43,63.49,0,5,,0.000108,1.4765,0,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,6482064,838,1447.75,47,137,,0.000129,1.7276,30.8032,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,5375847,714,1241.83,33,72,,0.000133,1.7393,37.6312,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,119068,26,40.03,2,3,,0.000218,1.5396,20.015,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,155487,46,64.54,1,7,,0.000296,1.403,64.54,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,90834,22,28.43,2,9,,0.000242,1.2923,14.215,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,341920,72,119.3,1,7,,0.000211,1.6569,119.3,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,52133,6,8.92,3,7,,0.000115,1.4867,2.9733,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,96441,11,17.67,7,15,,0.000114,1.6064,2.5243,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,4726,1,1.83,1,1,,0.000212,1.83,1.83,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,42240,9,12.08,3,5,,0.000213,1.3422,4.0267,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,3976212,608,953.33,20,52,,0.000153,1.568,47.6665,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-M,Unmapped Facebook Audience 30-34 M,30-34 M,276762,22,32.09,1,5,,0.000079,1.4586,32.09,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-M,Unmapped Facebook Audience 35-39 M,35-39 M,33534,2,2.96,1,1,,0.00006,1.48,2.96,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,490748,131,169.52,1,6,,0.000267,1.294,169.52,,real_facebook_ads
+2017-08-23,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,1354883,184,268.69,7,24,,0.000136,1.4603,38.3843,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,848141,114,193.08,5,15,,0.000134,1.6937,38.616,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,1707807,229,407.95,9,27,,0.000134,1.7814,45.3278,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,40-44 M,2639812,436,753.18,8,23,,0.000165,1.7275,94.1475,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,79420,17,25.76,1,5,,0.000214,1.5153,25.76,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,112554,22,32.67,7,15,,0.000195,1.485,4.6671,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,35537,10,13.54,1,5,,0.000281,1.354,13.54,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,21565,5,4.57,1,6,,0.000232,0.914,4.57,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,19603,4,5.28,1,1,,0.000204,1.32,5.28,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,21410,5,6.91,0,3,,0.000234,1.382,0,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,560471,91,142.21,4,9,,0.000162,1.5627,35.5525,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,761970,170,224.65,5,14,,0.000223,1.3215,44.93,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,228988,54,80.96,1,2,,0.000236,1.4993,80.96,,real_facebook_ads
+2017-08-24,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,7038081,1797,2562.73,19,70,,0.000255,1.4261,134.8805,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,3678193,412,724.81,29,65,,0.000112,1.7592,24.9934,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,40-44 M,5553186,762,1328.78,21,61,,0.000137,1.7438,63.2752,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,45-49 F,1448,0,0,1,1,,0,0,0,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,15101,4,5.63,2,2,,0.000265,1.4075,2.815,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,19198,3,4.01,2,5,,0.000156,1.3367,2.005,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,102660,28,33.67,4,9,,0.000273,1.2025,8.4175,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,1238,0,0,0,1,,0,0,0,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,62296,16,25.44,1,2,,0.000257,1.59,25.44,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,144969,42,64.89,3,6,,0.00029,1.545,21.63,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,22628,8,11.81,0,3,,0.000354,1.4762,0,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,3029,1,1.05,1,1,,0.00033,1.05,1.05,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-M,Unmapped Facebook Audience 30-34 M,30-34 M,121927,7,10.22,5,6,,0.000057,1.46,2.044,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,1043809,247,345.57,5,10,,0.000237,1.3991,69.114,,real_facebook_ads
+2017-08-25,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,3008113,816,1119.35,6,25,,0.000271,1.3718,186.5583,,real_facebook_ads
+2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,4843940,617,1072.49,36,82,,0.000127,1.7382,29.7914,,real_facebook_ads
+2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,45-49 M,1177535,221,365.66,3,15,,0.000188,1.6546,121.8867,,real_facebook_ads
+2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 F,14204,5,6.96,0,2,,0.000352,1.392,0,,real_facebook_ads
+2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,45-49 F,17864,7,9.38,0,2,,0.000392,1.34,0,,real_facebook_ads
+2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,22197,4,4.88,2,9,,0.00018,1.22,2.44,,real_facebook_ads
+2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,109945,26,33.76,1,4,,0.000236,1.2985,33.76,,real_facebook_ads
+2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,1062208,269,431.97,1,17,,0.000253,1.6058,431.97,,real_facebook_ads
+2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-M,Unmapped Facebook Audience 30-34 M,30-34 M,1493188,144,207.31,8,32,,0.000096,1.4397,25.9137,,real_facebook_ads
+2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,2159094,524,751.57,3,18,,0.000243,1.4343,250.5233,,real_facebook_ads
+2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,1201294,304,425.41,4,10,,0.000253,1.3994,106.3525,,real_facebook_ads
+2017-08-26,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,3075980,605,1064.81,9,24,,0.000197,1.76,118.3122,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,990112,130,233.44,6,12,,0.000131,1.7957,38.9067,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,1039034,163,278.41,4,11,,0.000157,1.708,69.6025,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 F,22221,7,9.43,1,1,,0.000315,1.3471,9.43,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,35-39 F,11155,4,5.62,1,3,,0.000359,1.405,5.62,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,40-44 F,3812,1,1.13,1,2,,0.000262,1.13,1.13,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,45-49 F,11199,4,5.73,1,1,,0.000357,1.4325,5.73,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,31161,7,8.92,4,7,,0.000225,1.2743,2.23,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,4423,1,1.46,1,1,,0.000226,1.46,1.46,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,839,0,0,0,1,,0,0,0,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,103821,25,33.88,0,2,,0.000241,1.3552,0,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,128247,31,50.37,0,6,,0.000242,1.6248,0,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,10090,2,2.65,1,1,,0.000198,1.325,2.65,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,1040199,156,217.81,6,24,,0.00015,1.3962,36.3017,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,6624679,1726,2459.95,21,62,,0.000261,1.4252,117.1405,,real_facebook_ads
+2017-08-27,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,3235619,546,904.26,21,44,,0.000169,1.6562,43.06,,real_facebook_ads
+2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,3781913,418,757.64,33,74,,0.000111,1.8125,22.9588,,real_facebook_ads
+2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,2094792,308,541.71,9,39,,0.000147,1.7588,60.19,,real_facebook_ads
+2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,34094,6,9.14,1,5,,0.000176,1.5233,9.14,,real_facebook_ads
+2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,10569,4,4.13,1,2,,0.000378,1.0325,4.13,,real_facebook_ads
+2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,12136,3,4.09,0,4,,0.000247,1.3633,0,,real_facebook_ads
+2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,98812,20,29.22,2,7,,0.000202,1.461,14.61,,real_facebook_ads
+2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,99890,22,34.33,2,7,,0.00022,1.5605,17.165,,real_facebook_ads
+2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,14670,7,9.41,0,1,,0.000477,1.3443,0,,real_facebook_ads
+2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,5875789,921,1439.31,24,86,,0.000157,1.5628,59.9712,,real_facebook_ads
+2017-08-28,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,7354944,1784,2514.41,7,32,,0.000243,1.4094,359.2014,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,4349621,464,878.54,27,85,,0.000107,1.8934,32.5385,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,3702928,513,890.72,14,49,,0.000139,1.7363,63.6229,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 M,10972,0,0,0,3,,0,0,0,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 F,6555,1,1.51,0,2,,0.000153,1.51,0,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,50392,13,18.37,2,7,,0.000258,1.4131,9.185,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,12123,2,1.32,0,3,,0.000165,0.66,0,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 F,11165,4,5.39,0,2,,0.000358,1.3475,0,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,13975,1,0.72,1,3,,0.000072,0.72,0.72,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,228646,55,81.39,2,7,,0.000241,1.4798,40.695,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,5403,1,0.95,0,2,,0.000185,0.95,0,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 F,9142,1,0.89,0,2,,0.000109,0.89,0,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 F,2077,1,1.51,1,1,,0.000481,1.51,1.51,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,2229000,284,434.77,8,28,,0.000127,1.5309,54.3462,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,530433,130,171.73,3,12,,0.000245,1.321,57.2433,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,806469,191,261.77,2,8,,0.000237,1.3705,130.885,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-F,Unmapped Facebook Audience 45-49 F,45-49 F,699314,164,226.03,0,3,,0.000235,1.3782,0,,real_facebook_ads
+2017-08-29,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,2297347,421,706.27,10,26,,0.000183,1.6776,70.627,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,30-34 M,696536,97,158.46,4,10,,0.000139,1.6336,39.615,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-1178,Facebook Campaign 1178,35-39 M,3974921,616,1072.33,13,38,,0.000155,1.7408,82.4869,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,30-34 M,34224,12,15.26,3,7,,0.000351,1.2717,5.0867,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-916,Facebook Campaign 916,35-39 M,25653,5,6.32,1,3,,0.000195,1.264,6.32,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,40-44 M,28780,8,13.11,1,2,,0.000278,1.6387,13.11,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 M,24087,4,5.08,2,3,,0.000166,1.27,2.54,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,45-49 M,5469,1,0.18,2,2,,0.000183,0.18,0.09,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,30-34 M,35316,7,10.21,3,6,,0.000198,1.4586,3.4033,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-936,Facebook Campaign 936,35-39 F,47387,15,20.68,0,2,,0.000317,1.3787,0,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-30-34-F,Unmapped Facebook Audience 30-34 F,30-34 F,263515,49,74,1,7,,0.000186,1.5102,74,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-35-39-F,Unmapped Facebook Audience 35-39 F,35-39 F,2994657,588,877.41,15,40,,0.000196,1.4922,58.494,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-40-44-F,Unmapped Facebook Audience 40-44 F,40-44 F,1764547,419,584.82,7,19,,0.000237,1.3958,83.5457,,real_facebook_ads
+2017-08-30,meta_ads,Meta,paid_social,Paid Social,FB-unmapped-45-49-M,Unmapped Facebook Audience 45-49 M,45-49 M,7606815,1188,2002.23,20,55,,0.000156,1.6854,100.1115,,real_facebook_ads
