@@ -562,7 +562,7 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
 
 const RevenueTrendChart = memo(function RevenueTrendChart({ data }) {
   const width = 760;
-  const height = 250;
+  const height = 220;
   const pad = { top: 22, right: 40, bottom: 36, left: 84 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
@@ -630,8 +630,8 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
     .sort((a, b) => b.spend - a.spend)
     .slice(0, 36);
   const width = 760;
-  const height = 330;
-  const pad = { top: 24, right: 28, bottom: 48, left: 68 };
+  const height = 260;
+  const pad = { top: 20, right: 28, bottom: 44, left: 68 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const maxCpa = niceAxisMax(Math.max(...candidates.map((campaign) => campaign.cpa), 1));
@@ -1609,21 +1609,22 @@ export default function App() {
               </article>
           </section>
 
-          <section className="revenue-panel panel">
-            <div className="panel-title-row">
-              <div>
-                <h2>Spend vs Revenue Over Time</h2>
-                <div className="legend-inline">
-                  <span><i className="blue" /> Spend</span>
-                  <span><i className="green" /> Revenue</span>
+          <section className="analytics-grid">
+            <article className="revenue-panel panel">
+              <div className="panel-title-row">
+                <div>
+                  <h2>Spend vs Revenue Over Time</h2>
+                  <div className="legend-inline">
+                    <span><i className="blue" /> Spend</span>
+                    <span><i className="green" /> Revenue</span>
+                  </div>
                 </div>
+                <span className="chart-note">Monthly view</span>
               </div>
-              <span className="chart-note">Monthly view</span>
-            </div>
-            <RevenueTrendChart data={monthly} />
+              <RevenueTrendChart data={monthly} />
+            </article>
+            <EfficiencyQuadrant campaigns={campaigns} />
           </section>
-
-          <EfficiencyQuadrant campaigns={campaigns} />
 
           <section className="breakdown-grid">
             <BreakdownTable title="Performance by Country" rows={countryBreakdown} labelHeader="Country" />

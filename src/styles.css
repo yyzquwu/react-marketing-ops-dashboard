@@ -947,10 +947,20 @@ button:disabled {
   margin: 2px 0 0;
 }
 
-.revenue-panel,
-.quadrant,
+.analytics-grid,
 .breakdown-grid {
   margin-top: 20px;
+}
+
+.analytics-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.analytics-grid > .panel {
+  min-height: 320px;
 }
 
 .mini-trend-chart,
@@ -959,6 +969,14 @@ button:disabled {
   height: auto;
   margin-top: 10px;
   width: 100%;
+}
+
+.mini-trend-chart {
+  aspect-ratio: 760 / 220;
+}
+
+.quadrant-chart {
+  aspect-ratio: 760 / 260;
 }
 
 .chart-note {
@@ -1361,6 +1379,10 @@ tbody tr[data-active="true"] {
 }
 
 @media (max-width: 1320px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
   .chart-grid {
     grid-template-columns: minmax(260px, 0.78fr) minmax(0, 1.22fr);
   }
