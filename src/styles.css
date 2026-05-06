@@ -30,6 +30,37 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.46;
+}
+
+.kpi-card,
+.panel,
+.upload-box,
+.download-button,
+.segmented button,
+.pagination button {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.kpi-card:hover,
+.panel:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 34px rgba(16, 32, 57, 0.12);
+}
+
+.download-button:hover,
+.upload-box button:hover,
+.pagination button:not(:disabled):hover,
+.segmented button:hover {
+  transform: translateY(-1px);
+}
+
 .loading {
   min-height: 100vh;
   display: grid;
@@ -148,6 +179,10 @@ button {
   background: transparent;
 }
 
+.topbar-meta button.is-refreshing svg {
+  animation: spin 620ms linear infinite;
+}
+
 .dashboard-grid {
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
@@ -226,6 +261,16 @@ button {
   gap: 9px;
   color: #17223a;
   text-align: center;
+}
+
+.upload-box.is-dragging {
+  border-color: #1767ef;
+  background: #eef5ff;
+  box-shadow: inset 0 0 0 1px rgba(23, 103, 239, 0.24);
+}
+
+.file-input {
+  display: none;
 }
 
 .upload-box strong {
@@ -379,6 +424,7 @@ button {
   grid-template-columns: 52px 1fr;
   gap: 15px;
   align-items: center;
+  animation: surfaceIn 420ms ease both;
 }
 
 .kpi-icon {
@@ -544,6 +590,9 @@ button {
   stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: drawLine 900ms ease forwards;
 }
 
 .conversion-line {
@@ -551,6 +600,9 @@ button {
   stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: drawLine 900ms 120ms ease forwards;
 }
 
 .spend-dot {
@@ -587,6 +639,7 @@ button {
 .donut-segment {
   fill: none;
   stroke-width: 26;
+  transition: stroke-dasharray 420ms ease, stroke-dashoffset 420ms ease;
 }
 
 .donut-legend {
@@ -658,6 +711,8 @@ button {
   height: 20px;
   border-radius: 3px;
   background: linear-gradient(90deg, #8758e9, #6b47df);
+  transform-origin: left center;
+  animation: barGrow 520ms ease both;
 }
 
 .bar-row b {
@@ -797,6 +852,49 @@ tr:last-child td {
   color: #fff;
   border-color: #1767ef;
   background: #1767ef;
+}
+
+@keyframes surfaceIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes barGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 .pagination label {

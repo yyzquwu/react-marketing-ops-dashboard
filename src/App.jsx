@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   CalendarDays,
   CheckCircle2,
@@ -77,12 +77,39 @@ function parseDate(value) {
   return new Date(year, month - 1, day);
 }
 
+function toIsoDate(date) {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, "0");
+  const day = `${date.getDate()}`.padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function normalizeDate(value) {
+  if (!value) return "";
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+  if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(value)) {
+    const [day, month, year] = value.split("/");
+    return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+  }
+  return value;
+}
+
 function labelDate(value, withYear = false) {
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
     ...(withYear ? { year: "numeric" } : {}),
   }).format(parseDate(value));
+}
+
+function labelBucket(value, granularity) {
+  if (granularity === "month") {
+    return new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric" }).format(parseDate(value));
+  }
+  if (granularity === "week") {
+    return `Wk ${labelDate(value)}`;
+  }
+  return labelDate(value);
 }
 
 function daysBetween(start, end) {
@@ -120,6 +147,97 @@ function groupBy(rows, keyFn) {
   return grouped;
 }
 
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let value = "";
+  let quoted = false;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    const next = text[index + 1];
+
+    if (char === '"' && quoted && next === '"') {
+      value += '"';
+      index += 1;
+      continue;
+    }
+
+    if (char === '"') {
+      quoted = !quoted;
+      continue;
+    }
+
+    if (char === "," && !quoted) {
+      row.push(value);
+      value = "";
+      continue;
+    }
+
+    if ((char === "\n" || char === "\r") && !quoted) {
+      if (char === "\r" && next === "\n") index += 1;
+      row.push(value);
+      if (row.some((cell) => cell.trim() !== "")) rows.push(row);
+      row = [];
+      value = "";
+      continue;
+    }
+
+    value += char;
+  }
+
+  if (value || row.length) {
+    row.push(value);
+    rows.push(row);
+  }
+
+  const [headers, ...records] = rows;
+  if (!headers) return [];
+  return records.map((record) =>
+    Object.fromEntries(headers.map((header, index) => [header.trim(), record[index] ?? ""])),
+  );
+}
+
+function normalizeRecords(records, dataset = "uploaded") {
+  return records
+    .map((record, index) => {
+      const date = normalizeDate(record.date || record.reporting_start || record.reporting_end);
+      const impressions = Number(record.impressions ?? record.Impressions) || 0;
+      const clicks = Number(record.clicks ?? record.Clicks) || 0;
+      const spend = Number(record.spend ?? record.spent ?? record.Spent) || 0;
+      const conversions =
+        Number(record.conversions ?? record.approved_conversion ?? record.Total_Conversion ?? record.total_conversion) || 0;
+      const source = record.source || record.source_label || "uploaded";
+      const sourceLabel = record.source_label || record.platform || record.source || "Uploaded";
+      const medium = record.medium || "uploaded";
+      const mediumLabel = record.medium_label || record.medium || "Uploaded";
+      const campaignId = record.campaign_id || record.campaign || record.fb_campaign_id || `UP-${index + 1}`;
+      const campaignName = record.campaign_name || record.campaign || record.campaign_id || `Uploaded Campaign ${index + 1}`;
+
+      return {
+        ...record,
+        date,
+        source,
+        source_label: sourceLabel,
+        medium,
+        medium_label: mediumLabel,
+        campaign_id: campaignId,
+        campaign_name: campaignName,
+        segment: record.segment || "",
+        impressions,
+        clicks,
+        spend,
+        conversions,
+        total_conversion: Number(record.total_conversion) || conversions,
+        ctr: Number(record.ctr) || (impressions ? clicks / impressions : 0),
+        cpc: Number(record.cpc) || (clicks ? spend / clicks : 0),
+        cpa: Number(record.cpa) || (conversions ? spend / conversions : 0),
+        dataset,
+      };
+    })
+    .filter((record) => record.date);
+}
+
 function metricDelta(rows, metric) {
   const dates = [...new Set(rows.map((row) => row.date))].sort();
   if (dates.length < 4) return 0;
@@ -134,8 +252,21 @@ function metricDelta(rows, metric) {
   return (lateValue - earlyValue) / Math.abs(earlyValue);
 }
 
-function buildDaily(rows) {
-  return [...groupBy(rows, (row) => row.date).entries()]
+function bucketDate(dateValue, granularity) {
+  const date = parseDate(dateValue);
+  if (granularity === "month") {
+    return `${date.getFullYear()}-${`${date.getMonth() + 1}`.padStart(2, "0")}-01`;
+  }
+  if (granularity === "week") {
+    const day = (date.getDay() + 6) % 7;
+    date.setDate(date.getDate() - day);
+    return toIsoDate(date);
+  }
+  return dateValue;
+}
+
+function buildTimeSeries(rows, granularity) {
+  return [...groupBy(rows, (row) => bucketDate(row.date, granularity)).entries()]
     .map(([date, dayRows]) => ({ date, ...summarize(dayRows) }))
     .sort((a, b) => a.date.localeCompare(b.date));
 }
@@ -208,7 +339,7 @@ function KpiCard({ accent, delta, iconKey, label, value, suffix }) {
   );
 }
 
-function LineComboChart({ data }) {
+function LineComboChart({ data, granularity }) {
   const width = 620;
   const height = 330;
   const pad = { top: 28, right: 72, bottom: 44, left: 98 };
@@ -252,8 +383,8 @@ function LineComboChart({ data }) {
       >
         Conversions
       </text>
-      <polyline points={spendPoints} fill="none" className="spend-line" />
-      <polyline points={conversionPoints} fill="none" className="conversion-line" />
+      <polyline points={spendPoints} fill="none" className="spend-line" pathLength="1" />
+      <polyline points={conversionPoints} fill="none" className="conversion-line" pathLength="1" />
       {data.map((day, index) => (
         <g key={`${day.date}-${index}`}>
           <circle cx={x(index)} cy={ySpend(day.spend)} r="4" className="spend-dot" />
@@ -264,7 +395,7 @@ function LineComboChart({ data }) {
         const index = data.findIndex((item) => item.date === day.date);
         return (
           <text key={day.date} x={x(index)} y={height - 10} textAnchor="middle" className="axis-label">
-            {labelDate(day.date)}
+            {labelBucket(day.date, granularity)}
           </text>
         );
       })}
@@ -391,15 +522,24 @@ function Takeaways({ summary, campaigns, platforms, deltas }) {
   );
 }
 
-function Leaderboard({ campaigns }) {
-  const rows = campaigns.slice(0, 10);
+function Leaderboard({ campaigns, page, rowsPerPage, setPage, setRowsPerPage }) {
+  const totalPages = Math.max(1, Math.ceil(campaigns.length / rowsPerPage));
+  const startIndex = (page - 1) * rowsPerPage;
+  const rows = campaigns.slice(startIndex, startIndex + rowsPerPage);
+  const visiblePages = [1, 2, 3, totalPages].filter(
+    (item, index, items) => item <= totalPages && items.indexOf(item) === index,
+  );
+
   return (
     <section className="leaderboard panel">
       <div className="panel-title-row">
         <h2>Campaign Leaderboard</h2>
         <div className="search-pill">
           <Search size={15} />
-          <span>Showing top 10 of {campaigns.length}</span>
+          <span>
+            Showing {campaigns.length ? startIndex + 1 : 0} to {Math.min(startIndex + rowsPerPage, campaigns.length)} of{" "}
+            {campaigns.length}
+          </span>
         </div>
       </div>
       <div className="table-wrap">
@@ -420,7 +560,7 @@ function Leaderboard({ campaigns }) {
           <tbody>
             {rows.map((campaign, index) => (
               <tr key={`${campaign.campaign}-${campaign.platform}`}>
-                <td>{index + 1}</td>
+                <td>{startIndex + index + 1}</td>
                 <td>{campaign.campaign}</td>
                 <td>{campaign.platform}</td>
                 <td>{formatCurrency(campaign.spend)}</td>
@@ -435,21 +575,36 @@ function Leaderboard({ campaigns }) {
         </table>
       </div>
       <div className="pagination">
-        <button aria-label="Previous page">
+        <button aria-label="Previous page" disabled={page === 1} onClick={() => setPage((current) => Math.max(1, current - 1))}>
           <ChevronLeft size={16} />
         </button>
-        <button className="active">1</button>
-        <button>2</button>
-        <button>3</button>
-        <span>...</span>
-        <button>10</button>
-        <button aria-label="Next page">
+        {visiblePages.map((item, index) => (
+          <React.Fragment key={item}>
+            {index > 0 && item - visiblePages[index - 1] > 1 ? <span>...</span> : null}
+            <button className={item === page ? "active" : ""} onClick={() => setPage(item)}>
+              {item}
+            </button>
+          </React.Fragment>
+        ))}
+        <button
+          aria-label="Next page"
+          disabled={page === totalPages}
+          onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+        >
           <ChevronRight size={16} />
         </button>
         <label>
           Rows per page:
-          <select value="10" readOnly>
+          <select
+            value={rowsPerPage}
+            onChange={(event) => {
+              setRowsPerPage(Number(event.target.value));
+              setPage(1);
+            }}
+          >
             <option>10</option>
+            <option>25</option>
+            <option>50</option>
           </select>
         </label>
       </div>
@@ -460,33 +615,52 @@ function Leaderboard({ campaigns }) {
 function Sidebar({
   campaigns,
   csvHref,
+  datasets,
   datasetId,
   dateRange,
+  dragActive,
   filters,
+  fileInputRef,
+  onBrowseFiles,
   onDatasetChange,
+  onDropFile,
+  onDragState,
   onFilterChange,
+  onUploadFile,
   platforms,
   setDateRange,
 }) {
-  const dataset = DATASETS[datasetId];
+  const dataset = datasets[datasetId];
   return (
     <aside className="sidebar">
       <section className="sidebar-section">
         <h3>DATA</h3>
         <label className="field-label">Dataset</label>
         <select value={datasetId} onChange={(event) => onDatasetChange(event.target.value)}>
-          {Object.entries(DATASETS).map(([id, item]) => (
+          {Object.entries(datasets).map(([id, item]) => (
             <option value={id} key={id}>
               {item.label}
             </option>
           ))}
         </select>
         <h4>Upload CSV</h4>
-        <div className="upload-box">
+        <input ref={fileInputRef} type="file" accept=".csv,text/csv" className="file-input" onChange={onUploadFile} />
+        <div
+          className={`upload-box ${dragActive ? "is-dragging" : ""}`}
+          onDragOver={(event) => {
+            event.preventDefault();
+            onDragState(true);
+          }}
+          onDragEnter={() => onDragState(true)}
+          onDragLeave={() => onDragState(false)}
+          onDrop={onDropFile}
+        >
           <FileUp size={26} />
           <strong>Drag & drop CSV here</strong>
           <span>or</span>
-          <button>Browse files</button>
+          <button type="button" onClick={onBrowseFiles}>
+            Browse files
+          </button>
         </div>
         <div className="file-valid">
           <CheckCircle2 size={18} />
@@ -571,7 +745,14 @@ function Sidebar({
 export default function App() {
   const [datasetId, setDatasetId] = useState("portfolio");
   const [rows, setRows] = useState([]);
+  const [uploadedRows, setUploadedRows] = useState([]);
+  const [uploadedMeta, setUploadedMeta] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
+  const [granularity, setGranularity] = useState("day");
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [dateRange, setDateRange] = useState({ start: "", end: "" });
   const [filters, setFilters] = useState({
     platform: "All Platforms",
@@ -579,39 +760,55 @@ export default function App() {
     medium: "All",
     includeTest: false,
   });
+  const fileInputRef = useRef(null);
+
+  const datasets = useMemo(
+    () => ({
+      ...DATASETS,
+      ...(uploadedMeta
+        ? {
+            uploaded: uploadedMeta,
+          }
+        : {}),
+    }),
+    [uploadedMeta],
+  );
+
+  const resetControlsForRows = useCallback((nextRows) => {
+    const dates = [...new Set(nextRows.map((row) => row.date).filter(Boolean))].sort();
+    setDateRange({ start: dates[0] ?? "", end: dates.at(-1) ?? "" });
+    setFilters({
+      platform: "All Platforms",
+      campaign: "All Campaigns",
+      medium: "All",
+      includeTest: false,
+    });
+    setPage(1);
+  }, []);
+
+  const loadDataset = useCallback(
+    async (nextDatasetId) => {
+      setLoading(true);
+      if (nextDatasetId === "uploaded") {
+        setRows(uploadedRows);
+        resetControlsForRows(uploadedRows);
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch(DATASETS[nextDatasetId].file);
+      const records = await response.json();
+      const parsed = normalizeRecords(records, nextDatasetId);
+      setRows(parsed);
+      resetControlsForRows(parsed);
+      setLoading(false);
+    },
+    [resetControlsForRows, uploadedRows],
+  );
 
   useEffect(() => {
-    let active = true;
-    setLoading(true);
-    fetch(DATASETS[datasetId].file)
-      .then((response) => response.json())
-      .then((records) => {
-        if (!active) return;
-        const parsed = records.map((record) => ({
-          ...record,
-          spend: Number(record.spend) || 0,
-          conversions: Number(record.conversions) || 0,
-          impressions: Number(record.impressions) || 0,
-          clicks: Number(record.clicks) || 0,
-          ctr: Number(record.ctr) || 0,
-          cpc: Number(record.cpc) || 0,
-          cpa: Number(record.cpa) || 0,
-        }));
-        const dates = [...new Set(parsed.map((row) => row.date))].sort();
-        setRows(parsed);
-        setDateRange({ start: dates[0] ?? "", end: dates.at(-1) ?? "" });
-        setFilters({
-          platform: "All Platforms",
-          campaign: "All Campaigns",
-          medium: "All",
-          includeTest: false,
-        });
-        setLoading(false);
-      });
-    return () => {
-      active = false;
-    };
-  }, [datasetId]);
+    loadDataset(datasetId);
+  }, [datasetId, loadDataset]);
 
   const platforms = useMemo(
     () => [...new Set(rows.map((row) => row.source_label).filter(Boolean))].sort(),
@@ -634,7 +831,7 @@ export default function App() {
     });
   }, [rows, dateRange, filters]);
 
-  const daily = useMemo(() => buildDaily(filteredRows), [filteredRows]);
+  const daily = useMemo(() => buildTimeSeries(filteredRows, granularity), [filteredRows, granularity]);
   const campaigns = useMemo(() => buildCampaigns(filteredRows), [filteredRows]);
   const platformSpend = useMemo(() => buildPlatforms(filteredRows), [filteredRows]);
   const summary = useMemo(() => summarize(filteredRows), [filteredRows]);
@@ -649,10 +846,73 @@ export default function App() {
     }),
     [filteredRows],
   );
-  const dataset = DATASETS[datasetId];
+  const dataset = datasets[datasetId] ?? DATASETS.portfolio;
+
+  useEffect(() => {
+    setPage(1);
+  }, [filters, dateRange, datasetId, rowsPerPage, granularity]);
+
+  useEffect(() => {
+    const totalPages = Math.max(1, Math.ceil(campaigns.length / rowsPerPage));
+    if (page > totalPages) setPage(totalPages);
+  }, [campaigns.length, page, rowsPerPage]);
 
   const onFilterChange = (key, value) => {
     setFilters((current) => ({ ...current, [key]: value }));
+  };
+
+  const handleDatasetChange = (nextDatasetId) => {
+    setDatasetId(nextDatasetId);
+  };
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await loadDataset(datasetId);
+    window.setTimeout(() => setRefreshing(false), 500);
+  };
+
+  const handleBrowseFiles = () => {
+    fileInputRef.current?.click();
+  };
+
+  const ingestFile = async (file) => {
+    if (!file) return;
+    const text = await file.text();
+    const records = parseCsv(text);
+    const parsed = normalizeRecords(records, "uploaded");
+    if (!parsed.length) return;
+    const dates = [...new Set(parsed.map((row) => row.date).filter(Boolean))].sort();
+    const labelDateText = dates.at(-1) ? labelDate(dates.at(-1), true) : "Uploaded";
+    setUploadedRows(parsed);
+    setUploadedMeta({
+      label: "Uploaded CSV",
+      sourceName: file.name,
+      file: "",
+      csv: "",
+      asOf: labelDateText,
+      uploaded: `Uploaded ${new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      })}`,
+      realness: "User uploaded CSV",
+    });
+    setRows(parsed);
+    resetControlsForRows(parsed);
+    setDatasetId("uploaded");
+  };
+
+  const handleUploadFile = (event) => {
+    ingestFile(event.target.files?.[0]);
+    event.target.value = "";
+  };
+
+  const handleDropFile = (event) => {
+    event.preventDefault();
+    setDragActive(false);
+    ingestFile(event.dataTransfer.files?.[0]);
   };
 
   if (loading) {
@@ -689,7 +949,7 @@ export default function App() {
             <span>Data as of:</span>
             <b>{dataset.asOf}</b>
           </div>
-          <button aria-label="Refresh dashboard">
+          <button className={refreshing ? "is-refreshing" : ""} aria-label="Refresh dashboard" onClick={handleRefresh}>
             <RefreshCw size={20} />
           </button>
         </div>
@@ -699,11 +959,18 @@ export default function App() {
         <Sidebar
           campaigns={campaignOptions}
           csvHref={csvHref}
+          datasets={datasets}
           datasetId={datasetId}
           dateRange={dateRange}
+          dragActive={dragActive}
+          fileInputRef={fileInputRef}
           filters={filters}
-          onDatasetChange={setDatasetId}
+          onBrowseFiles={handleBrowseFiles}
+          onDatasetChange={handleDatasetChange}
+          onDragState={setDragActive}
+          onDropFile={handleDropFile}
           onFilterChange={onFilterChange}
+          onUploadFile={handleUploadFile}
           platforms={platforms}
           setDateRange={setDateRange}
         />
@@ -764,12 +1031,19 @@ export default function App() {
                   </div>
                 </div>
                 <div className="segmented">
-                  <button className="active">Day</button>
-                  <button>Week</button>
-                  <button>Month</button>
+                  {["day", "week", "month"].map((item) => (
+                    <button
+                      className={granularity === item ? "active" : ""}
+                      key={item}
+                      onClick={() => setGranularity(item)}
+                      aria-pressed={granularity === item}
+                    >
+                      {item[0].toUpperCase() + item.slice(1)}
+                    </button>
+                  ))}
                 </div>
               </div>
-              <LineComboChart data={daily} />
+              <LineComboChart data={daily} granularity={granularity} />
             </article>
 
             <article className="panel platform-panel">
@@ -784,7 +1058,13 @@ export default function App() {
           </section>
 
           <Takeaways summary={summary} campaigns={campaigns} platforms={platformSpend} deltas={deltas} />
-          <Leaderboard campaigns={campaigns} />
+          <Leaderboard
+            campaigns={campaigns}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            setPage={setPage}
+            setRowsPerPage={setRowsPerPage}
+          />
         </section>
       </div>
     </main>
