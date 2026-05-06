@@ -14,6 +14,7 @@ const airflowOutput = path.resolve(
   "unified_campaign_daily.csv",
 );
 const realRaw = path.join(dataDir, "raw_real_facebook_ads.csv");
+const globalAdsRaw = path.join(dataDir, "raw_global_ads_performance_dataset.csv");
 
 const platformNames = {
   google_ads: "Google Ads",
@@ -64,6 +65,25 @@ const sourceMediumNames = {
   other_ads: "Display",
   tiktok_ads: "Paid Social",
   youtube_ads: "Paid Video",
+};
+
+const globalPlatformSources = {
+  "Google Ads": "google_ads",
+  "Meta Ads": "meta_ads",
+  "TikTok Ads": "tiktok_ads",
+};
+
+const globalPlatformLabels = {
+  "Google Ads": "Google Ads",
+  "Meta Ads": "Meta",
+  "TikTok Ads": "TikTok",
+};
+
+const globalCampaignMediums = {
+  Search: "Paid Search",
+  Display: "Display",
+  Video: "Paid Video",
+  Shopping: "Paid Shopping",
 };
 
 function parseCsv(text) {
@@ -264,6 +284,45 @@ function normalizeRealFacebook(rows) {
     .sort((a, b) => a.date.localeCompare(b.date) || a.campaign_id.localeCompare(b.campaign_id));
 }
 
+function normalizeGlobalAds(rows) {
+  return rows
+    .map((row, index) => {
+      const platform = row.platform || "Other";
+      const campaignType = row.campaign_type || "Campaign";
+      const industry = row.industry || "General";
+      const country = row.country || "Global";
+      const source = globalPlatformSources[platform] ?? platform.toLowerCase().replace(/\s+/g, "_");
+      const sourceLabel = globalPlatformLabels[platform] ?? platform.replace(/\s+Ads$/, "");
+      const mediumLabel = globalCampaignMediums[campaignType] ?? campaignType;
+      const impressions = asNumber(row.impressions);
+      const clicks = asNumber(row.clicks);
+      const spend = asNumber(row.ad_spend);
+      const conversions = asNumber(row.conversions);
+      const campaignName = `${industry} ${campaignType} ${country}`;
+
+      return {
+        date: row.date,
+        source,
+        source_label: sourceLabel,
+        medium: mediumLabel.toLowerCase().replace(/\s+/g, "_"),
+        medium_label: mediumLabel,
+        campaign_id: `GA-${String(index + 1).padStart(5, "0")}`,
+        campaign_name: campaignName,
+        segment: country,
+        impressions,
+        clicks,
+        spend: round(spend, 2),
+        conversions,
+        total_conversion: conversions,
+        ctr: impressions ? round(clicks / impressions, 6) : 0,
+        cpc: clicks ? round(spend / clicks, 4) : 0,
+        cpa: conversions ? round(spend / conversions, 4) : 0,
+        dataset: "global_ads_performance",
+      };
+    })
+    .sort((a, b) => a.date.localeCompare(b.date) || a.campaign_id.localeCompare(b.campaign_id));
+}
+
 async function writeDataset(name, records) {
   const headers = [
     "date",
@@ -302,12 +361,17 @@ async function main() {
   if (!existsSync(realRaw)) {
     throw new Error(`Missing real Facebook ads CSV: ${realRaw}`);
   }
+  if (!existsSync(globalAdsRaw)) {
+    throw new Error(`Missing Kaggle global ads CSV: ${globalAdsRaw}`);
+  }
 
   const portfolioRows = parseCsv(await readFile(airflowOutput, "utf8"));
   const realRows = parseCsv(await readFile(realRaw, "utf8"));
+  const globalAdsRows = parseCsv(await readFile(globalAdsRaw, "utf8"));
 
   await writeDataset("portfolio_campaign_daily", normalizePortfolio(portfolioRows));
   await writeDataset("real_facebook_ads_daily", normalizeRealFacebook(realRows));
+  await writeDataset("global_ads_performance_daily", normalizeGlobalAds(globalAdsRows));
 
   const manifest = {
     generated_at: new Date().toISOString(),
@@ -328,6 +392,15 @@ async function main() {
         json: "/data/real_facebook_ads_daily.json",
         raw: "/data/raw_real_facebook_ads.csv",
         rows: realRows.length,
+      },
+      {
+        id: "global_ads_performance",
+        label: "Kaggle global ads performance",
+        source: "Kaggle Global Ads Performance: Google, Meta, TikTok",
+        csv: "/data/global_ads_performance_daily.csv",
+        json: "/data/global_ads_performance_daily.json",
+        raw: "/data/raw_global_ads_performance_dataset.csv",
+        rows: globalAdsRows.length,
       },
     ],
   };

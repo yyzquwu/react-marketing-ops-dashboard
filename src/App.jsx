@@ -37,6 +37,15 @@ const DATASETS = {
     uploaded: "Public anonymized dataset",
     realness: "Real public Facebook campaign data",
   },
+  global_ads_performance: {
+    label: "Kaggle global ads performance",
+    sourceName: "GlobalAdsPerformance_GoogleMetaTikTok.csv",
+    file: "/data/global_ads_performance_daily.json",
+    csv: "/data/global_ads_performance_daily.csv",
+    asOf: "Dec 31, 2024",
+    uploaded: "Kaggle CC0 public dataset",
+    realness: "Kaggle public multi-platform ads dataset",
+  },
 };
 
 const COLORS = {
@@ -81,12 +90,14 @@ const SOURCE_MEDIUM_LABELS = {
   google_ads: "Paid Search",
   "Google Ads": "Paid Search",
   meta: "Paid Social",
+  meta_ads: "Paid Social",
   Meta: "Paid Social",
   microsoft_ads: "Paid Search",
   "Microsoft Ads": "Paid Search",
   other: "Display",
   Other: "Display",
   tiktok: "Paid Social",
+  tiktok_ads: "Paid Social",
   TikTok: "Paid Social",
   youtube: "Paid Video",
   YouTube: "Paid Video",
@@ -124,12 +135,20 @@ function formatNumber(value) {
 
 function formatCompactNumber(value) {
   const number = Number(value) || 0;
+  if (Math.abs(number) >= 1000000) {
+    const rounded = number / 1000000;
+    return `${rounded >= 10 ? Math.round(rounded) : rounded.toFixed(1).replace(/\.0$/, "")}M`;
+  }
   if (Math.abs(number) >= 1000) return `${Math.round(number / 1000)}K`;
   return formatNumber(number);
 }
 
 function formatCompactCurrency(value) {
   const number = Number(value) || 0;
+  if (Math.abs(number) >= 1000000) {
+    const rounded = number / 1000000;
+    return `$${rounded >= 10 ? Math.round(rounded) : rounded.toFixed(1).replace(/\.0$/, "")}M`;
+  }
   if (Math.abs(number) >= 1000) return `$${Math.round(number / 1000)}K`;
   return formatCurrency(number);
 }
@@ -173,7 +192,7 @@ function labelBucket(value, granularity) {
     return new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric" }).format(parseDate(value));
   }
   if (granularity === "week") {
-    return `Wk ${labelDate(value)}`;
+    return labelDate(value);
   }
   return labelDate(value);
 }
@@ -415,14 +434,15 @@ const KpiCard = memo(function KpiCard({ accent, delta, iconKey, label, value, su
 });
 
 const LineComboChart = memo(function LineComboChart({ data, granularity }) {
+  const [tooltip, setTooltip] = useState(null);
   const width = 760;
   const height = 350;
-  const pad = { top: 24, right: 62, bottom: 44, left: 78 };
+  const pad = { top: 24, right: 62, bottom: 44, left: 84 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const maxSpend = niceAxisMax(Math.max(...data.map((day) => day.spend), 1));
   const maxConversions = niceAxisMax(Math.max(...data.map((day) => day.conversions), 1));
-  const plotCenterY = pad.top + innerH / 2;
+  const svgCenterY = height / 2;
   const x = (index) => pad.left + (index / Math.max(1, data.length - 1)) * innerW;
   const ySpend = (value) => pad.top + innerH - (value / maxSpend) * innerH;
   const yConversions = (value) => pad.top + innerH - (value / maxConversions) * innerH;
@@ -440,62 +460,105 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
     labelIndexes.push(lastIndex);
   }
   const labels = labelIndexes.map((index) => ({ ...data[index], index }));
+  const showTooltip = (event, day, index) => {
+    const bounds = event.currentTarget.ownerSVGElement.getBoundingClientRect();
+    const xPosition = x(index);
+    const yPosition = Math.min(ySpend(day.spend), yConversions(day.conversions));
+    setTooltip({
+      date: labelBucket(day.date, granularity),
+      spend: day.spend,
+      conversions: day.conversions,
+      x: (xPosition / width) * bounds.width,
+      y: (yPosition / height) * bounds.height,
+    });
+  };
 
   return (
-    <svg className="trend-chart" viewBox={`0 0 ${width} ${height}`} role="img" preserveAspectRatio="xMidYMid meet">
-      {[0, 0.25, 0.5, 0.75, 1].map((tick) => {
-        const y = pad.top + innerH - tick * innerH;
-        return (
-          <g key={tick}>
-            <line x1={pad.left} x2={width - pad.right} y1={y} y2={y} className="grid-line" />
-            <text x={pad.left - 16} y={y + 4} textAnchor="end" className="axis-label">
-              {formatCompactCurrency(maxSpend * tick)}
-            </text>
-            <text x={width - pad.right + 16} y={y + 4} className="axis-label">
-              {formatCompactNumber(maxConversions * tick)}
-            </text>
+    <div className="trend-chart-wrap" onMouseLeave={() => setTooltip(null)}>
+      <svg className="trend-chart" viewBox={`0 0 ${width} ${height}`} role="img" preserveAspectRatio="xMidYMid meet">
+        {[0, 0.25, 0.5, 0.75, 1].map((tick) => {
+          const y = pad.top + innerH - tick * innerH;
+          return (
+            <g key={tick}>
+              <line x1={pad.left} x2={width - pad.right} y1={y} y2={y} className="grid-line" />
+              <text x={pad.left - 16} y={y + 4} textAnchor="end" className="axis-label">
+                {formatCompactCurrency(maxSpend * tick)}
+              </text>
+              <text x={width - pad.right + 16} y={y + 4} className="axis-label">
+                {formatCompactNumber(maxConversions * tick)}
+              </text>
+            </g>
+          );
+        })}
+        <text x={10} y={svgCenterY} className="axis-title" transform={`rotate(-90 10 ${svgCenterY})`}>
+          Spend (USD)
+        </text>
+        <text
+          x={width - 12}
+          y={svgCenterY}
+          className="axis-title conversions"
+          transform={`rotate(-90 ${width - 12} ${svgCenterY})`}
+        >
+          Conversions
+        </text>
+        <polyline points={spendPoints} fill="none" className="spend-line" pathLength="1" />
+        <polyline points={conversionPoints} fill="none" className="conversion-line" pathLength="1" />
+        {data.map((day, index) => (
+          <g
+            className="trend-hover-target"
+            key={`${day.date}-${index}`}
+            onMouseMove={(event) => showTooltip(event, day, index)}
+            onFocus={(event) => showTooltip(event, day, index)}
+            onBlur={() => setTooltip(null)}
+            tabIndex="0"
+          >
+            <line x1={x(index)} x2={x(index)} y1={pad.top} y2={height - pad.bottom} className="trend-hover-line" />
+            <circle cx={x(index)} cy={ySpend(day.spend)} r="4" className="spend-dot" />
+            <circle cx={x(index)} cy={yConversions(day.conversions)} r="3.5" className="conversion-dot" />
+            <circle cx={x(index)} cy={ySpend(day.spend)} r="11" className="trend-hit-dot" />
+            <circle cx={x(index)} cy={yConversions(day.conversions)} r="11" className="trend-hit-dot" />
           </g>
-        );
-      })}
-      <text x={18} y={plotCenterY} className="axis-title" transform={`rotate(-90 18 ${plotCenterY})`}>
-        Spend (USD)
-      </text>
-      <text
-        x={width - 18}
-        y={plotCenterY}
-        className="axis-title conversions"
-        transform={`rotate(90 ${width - 18} ${plotCenterY})`}
-      >
-        Conversions
-      </text>
-      <polyline points={spendPoints} fill="none" className="spend-line" pathLength="1" />
-      <polyline points={conversionPoints} fill="none" className="conversion-line" pathLength="1" />
-      {data.map((day, index) => (
-        <g key={`${day.date}-${index}`}>
-          <circle cx={x(index)} cy={ySpend(day.spend)} r="4" className="spend-dot" />
-          <circle cx={x(index)} cy={yConversions(day.conversions)} r="3.5" className="conversion-dot" />
-        </g>
-      ))}
-      {labels.map((day) => {
-        const index = day.index;
-        return (
-          <text key={day.date} x={x(index)} y={height - 10} textAnchor="middle" className="axis-label">
-            {labelBucket(day.date, granularity)}
-          </text>
-        );
-      })}
-    </svg>
+        ))}
+        {labels.map((day) => {
+          const index = day.index;
+          return (
+            <text key={day.date} x={x(index)} y={height - 10} textAnchor="middle" className="axis-label">
+              {labelBucket(day.date, granularity)}
+            </text>
+          );
+        })}
+      </svg>
+      {tooltip ? (
+        <div className="trend-tooltip" style={{ left: tooltip.x, top: tooltip.y }}>
+          <strong>{tooltip.date}</strong>
+          <span><i className="blue" /> Spend: {formatCurrency(tooltip.spend)}</span>
+          <span><i className="teal" /> Conversions: {formatNumber(tooltip.conversions)}</span>
+        </div>
+      ) : null}
+    </div>
   );
 });
 
-const DonutChart = memo(function DonutChart({ data }) {
+const DonutChart = memo(function DonutChart({ data, onPlatformSelect, selectedPlatform }) {
+  const [tooltip, setTooltip] = useState(null);
   const total = data.reduce((sum, row) => sum + row.spend, 0) || 1;
   const radius = 54;
   const circumference = 2 * Math.PI * radius;
   let offset = 0;
+  const showTooltip = (event, row) => {
+    const bounds = event.currentTarget.closest(".donut-layout").getBoundingClientRect();
+    const share = row.spend / total;
+    setTooltip({
+      platform: row.platform,
+      spend: row.spend,
+      share,
+      x: event.clientX - bounds.left + 12,
+      y: event.clientY - bounds.top + 12,
+    });
+  };
 
   return (
-    <div className="donut-layout">
+    <div className="donut-layout" onMouseLeave={() => setTooltip(null)}>
       <svg className="donut" viewBox="0 0 150 150" role="img">
         <circle cx="75" cy="75" r={radius} className="donut-track" />
         {data.map((row) => {
@@ -511,7 +574,17 @@ const DonutChart = memo(function DonutChart({ data }) {
               stroke={COLORS[row.platform] || COLORS.Other}
               strokeDasharray={`${dash} ${circumference - dash}`}
               strokeDashoffset={-offset}
-            />
+              onMouseMove={(event) => showTooltip(event, row)}
+              onFocus={(event) => showTooltip(event, row)}
+              onBlur={() => setTooltip(null)}
+              onClick={() => onPlatformSelect(row.platform)}
+              tabIndex="0"
+              role="button"
+              aria-label={`Filter to ${row.platform}`}
+              data-active={selectedPlatform === row.platform}
+            >
+              <title>{`${row.platform}: ${formatCurrency(row.spend)} (${((row.spend / total) * 100).toFixed(1)}%)`}</title>
+            </circle>
           );
           offset += dash;
           return segment;
@@ -520,12 +593,17 @@ const DonutChart = memo(function DonutChart({ data }) {
       </svg>
       <div className="donut-legend">
         {data.map((row) => (
-          <div className="legend-row" key={row.platform}>
+          <button
+            className="legend-row legend-action"
+            data-active={selectedPlatform === row.platform}
+            key={row.platform}
+            onClick={() => onPlatformSelect(row.platform)}
+          >
             <span className="legend-dot" style={{ background: COLORS[row.platform] || COLORS.Other }} />
             <span>{row.platform}</span>
             <b>{formatCurrency(row.spend)}</b>
             <em>{((row.spend / total) * 100).toFixed(1)}%</em>
-          </div>
+          </button>
         ))}
         <div className="legend-row total">
           <span />
@@ -534,11 +612,18 @@ const DonutChart = memo(function DonutChart({ data }) {
           <em>100%</em>
         </div>
       </div>
+      {tooltip ? (
+        <div className="donut-tooltip" style={{ left: tooltip.x, top: tooltip.y }}>
+          <strong>{tooltip.platform}</strong>
+          <span>{formatCurrency(tooltip.spend)}</span>
+          <em>{formatPercent(tooltip.share, 1)} of spend</em>
+        </div>
+      ) : null}
     </div>
   );
 });
 
-const CpaBars = memo(function CpaBars({ campaigns }) {
+const CpaBars = memo(function CpaBars({ campaigns, onCampaignSelect, selectedCampaignKey }) {
   const ranked = campaigns
     .filter((campaign) => campaign.conversions > 0)
     .sort((a, b) => a.cpa - b.cpa)
@@ -548,13 +633,18 @@ const CpaBars = memo(function CpaBars({ campaigns }) {
   return (
     <div className="bar-list">
       {ranked.map((campaign) => (
-        <div className="bar-row" key={`${campaign.campaign}-${campaign.platform}`}>
+        <button
+          className="bar-row bar-action"
+          data-active={selectedCampaignKey === `${campaign.campaign}|${campaign.platform}`}
+          key={`${campaign.campaign}-${campaign.platform}`}
+          onClick={() => onCampaignSelect(campaign)}
+        >
           <span>{campaign.campaign}</span>
           <div className="bar-track">
             <i style={{ width: `${Math.max(3, (campaign.cpa / maxCpa) * 100)}%` }} />
           </div>
           <b>{formatCurrency(campaign.cpa, 2)}</b>
-        </div>
+        </button>
       ))}
       <div className="bar-axis">
         <span />
@@ -566,6 +656,100 @@ const CpaBars = memo(function CpaBars({ campaigns }) {
         <span />
       </div>
     </div>
+  );
+});
+
+const OpportunityPanel = memo(function OpportunityPanel({ campaigns, summary }) {
+  const viable = campaigns.filter((campaign) => campaign.conversions > 0);
+  const scale = viable
+    .filter((campaign) => campaign.cpa <= summary.cpa && campaign.spend >= summary.spend * 0.025)
+    .sort((a, b) => b.conversions - a.conversions)[0];
+  const inspect = viable
+    .filter((campaign) => campaign.cpa > summary.cpa * 1.15 && campaign.spend >= summary.spend * 0.025)
+    .sort((a, b) => b.spend - a.spend)[0];
+  const creative = viable
+    .filter((campaign) => campaign.ctr >= summary.ctr * 1.08 && campaign.cvr < summary.cvr)
+    .sort((a, b) => b.clicks - a.clicks)[0];
+  const opportunities = [
+    scale
+      ? {
+          label: "Scale efficient spend",
+          value: scale.campaign,
+          detail: `${scale.platform} is at ${formatCurrency(scale.cpa, 2)} CPA with ${formatNumber(scale.conversions)} conversions.`,
+        }
+      : null,
+    inspect
+      ? {
+          label: "Inspect high CPA",
+          value: inspect.campaign,
+          detail: `${formatCurrency(inspect.spend)} spend at ${formatCurrency(inspect.cpa, 2)} CPA is above the filtered average.`,
+        }
+      : null,
+    creative
+      ? {
+          label: "Fix post-click funnel",
+          value: creative.campaign,
+          detail: `${formatPercent(creative.ctr)} CTR is strong, but ${formatPercent(creative.cvr)} CVR trails the filtered average.`,
+        }
+      : null,
+  ].filter(Boolean);
+
+  return (
+    <section className="opportunity-panel panel">
+      <h2>Budget Opportunities</h2>
+      <div className="opportunity-grid">
+        {opportunities.length ? opportunities.map((item) => (
+          <div className="opportunity-card" key={item.label}>
+            <span>{item.label}</span>
+            <strong>{item.value}</strong>
+            <p>{item.detail}</p>
+          </div>
+        )) : (
+          <div className="opportunity-card">
+            <span>No major reallocations flagged</span>
+            <strong>Current mix is balanced</strong>
+            <p>Filtered campaigns are clustered close to the average CPA and conversion profile.</p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+});
+
+const CampaignDrilldown = memo(function CampaignDrilldown({ campaign, rows, onClose }) {
+  if (!campaign) return null;
+  const dailyRows = buildTimeSeries(rows, "day");
+  const lastDay = dailyRows.at(-1);
+  const firstDay = dailyRows[0];
+
+  return (
+    <section className="drilldown panel">
+      <div className="panel-title-row">
+        <div>
+          <h2>Campaign Drilldown</h2>
+          <p>{campaign.campaign}</p>
+        </div>
+        <button className="text-button" onClick={onClose}>Clear</button>
+      </div>
+      <div className="drilldown-meta">
+        <span className="platform-chip">
+          <i style={{ background: COLORS[campaign.platform] || COLORS.Other }} />
+          {campaign.platform}
+        </span>
+        <span>{formatNumber(rows.length)} daily rows</span>
+        <span>{firstDay && lastDay ? `${labelDate(firstDay.date)} - ${labelDate(lastDay.date)}` : "No dates"}</span>
+      </div>
+      <div className="drilldown-kpis">
+        <div><span>Spend</span><strong>{formatCurrency(campaign.spend)}</strong></div>
+        <div><span>Conversions</span><strong>{formatNumber(campaign.conversions)}</strong></div>
+        <div><span>CPA</span><strong>{formatCurrency(campaign.cpa, 2)}</strong></div>
+        <div><span>CTR</span><strong>{formatPercent(campaign.ctr)}</strong></div>
+        <div><span>CPC</span><strong>{formatCurrency(campaign.cpc, 2)}</strong></div>
+      </div>
+      <div className="drilldown-note">
+        Latest day: {lastDay ? `${labelDate(lastDay.date)} with ${formatCurrency(lastDay.spend)} spend and ${formatNumber(lastDay.conversions)} conversions.` : "No daily activity."}
+      </div>
+    </section>
   );
 });
 
@@ -611,7 +795,15 @@ const Takeaways = memo(function Takeaways({ summary, campaigns, platforms, delta
   );
 });
 
-const Leaderboard = memo(function Leaderboard({ campaigns, page, rowsPerPage, onPageChange, onRowsPerPageChange }) {
+const Leaderboard = memo(function Leaderboard({
+  campaigns,
+  onCampaignSelect,
+  page,
+  rowsPerPage,
+  selectedCampaignKey,
+  onPageChange,
+  onRowsPerPageChange,
+}) {
   const totalPages = Math.max(1, Math.ceil(campaigns.length / rowsPerPage));
   const startIndex = (page - 1) * rowsPerPage;
   const rows = campaigns.slice(startIndex, startIndex + rowsPerPage);
@@ -635,29 +827,33 @@ const Leaderboard = memo(function Leaderboard({ campaigns, page, rowsPerPage, on
         <table>
           <thead>
             <tr>
-              <th>Rank</th>
+              <th className="col-rank">Rank</th>
               <th>Campaign</th>
-              <th>Platform</th>
-              <th>Spend (USD)</th>
-              <th>Conversions</th>
-              <th>CPA (USD)</th>
-              <th>CTR</th>
-              <th>CPC (USD)</th>
-              <th>CVR</th>
+              <th className="col-center">Platform</th>
+              <th className="col-number">Spend (USD)</th>
+              <th className="col-number">Conversions</th>
+              <th className="col-number">CPA (USD)</th>
+              <th className="col-number">CTR</th>
+              <th className="col-number">CPC (USD)</th>
+              <th className="col-number">CVR</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((campaign, index) => (
-              <tr key={`${campaign.campaign}-${campaign.platform}`}>
-                <td>{startIndex + index + 1}</td>
+              <tr
+                data-active={selectedCampaignKey === `${campaign.campaign}|${campaign.platform}`}
+                key={`${campaign.campaign}-${campaign.platform}`}
+                onClick={() => onCampaignSelect(campaign)}
+              >
+                <td className="col-rank">{startIndex + index + 1}</td>
                 <td>{campaign.campaign}</td>
-                <td>{campaign.platform}</td>
-                <td>{formatCurrency(campaign.spend)}</td>
-                <td>{formatNumber(campaign.conversions)}</td>
-                <td>{formatCurrency(campaign.cpa, 2)}</td>
-                <td>{formatPercent(campaign.ctr)}</td>
-                <td>{formatCurrency(campaign.cpc, 2)}</td>
-                <td>{formatPercent(campaign.cvr)}</td>
+                <td className="col-center">{campaign.platform}</td>
+                <td className="col-number">{formatCurrency(campaign.spend)}</td>
+                <td className="col-number">{formatNumber(campaign.conversions)}</td>
+                <td className="col-number">{formatCurrency(campaign.cpa, 2)}</td>
+                <td className="col-number">{formatPercent(campaign.ctr)}</td>
+                <td className="col-number">{formatCurrency(campaign.cpc, 2)}</td>
+                <td className="col-number">{formatPercent(campaign.cvr)}</td>
               </tr>
             ))}
           </tbody>
@@ -724,7 +920,7 @@ const Sidebar = memo(function Sidebar({
       <section className="sidebar-section">
         <h3>DATA</h3>
         <label className="field-label">Dataset</label>
-        <select value={datasetId} onChange={(event) => onDatasetChange(event.target.value)}>
+        <select className="dataset-select" value={datasetId} onChange={(event) => onDatasetChange(event.target.value)}>
           {Object.entries(datasets).map(([id, item]) => (
             <option value={id} key={id}>
               {item.label}
@@ -831,7 +1027,7 @@ const Sidebar = memo(function Sidebar({
 });
 
 export default function App() {
-  const [datasetId, setDatasetId] = useState("portfolio");
+  const [datasetId, setDatasetId] = useState("global_ads_performance");
   const [rows, setRows] = useState([]);
   const [uploadedRows, setUploadedRows] = useState([]);
   const [uploadedMeta, setUploadedMeta] = useState(null);
@@ -843,6 +1039,7 @@ export default function App() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [dateRange, setDateRange] = useState({ start: "", end: "" });
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
+  const [selectedCampaignKey, setSelectedCampaignKey] = useState("");
   const fileInputRef = useRef(null);
   const dataRequestRef = useRef(0);
 
@@ -862,6 +1059,7 @@ export default function App() {
     const dates = [...new Set(nextRows.map((row) => row.date).filter(Boolean))].sort();
     setDateRange({ start: dates[0] ?? "", end: dates.at(-1) ?? "" });
     setFilters(DEFAULT_FILTERS);
+    setSelectedCampaignKey("");
     setPage(1);
   }, []);
 
@@ -927,6 +1125,18 @@ export default function App() {
   const campaigns = useMemo(() => buildCampaigns(filteredRows), [filteredRows]);
   const platformSpend = useMemo(() => buildPlatforms(filteredRows), [filteredRows]);
   const summary = useMemo(() => summarize(filteredRows), [filteredRows]);
+  const selectedCampaign = useMemo(
+    () => campaigns.find((campaign) => `${campaign.campaign}|${campaign.platform}` === selectedCampaignKey) ?? null,
+    [campaigns, selectedCampaignKey],
+  );
+  const selectedCampaignRows = useMemo(() => {
+    if (!selectedCampaign) return [];
+    return filteredRows.filter(
+      (row) =>
+        row.campaign_name === selectedCampaign.campaign &&
+        row.source_label === selectedCampaign.platform,
+    );
+  }, [filteredRows, selectedCampaign]);
   const csvHref = useMemo(() => csvFromRows(filteredRows), [filteredRows]);
   const deltas = useMemo(
     () => ({
@@ -960,9 +1170,31 @@ export default function App() {
     if (page > totalPages) setPage(totalPages);
   }, [campaigns.length, page, rowsPerPage]);
 
+  useEffect(() => {
+    if (!selectedCampaignKey) return;
+    if (campaigns.some((campaign) => `${campaign.campaign}|${campaign.platform}` === selectedCampaignKey)) return;
+    setSelectedCampaignKey("");
+  }, [campaigns, selectedCampaignKey]);
+
   const onFilterChange = useCallback((key, value) => {
     startTransition(() => {
       setFilters((current) => ({ ...current, [key]: value }));
+    });
+  }, []);
+
+  const handlePlatformSelect = useCallback((platform) => {
+    startTransition(() => {
+      setFilters((current) => ({
+        ...current,
+        platform: current.platform === platform ? "All Platforms" : platform,
+      }));
+      setSelectedCampaignKey("");
+    });
+  }, []);
+
+  const handleCampaignSelect = useCallback((campaign) => {
+    startTransition(() => {
+      setSelectedCampaignKey(`${campaign.campaign}|${campaign.platform}`);
     });
   }, []);
 
@@ -1174,20 +1406,36 @@ export default function App() {
 
               <article className="panel platform-panel">
                 <h2>Spend by Platform</h2>
-                <DonutChart data={platformSpend} />
+                <DonutChart
+                  data={platformSpend}
+                  onPlatformSelect={handlePlatformSelect}
+                  selectedPlatform={filters.platform}
+                />
               </article>
 
               <article className="panel cpa-panel">
                 <h2>CPA by Campaign</h2>
-                <CpaBars campaigns={campaigns} />
+                <CpaBars
+                  campaigns={campaigns}
+                  onCampaignSelect={handleCampaignSelect}
+                  selectedCampaignKey={selectedCampaignKey}
+                />
               </article>
           </section>
 
+          <OpportunityPanel campaigns={campaigns} summary={summary} />
+          <CampaignDrilldown
+            campaign={selectedCampaign}
+            rows={selectedCampaignRows}
+            onClose={() => setSelectedCampaignKey("")}
+          />
           <Takeaways summary={summary} campaigns={campaigns} platforms={platformSpend} deltas={deltas} />
           <Leaderboard
             campaigns={campaigns}
+            onCampaignSelect={handleCampaignSelect}
             page={page}
             rowsPerPage={rowsPerPage}
+            selectedCampaignKey={selectedCampaignKey}
             onPageChange={handlePageChange}
             onRowsPerPageChange={handleRowsPerPageChange}
           />

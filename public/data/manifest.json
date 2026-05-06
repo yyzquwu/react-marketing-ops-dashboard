@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-06T11:27:32.470Z",
+  "generated_at": "2026-05-06T13:04:24.841Z",
   "datasets": [
     {
       "id": "portfolio",
@@ -17,6 +17,15 @@
       "json": "/data/real_facebook_ads_daily.json",
       "raw": "/data/raw_real_facebook_ads.csv",
       "rows": 1143
+    },
+    {
+      "id": "global_ads_performance",
+      "label": "Kaggle global ads performance",
+      "source": "Kaggle Global Ads Performance: Google, Meta, TikTok",
+      "csv": "/data/global_ads_performance_daily.csv",
+      "json": "/data/global_ads_performance_daily.json",
+      "raw": "/data/raw_global_ads_performance_dataset.csv",
+      "rows": 1800
     }
   ]
 }
