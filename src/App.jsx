@@ -1,5 +1,8 @@
 import React, { memo, startTransition, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  AlertTriangle,
+  ArrowRight,
+  ArrowUpRight,
   CalendarDays,
   CheckCircle2,
   ChevronLeft,
@@ -216,6 +219,13 @@ function niceAxisMax(value) {
   const normalized = number / base;
   const multiplier = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10;
   return multiplier * base;
+}
+
+function median(values) {
+  const sorted = values.filter((value) => Number.isFinite(value)).sort((a, b) => a - b);
+  if (!sorted.length) return 0;
+  const midpoint = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[midpoint] : (sorted[midpoint - 1] + sorted[midpoint]) / 2;
 }
 
 function summarize(rows) {
@@ -607,6 +617,8 @@ const RevenueTrendChart = memo(function RevenueTrendChart({ data }) {
 });
 
 const BreakdownTable = memo(function BreakdownTable({ title, rows, labelHeader }) {
+  const linkLabel = labelHeader === "Country" ? "countries" : labelHeader === "Industry" ? "industries" : "types";
+
   return (
     <section className="breakdown-card panel">
       <h2>{title}</h2>
@@ -626,6 +638,9 @@ const BreakdownTable = memo(function BreakdownTable({ title, rows, labelHeader }
           </div>
         ))}
       </div>
+      <button className="breakdown-link" type="button">
+        View all {linkLabel} <ArrowRight size={14} />
+      </button>
     </section>
   );
 });
@@ -636,21 +651,27 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
     .sort((a, b) => b.spend - a.spend)
     .slice(0, 36);
   const width = 760;
-  const height = 260;
-  const pad = { top: 20, right: 28, bottom: 44, left: 68 };
+  const height = 272;
+  const pad = { top: 26, right: 176, bottom: 48, left: 68 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const maxCpa = niceAxisMax(Math.max(...candidates.map((campaign) => campaign.cpa), 1));
   const maxRoas = niceAxisMax(Math.max(...candidates.map((campaign) => campaign.roas), 1));
   const maxSpend = Math.max(...candidates.map((campaign) => campaign.spend), 1);
+  const medianCpa = median(candidates.map((campaign) => campaign.cpa)) || maxCpa / 2;
+  const medianRoas = median(candidates.map((campaign) => campaign.roas)) || maxRoas / 2;
+  const legendPlatforms = [...new Set(candidates.map((campaign) => campaign.platform))]
+    .sort((a, b) => (COLORS[a] ? 0 : 1) - (COLORS[b] ? 0 : 1))
+    .slice(0, 6);
   const x = (value) => pad.left + (value / maxCpa) * innerW;
   const y = (value) => pad.top + innerH - (value / maxRoas) * innerH;
+  const thresholdX = x(Math.min(medianCpa, maxCpa));
+  const thresholdY = y(Math.min(medianRoas, maxRoas));
 
   return (
     <section className="quadrant panel">
       <div className="panel-title-row">
-        <h2>Efficiency Quadrant</h2>
-        <span className="chart-note">Bubble size = spend, color = platform</span>
+        <h2>Efficiency Quadrant <span>(Top 36)</span></h2>
       </div>
       <svg className="quadrant-chart" viewBox={`0 0 ${width} ${height}`} role="img" preserveAspectRatio="xMidYMid meet">
         {[0, 0.5, 1].map((tick) => {
@@ -665,8 +686,18 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
             </g>
           );
         })}
-        <text x={18} y={height / 2} className="axis-title" transform={`rotate(-90 18 ${height / 2})`}>ROAS</text>
-        <text x={width / 2} y={height - 2} className="axis-title">CPA</text>
+        <line x1={thresholdX} x2={thresholdX} y1={pad.top} y2={height - pad.bottom} className="threshold-line" />
+        <line x1={pad.left} x2={width - pad.right} y1={thresholdY} y2={thresholdY} className="threshold-line" />
+        <text x={pad.left + 12} y={pad.top + 16} className="quadrant-label">High ROAS</text>
+        <text x={pad.left + 12} y={pad.top + 31} className="quadrant-label">Low CPA</text>
+        <text x={thresholdX + 14} y={pad.top + 16} className="quadrant-label">High ROAS</text>
+        <text x={thresholdX + 14} y={pad.top + 31} className="quadrant-label">High CPA</text>
+        <text x={pad.left + 12} y={height - pad.bottom - 28} className="quadrant-label">Low ROAS</text>
+        <text x={pad.left + 12} y={height - pad.bottom - 13} className="quadrant-label">Low CPA</text>
+        <text x={thresholdX + 14} y={height - pad.bottom - 28} className="quadrant-label">Low ROAS</text>
+        <text x={thresholdX + 14} y={height - pad.bottom - 13} className="quadrant-label">High CPA</text>
+        <text x={18} y={pad.top + innerH / 2} className="axis-title" transform={`rotate(-90 18 ${pad.top + innerH / 2})`}>ROAS (x)</text>
+        <text x={pad.left + innerW / 2} y={height - 2} className="axis-title">CPA (USD)</text>
         {candidates.map((campaign) => (
           <circle
             className="quadrant-dot"
@@ -679,6 +710,15 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
             <title>{`${campaign.campaign} (${campaign.platform})\nCPA ${formatCurrency(campaign.cpa, 2)} | ROAS ${campaign.roas.toFixed(2)}x | Spend ${formatCurrency(campaign.spend)}`}</title>
           </circle>
         ))}
+        <g className="quadrant-legend" transform={`translate(${width - 150} 50)`}>
+          {legendPlatforms.map((platform, index) => (
+            <g key={platform} transform={`translate(0 ${index * 22})`}>
+              <circle cx="0" cy="0" r="5" fill={COLORS[platform] || COLORS.Other} />
+              <text x="14" y="4">{platform}</text>
+            </g>
+          ))}
+        </g>
+        <text x={width - 150} y={height - 16} className="quadrant-note">Bubble size = Spend</text>
       </svg>
     </section>
   );
@@ -810,58 +850,74 @@ const CpaBars = memo(function CpaBars({ campaigns, onCampaignSelect, selectedCam
 });
 
 const OpportunityPanel = memo(function OpportunityPanel({ campaigns, summary }) {
+  const [expanded, setExpanded] = useState(false);
   const viable = campaigns.filter((campaign) => campaign.conversions > 0);
-  const scale = viable
-    .filter((campaign) => campaign.roas >= summary.roas * 1.15 && campaign.spend <= summary.spend * 0.04)
-    .sort((a, b) => b.roas - a.roas)[0];
-  const inspect = viable
-    .filter((campaign) => campaign.roas < summary.roas * 0.75 && campaign.spend >= summary.spend * 0.025)
-    .sort((a, b) => b.spend - a.spend)[0];
-  const creative = viable
+  const scaleList = viable
+    .filter((campaign) => campaign.roas >= Math.max(summary.roas * 1.2, 5) && campaign.spend <= summary.spend * 0.04)
+    .sort((a, b) => b.roas - a.roas);
+  const improveList = viable
+    .filter((campaign) => campaign.roas < Math.max(summary.roas * 0.72, 2) && campaign.spend >= summary.spend * 0.018)
+    .sort((a, b) => b.spend - a.spend);
+  const balanceList = viable
     .filter((campaign) => campaign.cpa <= summary.cpa && campaign.roas < summary.roas)
-    .sort((a, b) => b.clicks - a.clicks)[0];
+    .sort((a, b) => b.clicks - a.clicks);
   const opportunities = [
-    scale
-      ? {
-          label: "Scale efficient spend",
-          value: scale.campaign,
-          detail: `${scale.platform} is at ${scale.roas.toFixed(2)}x ROAS with only ${formatCurrency(scale.spend)} spend.`,
-        }
-      : null,
-    inspect
-      ? {
-          label: "Inspect high CPA",
-          value: inspect.campaign,
-          detail: `${formatCurrency(inspect.spend)} spend is returning ${inspect.roas.toFixed(2)}x ROAS, below the filtered average.`,
-        }
-      : null,
-    creative
-      ? {
-          label: "Check conversion quality",
-          value: creative.campaign,
-          detail: `${formatCurrency(creative.cpa, 2)} CPA is efficient, but ${creative.roas.toFixed(2)}x ROAS trails the filtered average.`,
-        }
-      : null,
-  ].filter(Boolean);
+    {
+      Icon: ArrowUpRight,
+      tone: "green",
+      label: "Scale high ROAS campaigns",
+      detail: `${formatNumber(scaleList.length)} campaigns have ROAS above target with room to absorb incremental budget.`,
+      rows: scaleList,
+    },
+    {
+      Icon: AlertTriangle,
+      tone: "amber",
+      label: "Improve low ROAS campaigns",
+      detail: `${formatNumber(improveList.length)} campaigns have low ROAS with meaningful spend. Review targeting and creatives.`,
+      rows: improveList,
+    },
+    {
+      Icon: Target,
+      tone: "purple",
+      label: "Balance CPA & ROAS",
+      detail: `${formatNumber(balanceList.length)} campaigns have efficient CPA but weaker ROAS. Check conversion quality.`,
+      rows: balanceList,
+    },
+  ];
 
   return (
     <section className="opportunity-panel panel">
       <h2>Budget Opportunities</h2>
       <div className="opportunity-grid">
-        {opportunities.length ? opportunities.map((item) => (
-          <div className="opportunity-card" key={item.label}>
-            <span>{item.label}</span>
-            <strong>{item.value}</strong>
-            <p>{item.detail}</p>
+        {opportunities.map(({ Icon, ...item }) => (
+          <div className={`opportunity-card ${item.tone}`} key={item.label}>
+            <div className="opportunity-icon">
+              <Icon size={25} />
+            </div>
+            <div>
+              <strong>{item.label}</strong>
+              <p>{item.detail}</p>
+            </div>
           </div>
-        )) : (
-          <div className="opportunity-card">
-            <span>No major reallocations flagged</span>
-            <strong>Current mix is balanced</strong>
-            <p>Filtered campaigns are clustered close to the average CPA and conversion profile.</p>
-          </div>
-        )}
+        ))}
       </div>
+      {expanded ? (
+        <div className="opportunity-detail-list">
+          {opportunities.map((item) => (
+            <div key={item.label}>
+              <span>{item.label}</span>
+              {(item.rows.length ? item.rows.slice(0, 3) : viable.slice(0, 1)).map((campaign) => (
+                <p key={`${item.label}-${campaign.campaign}-${campaign.platform}`}>
+                  <b>{campaign.campaign}</b> {campaign.roas.toFixed(2)}x ROAS, {formatCurrency(campaign.cpa, 2)} CPA
+                </p>
+              ))}
+            </div>
+          ))}
+        </div>
+      ) : null}
+      <button className="opportunity-link" type="button" onClick={() => setExpanded((value) => !value)}>
+        {expanded ? "Hide opportunities" : "View full opportunities"} <ArrowRight size={15} />
+      </button>
     </section>
   );
 });
@@ -1311,6 +1367,10 @@ export default function App() {
   const daily = useMemo(() => buildTimeSeries(filteredRows, granularity), [filteredRows, granularity]);
   const monthly = useMemo(() => buildTimeSeries(filteredRows, "month"), [filteredRows]);
   const campaigns = useMemo(() => buildCampaigns(filteredRows), [filteredRows]);
+  const cpaConversionThreshold = useMemo(
+    () => Math.max(1, campaigns.reduce((sum, campaign) => sum + campaign.conversions, 0) * 0.0025),
+    [campaigns],
+  );
   const platformSpend = useMemo(() => buildPlatforms(filteredRows), [filteredRows]);
   const countryBreakdown = useMemo(
     () => buildBreakdown(filteredRows, (row) => row.segment || "Unknown"),
@@ -1670,7 +1730,7 @@ export default function App() {
               </article>
 
               <article className="panel cpa-panel">
-                <h2>CPA by Campaign</h2>
+                <h2>CPA by Campaign <span className="panel-title-meta">(min. {formatNumber(cpaConversionThreshold)} conversions)</span></h2>
                 <CpaBars
                   campaigns={campaigns}
                   onCampaignSelect={handleCampaignSelect}
@@ -1697,27 +1757,25 @@ export default function App() {
             <OpportunityPanel campaigns={campaigns} summary={summary} />
           </section>
 
-          <section className="breakdown-grid">
-            <BreakdownTable title="Performance by Country" rows={countryBreakdown} labelHeader="Country" />
-            <BreakdownTable title="Performance by Industry" rows={industryBreakdown} labelHeader="Industry" />
-            <BreakdownTable title="Performance by Campaign Type" rows={typeBreakdown} labelHeader="Type" />
-          </section>
-
           <CampaignDrilldown
             campaign={selectedCampaign}
             rows={selectedCampaignRows}
             onClose={() => setSelectedCampaignKey("")}
           />
-          <Takeaways summary={summary} campaigns={campaigns} platforms={platformSpend} deltas={deltas} />
-          <Leaderboard
-            campaigns={campaigns}
-            onCampaignSelect={handleCampaignSelect}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            selectedCampaignKey={selectedCampaignKey}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleRowsPerPageChange}
-          />
+          <section className="bottom-grid">
+            <BreakdownTable title="Performance by Country" rows={countryBreakdown} labelHeader="Country" />
+            <BreakdownTable title="Performance by Industry" rows={industryBreakdown} labelHeader="Industry" />
+            <BreakdownTable title="Performance by Campaign Type" rows={typeBreakdown} labelHeader="Type" />
+            <Leaderboard
+              campaigns={campaigns}
+              onCampaignSelect={handleCampaignSelect}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              selectedCampaignKey={selectedCampaignKey}
+              onPageChange={handlePageChange}
+              onRowsPerPageChange={handleRowsPerPageChange}
+            />
+          </section>
         </section>
       </div>
     </main>
