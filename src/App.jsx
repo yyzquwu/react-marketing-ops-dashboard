@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { memo, startTransition, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   CalendarDays,
   CheckCircle2,
@@ -55,6 +55,33 @@ const KPI_ICONS = {
   ctr: MousePointer2,
   cpc: MousePointer2,
 };
+
+const DEFAULT_FILTERS = Object.freeze({
+  platform: "All Platforms",
+  campaign: "All Campaigns",
+  medium: "All",
+  includeTest: false,
+});
+
+const CHART_GRANULARITIES = ["day", "week", "month"];
+
+const MEDIUM_OPTIONS = ["Paid Search", "Paid Social", "Paid Video", "Display"];
+
+const CSV_HEADERS = [
+  "date",
+  "source_label",
+  "medium_label",
+  "campaign_id",
+  "campaign_name",
+  "segment",
+  "impressions",
+  "clicks",
+  "spend",
+  "conversions",
+  "ctr",
+  "cpc",
+  "cpa",
+];
 
 function formatCurrency(value, digits = 0) {
   return new Intl.NumberFormat("en-US", {
@@ -292,30 +319,15 @@ function buildPlatforms(rows) {
 }
 
 function csvFromRows(rows) {
-  const headers = [
-    "date",
-    "source_label",
-    "medium_label",
-    "campaign_id",
-    "campaign_name",
-    "segment",
-    "impressions",
-    "clicks",
-    "spend",
-    "conversions",
-    "ctr",
-    "cpc",
-    "cpa",
-  ];
   const escape = (value) => {
     const text = value == null ? "" : String(value);
     return /[",\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
   };
-  const body = rows.map((row) => headers.map((header) => escape(row[header])).join(",")).join("\n");
-  return `data:text/csv;charset=utf-8,${encodeURIComponent(`${headers.join(",")}\n${body}`)}`;
+  const body = rows.map((row) => CSV_HEADERS.map((header) => escape(row[header])).join(",")).join("\n");
+  return `data:text/csv;charset=utf-8,${encodeURIComponent(`${CSV_HEADERS.join(",")}\n${body}`)}`;
 }
 
-function KpiCard({ accent, delta, iconKey, label, value, suffix }) {
+const KpiCard = memo(function KpiCard({ accent, delta, iconKey, label, value, suffix }) {
   const Icon = KPI_ICONS[iconKey] || Sparkles;
   const positiveIsGood = iconKey !== "cpa" && iconKey !== "cpc";
   const good = positiveIsGood ? delta >= 0 : delta <= 0;
@@ -337,9 +349,9 @@ function KpiCard({ accent, delta, iconKey, label, value, suffix }) {
       {suffix ? <div className="kpi-suffix">{suffix}</div> : null}
     </section>
   );
-}
+});
 
-function LineComboChart({ data, granularity }) {
+const LineComboChart = memo(function LineComboChart({ data, granularity }) {
   const width = 620;
   const height = 330;
   const pad = { top: 28, right: 72, bottom: 44, left: 98 };
@@ -401,9 +413,9 @@ function LineComboChart({ data, granularity }) {
       })}
     </svg>
   );
-}
+});
 
-function DonutChart({ data }) {
+const DonutChart = memo(function DonutChart({ data }) {
   const total = data.reduce((sum, row) => sum + row.spend, 0) || 1;
   const radius = 54;
   const circumference = 2 * Math.PI * radius;
@@ -451,9 +463,9 @@ function DonutChart({ data }) {
       </div>
     </div>
   );
-}
+});
 
-function CpaBars({ campaigns }) {
+const CpaBars = memo(function CpaBars({ campaigns }) {
   const ranked = campaigns
     .filter((campaign) => campaign.conversions > 0)
     .sort((a, b) => a.cpa - b.cpa)
@@ -478,9 +490,9 @@ function CpaBars({ campaigns }) {
       </div>
     </div>
   );
-}
+});
 
-function Takeaways({ summary, campaigns, platforms, deltas }) {
+const Takeaways = memo(function Takeaways({ summary, campaigns, platforms, deltas }) {
   const bestPlatform = platforms[0]?.platform ?? "top platform";
   const bestCpa = campaigns.filter((item) => item.conversions > 0).sort((a, b) => a.cpa - b.cpa)[0];
   const inefficient = campaigns.filter((item) => item.conversions > 0).sort((a, b) => b.cpa - a.cpa)[0];
@@ -520,9 +532,9 @@ function Takeaways({ summary, campaigns, platforms, deltas }) {
       </div>
     </section>
   );
-}
+});
 
-function Leaderboard({ campaigns, page, rowsPerPage, setPage, setRowsPerPage }) {
+const Leaderboard = memo(function Leaderboard({ campaigns, page, rowsPerPage, onPageChange, onRowsPerPageChange }) {
   const totalPages = Math.max(1, Math.ceil(campaigns.length / rowsPerPage));
   const startIndex = (page - 1) * rowsPerPage;
   const rows = campaigns.slice(startIndex, startIndex + rowsPerPage);
@@ -575,13 +587,13 @@ function Leaderboard({ campaigns, page, rowsPerPage, setPage, setRowsPerPage }) 
         </table>
       </div>
       <div className="pagination">
-        <button aria-label="Previous page" disabled={page === 1} onClick={() => setPage((current) => Math.max(1, current - 1))}>
+        <button aria-label="Previous page" disabled={page === 1} onClick={() => onPageChange(page - 1)}>
           <ChevronLeft size={16} />
         </button>
         {visiblePages.map((item, index) => (
           <React.Fragment key={item}>
             {index > 0 && item - visiblePages[index - 1] > 1 ? <span>...</span> : null}
-            <button className={item === page ? "active" : ""} onClick={() => setPage(item)}>
+            <button className={item === page ? "active" : ""} onClick={() => onPageChange(item)}>
               {item}
             </button>
           </React.Fragment>
@@ -589,7 +601,7 @@ function Leaderboard({ campaigns, page, rowsPerPage, setPage, setRowsPerPage }) 
         <button
           aria-label="Next page"
           disabled={page === totalPages}
-          onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+          onClick={() => onPageChange(page + 1)}
         >
           <ChevronRight size={16} />
         </button>
@@ -597,10 +609,7 @@ function Leaderboard({ campaigns, page, rowsPerPage, setPage, setRowsPerPage }) 
           Rows per page:
           <select
             value={rowsPerPage}
-            onChange={(event) => {
-              setRowsPerPage(Number(event.target.value));
-              setPage(1);
-            }}
+            onChange={(event) => onRowsPerPageChange(Number(event.target.value))}
           >
             <option>10</option>
             <option>25</option>
@@ -610,9 +619,9 @@ function Leaderboard({ campaigns, page, rowsPerPage, setPage, setRowsPerPage }) 
       </div>
     </section>
   );
-}
+});
 
-function Sidebar({
+const Sidebar = memo(function Sidebar({
   campaigns,
   csvHref,
   datasets,
@@ -708,10 +717,9 @@ function Sidebar({
         <label className="field-label">Source / Medium</label>
         <select value={filters.medium} onChange={(event) => onFilterChange("medium", event.target.value)}>
           <option>All</option>
-          <option>Paid Search</option>
-          <option>Paid Social</option>
-          <option>Paid Video</option>
-          <option>Display</option>
+          {MEDIUM_OPTIONS.map((medium) => (
+            <option key={medium}>{medium}</option>
+          ))}
         </select>
         <label className="checkbox-row">
           <input
@@ -740,7 +748,7 @@ function Sidebar({
       </p>
     </aside>
   );
-}
+});
 
 export default function App() {
   const [datasetId, setDatasetId] = useState("portfolio");
@@ -754,13 +762,9 @@ export default function App() {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [dateRange, setDateRange] = useState({ start: "", end: "" });
-  const [filters, setFilters] = useState({
-    platform: "All Platforms",
-    campaign: "All Campaigns",
-    medium: "All",
-    includeTest: false,
-  });
+  const [filters, setFilters] = useState(DEFAULT_FILTERS);
   const fileInputRef = useRef(null);
+  const dataRequestRef = useRef(0);
 
   const datasets = useMemo(
     () => ({
@@ -777,19 +781,17 @@ export default function App() {
   const resetControlsForRows = useCallback((nextRows) => {
     const dates = [...new Set(nextRows.map((row) => row.date).filter(Boolean))].sort();
     setDateRange({ start: dates[0] ?? "", end: dates.at(-1) ?? "" });
-    setFilters({
-      platform: "All Platforms",
-      campaign: "All Campaigns",
-      medium: "All",
-      includeTest: false,
-    });
+    setFilters(DEFAULT_FILTERS);
     setPage(1);
   }, []);
 
   const loadDataset = useCallback(
     async (nextDatasetId) => {
+      const requestId = dataRequestRef.current + 1;
+      dataRequestRef.current = requestId;
       setLoading(true);
       if (nextDatasetId === "uploaded") {
+        if (requestId !== dataRequestRef.current) return;
         setRows(uploadedRows);
         resetControlsForRows(uploadedRows);
         setLoading(false);
@@ -799,6 +801,7 @@ export default function App() {
       const response = await fetch(DATASETS[nextDatasetId].file);
       const records = await response.json();
       const parsed = normalizeRecords(records, nextDatasetId);
+      if (requestId !== dataRequestRef.current) return;
       setRows(parsed);
       resetControlsForRows(parsed);
       setLoading(false);
@@ -857,25 +860,29 @@ export default function App() {
     if (page > totalPages) setPage(totalPages);
   }, [campaigns.length, page, rowsPerPage]);
 
-  const onFilterChange = (key, value) => {
-    setFilters((current) => ({ ...current, [key]: value }));
-  };
+  const onFilterChange = useCallback((key, value) => {
+    startTransition(() => {
+      setFilters((current) => ({ ...current, [key]: value }));
+    });
+  }, []);
 
-  const handleDatasetChange = (nextDatasetId) => {
-    setDatasetId(nextDatasetId);
-  };
+  const handleDatasetChange = useCallback((nextDatasetId) => {
+    startTransition(() => {
+      setDatasetId(nextDatasetId);
+    });
+  }, []);
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
     await loadDataset(datasetId);
     window.setTimeout(() => setRefreshing(false), 500);
-  };
+  }, [datasetId, loadDataset]);
 
-  const handleBrowseFiles = () => {
+  const handleBrowseFiles = useCallback(() => {
     fileInputRef.current?.click();
-  };
+  }, []);
 
-  const ingestFile = async (file) => {
+  const ingestFile = useCallback(async (file) => {
     if (!file) return;
     const text = await file.text();
     const records = parseCsv(text);
@@ -883,37 +890,54 @@ export default function App() {
     if (!parsed.length) return;
     const dates = [...new Set(parsed.map((row) => row.date).filter(Boolean))].sort();
     const labelDateText = dates.at(-1) ? labelDate(dates.at(-1), true) : "Uploaded";
-    setUploadedRows(parsed);
-    setUploadedMeta({
-      label: "Uploaded CSV",
-      sourceName: file.name,
-      file: "",
-      csv: "",
-      asOf: labelDateText,
-      uploaded: `Uploaded ${new Date().toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-      })}`,
-      realness: "User uploaded CSV",
+    startTransition(() => {
+      setUploadedRows(parsed);
+      setUploadedMeta({
+        label: "Uploaded CSV",
+        sourceName: file.name,
+        file: "",
+        csv: "",
+        asOf: labelDateText,
+        uploaded: `Uploaded ${new Date().toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        })}`,
+        realness: "User uploaded CSV",
+      });
+      setRows(parsed);
+      resetControlsForRows(parsed);
+      setDatasetId("uploaded");
     });
-    setRows(parsed);
-    resetControlsForRows(parsed);
-    setDatasetId("uploaded");
-  };
+  }, [resetControlsForRows]);
 
-  const handleUploadFile = (event) => {
+  const handleUploadFile = useCallback((event) => {
     ingestFile(event.target.files?.[0]);
     event.target.value = "";
-  };
+  }, [ingestFile]);
 
-  const handleDropFile = (event) => {
+  const handleDropFile = useCallback((event) => {
     event.preventDefault();
     setDragActive(false);
     ingestFile(event.dataTransfer.files?.[0]);
-  };
+  }, [ingestFile]);
+
+  const handleGranularityChange = useCallback((nextGranularity) => {
+    startTransition(() => setGranularity(nextGranularity));
+  }, []);
+
+  const handlePageChange = useCallback((nextPage) => {
+    startTransition(() => setPage(Math.max(1, nextPage)));
+  }, []);
+
+  const handleRowsPerPageChange = useCallback((nextRowsPerPage) => {
+    startTransition(() => {
+      setRowsPerPage(nextRowsPerPage);
+      setPage(1);
+    });
+  }, []);
 
   if (loading) {
     return (
@@ -1031,11 +1055,11 @@ export default function App() {
                   </div>
                 </div>
                 <div className="segmented">
-                  {["day", "week", "month"].map((item) => (
+                  {CHART_GRANULARITIES.map((item) => (
                     <button
                       className={granularity === item ? "active" : ""}
                       key={item}
-                      onClick={() => setGranularity(item)}
+                      onClick={() => handleGranularityChange(item)}
                       aria-pressed={granularity === item}
                     >
                       {item[0].toUpperCase() + item.slice(1)}
@@ -1062,8 +1086,8 @@ export default function App() {
             campaigns={campaigns}
             page={page}
             rowsPerPage={rowsPerPage}
-            setPage={setPage}
-            setRowsPerPage={setRowsPerPage}
+            onPageChange={handlePageChange}
+            onRowsPerPageChange={handleRowsPerPageChange}
           />
         </section>
       </div>

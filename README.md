@@ -15,6 +15,7 @@ This is an independent portfolio project and is not affiliated with or endorsed 
 - Dataset selector that switches between the portfolio multi-platform sample and the real public Facebook ads export.
 - Interactive controls for CSV upload, drag/drop import, refresh, Day/Week/Month chart aggregation, filters, generated CSV download, pagination, rows per page, and the data dictionary disclosure.
 - Subtle motion polish on KPI cards, chart lines, CPA bars, hover states, drag/drop, and refresh, with reduced-motion support.
+- React optimization pass with memoized dashboard sections, stable callbacks, transition-wrapped non-urgent updates, hoisted constants, and stale dataset request protection.
 - Reproducible CSV/JSON data artifacts in `public/data`.
 - Local SVG logo assets, not remote hotlinks.
 
@@ -56,4 +57,4 @@ Validated locally on May 6, 2026:
 npm run build
 ```
 
-Additional local QA used Codex Browser Use DOM/click inspection plus Playwright screenshots for the default dashboard, real-data mode, mobile rendering, CSV upload, Day/Week/Month controls, refresh, pagination, rows-per-page, chart axis spacing, CPA panel overflow, KPI/card counts, logo assets, download link, data dictionary, and leaderboard rendering.
+Additional local QA used Codex Browser Use DOM/click inspection plus Playwright screenshots for the default dashboard, real-data mode, mobile rendering, CSV upload, Day/Week/Month controls, refresh, pagination, rows-per-page, chart axis spacing, CPA panel overflow, KPI/card counts, logo assets, download link, data dictionary, leaderboard rendering, and the React optimization pass.
