@@ -59,3 +59,13 @@ The dashboard currently uses one built-in dataset:
 - `Kaggle Global Ads Performance`
 
 The app loads the processed JSON and CSV from `public/data`, with the raw Kaggle CSV kept beside them for reference. The transformation script lives in `scripts/build-data.mjs`.
+
+## Optional Python + SQL Pipeline
+
+On the `python-sql-analytics-pipeline` branch, I also added an optional analytics layer in `analytics/`. It uses Python and SQLite to load the raw Kaggle CSV, run SQL transformations, and export the same dashboard-ready JSON/CSV shape used by the React app.
+
+```bash
+npm run build:data:sql
+```
+
+I kept this as a separate branch so the deployed dashboard layout and current data files stay stable while I experiment with a more realistic analytics engineering workflow.

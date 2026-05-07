@@ -1,5 +1,5 @@
 {
-  "name": "react-marketing-ops-dashboard",
+  "name": "global-ads-marketing-analytics-dashboard",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "build:data": "node scripts/build-data.mjs",
+    "build:data:sql": "python analytics/build_dashboard_data.py",
     "test:e2e": "playwright test",
     "verify:layout": "playwright test tests/dashboard-layout.spec.js --project=chromium"
   },

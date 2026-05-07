@@ -7,3 +7,4 @@ dist/
 *.local
 .tmp/
 .vercel
+analytics/*.sqlite
