@@ -6,7 +6,7 @@ This is an independent portfolio project and is not affiliated with or endorsed 
 
 Live demo: https://react-marketing-ops-dashboard.vercel.app
 
-![Dashboard preview](docs/dashboard-preview.png)
+![Dashboard preview](docs/dashboard-preview.png?v=2026-05-07-sparklines)
 
 ## What I Included
 
