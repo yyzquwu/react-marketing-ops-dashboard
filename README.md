@@ -59,7 +59,3 @@ The dashboard currently uses one built-in dataset:
 - `Kaggle Global Ads Performance`
 
 The app loads the processed JSON and CSV from `public/data`, with the raw Kaggle CSV kept beside them for reference. The transformation script lives in `scripts/build-data.mjs`.
-
-## Notes
-
-I tuned this version around the Kaggle data instead of keeping the older sample datasets around. The goal is a focused dashboard that fills the page well, stays readable at a 1920 desktop viewport, and keeps the charts useful without feeling cramped.
