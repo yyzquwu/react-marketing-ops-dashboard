@@ -4,7 +4,7 @@ I built this as a React/Vite media analytics dashboard for the Kaggle Global Ads
 
 This is an independent portfolio project and is not affiliated with or endorsed by Paramount.
 
-Live demo: https://react-marketing-ops-dashboard.vercel.app
+Live demo: https://global-ads-marketing-analytics-dashboard.vercel.app
 
 ![Dashboard preview](docs/dashboard-preview.png?v=2026-05-07-sparklines)
 
