@@ -37,14 +37,14 @@ select
   country as segment,
   cast(impressions as integer) as impressions,
   cast(clicks as integer) as clicks,
-  js_round(ad_spend, 2) as spend,
+  round(ad_spend, 2) as spend,
   cast(conversions as integer) as conversions,
   cast(conversions as integer) as total_conversion,
-  js_round(revenue, 2) as revenue,
-  js_round(clicks / nullif(impressions, 0), 6) as ctr,
-  js_round(ad_spend / nullif(clicks, 0), 4) as cpc,
-  js_round(ad_spend / nullif(conversions, 0), 4) as cpa,
-  js_round(revenue / nullif(ad_spend, 0), 4) as roas,
+  round(revenue, 2) as revenue,
+  round(clicks / nullif(impressions, 0), 6) as ctr,
+  round(ad_spend / nullif(clicks, 0), 4) as cpc,
+  round(ad_spend / nullif(conversions, 0), 4) as cpa,
+  round(revenue / nullif(ad_spend, 0), 4) as roas,
   'global_ads_performance' as dataset
 from raw_global_ads
 order by date, row_id;

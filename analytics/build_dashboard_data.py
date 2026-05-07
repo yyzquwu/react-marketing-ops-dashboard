@@ -3,9 +3,7 @@ from __future__ import annotations
 import csv
 import io
 import json
-import math
 import sqlite3
-import sys
 from pathlib import Path
 
 
@@ -39,13 +37,6 @@ DASHBOARD_HEADERS = [
     "roas",
     "dataset",
 ]
-
-
-def js_round(value: float | None, decimals: int) -> float | None:
-    if value is None:
-        return None
-    multiplier = 10**int(decimals)
-    return math.floor((float(value) + sys.float_info.epsilon) * multiplier + 0.5) / multiplier
 
 
 def normalize_number(value):
@@ -169,7 +160,6 @@ def main() -> None:
 
     connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
-    connection.create_function("js_round", 2, js_round)
     try:
         raw_count = load_raw_csv(connection)
         run_sql_file(connection, "01_campaign_daily.sql")
