@@ -533,13 +533,67 @@ button:disabled {
 }
 
 .kpi-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 7px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
   display: grid;
   place-items: center;
-  color: #fff;
-  box-shadow: 0 14px 22px rgba(20, 58, 123, 0.18);
+  color: var(--kpi-icon-color);
+  background: var(--kpi-icon-bg);
+  box-shadow: none;
+}
+
+.kpi-icon-spend {
+  --kpi-icon-bg: #e7efff;
+  --kpi-icon-color: #1458f5;
+}
+
+.kpi-icon-conversions {
+  --kpi-icon-bg: #dffafa;
+  --kpi-icon-color: #0fbcc3;
+}
+
+.kpi-icon-cpa {
+  --kpi-icon-bg: #f2e8ff;
+  --kpi-icon-color: #7117f1;
+}
+
+.kpi-icon-ctr {
+  --kpi-icon-bg: #e8f2ff;
+  --kpi-icon-color: #006eff;
+}
+
+.kpi-icon-cpc {
+  --kpi-icon-bg: #e8f2ff;
+  --kpi-icon-color: #0866ff;
+}
+
+.kpi-icon-revenue {
+  --kpi-icon-bg: #e5f8ee;
+  --kpi-icon-color: #12b956;
+}
+
+.kpi-icon-roas {
+  --kpi-icon-bg: #ffedf7;
+  --kpi-icon-color: #ec1684;
+}
+
+.kpi-art {
+  color: currentColor;
+  display: block;
+  fill: currentColor;
+  height: 28px;
+  overflow: visible;
+  stroke: none;
+  width: 28px;
+}
+
+.kpi-art-cutout {
+  fill: #ffffff;
+}
+
+.kpi-art-dot {
+  fill: currentColor;
 }
 
 .kpi-copy span {
