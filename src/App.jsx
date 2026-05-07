@@ -16,6 +16,7 @@ import {
   Download,
   FileUp,
   Github,
+  Linkedin,
   BarChart3,
   MousePointerClick,
   MousePointer2,
@@ -1339,10 +1340,17 @@ const Sidebar = memo(function Sidebar({
         <RefreshCw size={14} />
         Last refreshed: {dataset.asOf}
       </p>
-      <a className="github-follow" href="https://github.com/yyzquwu" target="_blank" rel="noreferrer">
-        <Github size={16} />
+      <div className="social-links" aria-label="Follow Me">
         <span>Follow Me</span>
-      </a>
+        <a href="https://github.com/yyzquwu" target="_blank" rel="noreferrer">
+          <Github size={16} />
+          GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/zeheng-huang" target="_blank" rel="noreferrer">
+          <Linkedin size={16} />
+          LinkedIn
+        </a>
+      </div>
     </aside>
   );
 });
