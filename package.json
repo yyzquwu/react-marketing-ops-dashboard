@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "build:data": "node scripts/build-data.mjs"
+    "build:data": "node scripts/build-data.mjs",
+    "test:e2e": "playwright test",
+    "verify:layout": "playwright test tests/dashboard-layout.spec.js --project=chromium"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.1.1",
@@ -17,5 +19,7 @@
     "react-dom": "^19.2.3",
     "lucide-react": "^0.561.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@playwright/test": "^1.48.2"
+  }
 }

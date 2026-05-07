@@ -1,0 +1,677 @@
+/*
+  Desktop visual calibration for the generated dashboard reference.
+  Keep this file imported after styles.css so these rules only tune the
+  final proportions, spacing, typography, and desktop geometry.
+*/
+
+:root {
+  --image-topbar-height: 56px;
+  --image-sidebar-width: 236px;
+  --image-content-pad-x: 13px;
+  --image-content-pad-y: 14px;
+  --image-gap: 14px;
+  --image-tight-gap: 8px;
+  --image-border: #dfe7f1;
+  --image-panel-bg: rgba(255, 255, 255, 0.96);
+  --image-text: #0e1930;
+  --image-muted: #53657c;
+}
+
+@media (min-width: 1280px) {
+  :root {
+    font-family: "Segoe UI", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  body {
+    background:
+      linear-gradient(180deg, rgba(240, 246, 252, 0.92), rgba(247, 250, 253, 0.96) 310px),
+      #f6f9fc;
+    overflow-x: hidden;
+  }
+
+  .dashboard-shell {
+    min-height: 100vh;
+    background: transparent;
+  }
+
+  .topbar {
+    height: var(--image-topbar-height);
+    min-height: var(--image-topbar-height);
+    padding: 0 16px;
+    background: linear-gradient(180deg, #071a3a 0%, #061735 100%);
+    box-shadow: 0 10px 24px rgba(8, 30, 63, 0.2);
+  }
+
+  .brand-lockup {
+    gap: 13px;
+    min-width: 0;
+  }
+
+  .paramount-header-logo {
+    width: 146px;
+    height: 42px;
+    gap: 7px;
+  }
+
+  .paramount-mountain-logo {
+    width: 40px;
+    height: 34px;
+  }
+
+  .paramount-wordmark-logo {
+    width: 96px;
+    height: 25px;
+  }
+
+  .brand-divider {
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .brand-lockup h1 {
+    font-size: 14px;
+    font-weight: 850;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+
+  .brand-lockup p,
+  .topbar-meta span {
+    margin-top: 2px;
+    font-size: 11px;
+    font-weight: 650;
+    line-height: 1.2;
+  }
+
+  .topbar-meta {
+    flex: 0 0 auto;
+    gap: 10px;
+    margin-left: auto;
+  }
+
+  .topbar-meta div {
+    gap: 7px;
+  }
+
+  .topbar-control {
+    min-height: 34px;
+    height: 34px;
+    padding: 0 11px;
+    gap: 7px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.065);
+    border-color: rgba(255, 255, 255, 0.075);
+  }
+
+  .topbar-control span,
+  .topbar-control select,
+  .topbar-control input {
+    font-size: 11px;
+    line-height: 1;
+  }
+
+  .topbar-control select,
+  .topbar-control input {
+    height: 28px;
+    font-weight: 780;
+  }
+
+  .topbar-control select {
+    max-width: 190px;
+  }
+
+  .date-control input {
+    width: 104px;
+  }
+
+  .topbar-meta button {
+    width: 36px;
+    height: 36px;
+    padding-left: 13px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: var(--image-sidebar-width) minmax(0, 1fr);
+  }
+
+  .sidebar {
+    min-height: calc(100vh - var(--image-topbar-height));
+    padding: 14px 15px;
+    border-right-color: var(--image-border);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(246, 250, 253, 0.96)),
+      #f7fafc;
+  }
+
+  .sidebar-section {
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+  }
+
+  .sidebar h3 {
+    margin: 0 0 13px;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+  }
+
+  .field-label {
+    margin: 10px 0 6px;
+    font-size: 11px;
+    font-weight: 790;
+  }
+
+  .sidebar select,
+  .sidebar input[type="date"] {
+    height: 30px;
+    border-radius: 5px;
+    padding: 0 30px 0 10px;
+    font-size: 11px;
+  }
+
+  .sidebar .dataset-select {
+    font-size: 11px;
+    padding-right: 34px;
+  }
+
+  .date-range {
+    grid-template-columns: minmax(0, 1fr) 16px minmax(0, 1fr);
+    gap: 7px;
+  }
+
+  .date-range input {
+    padding: 0 8px;
+    font-size: 10px;
+  }
+
+  .upload-box {
+    min-height: 104px;
+    gap: 6px;
+    border-radius: 7px;
+  }
+
+  .upload-box svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .upload-box strong,
+  .upload-box span {
+    font-size: 11px;
+  }
+
+  .upload-box button {
+    height: 29px;
+    padding: 0 20px;
+    font-size: 11px;
+    font-weight: 760;
+  }
+
+  .file-valid {
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .file-valid b {
+    font-size: 11px;
+  }
+
+  .file-valid span {
+    font-size: 10px;
+  }
+
+  .checkbox-row {
+    gap: 8px;
+    margin: 14px 0;
+    font-size: 11px;
+  }
+
+  .checkbox-row input {
+    width: 15px;
+    height: 15px;
+  }
+
+  .download-button {
+    height: 32px;
+    gap: 8px;
+    border-radius: 4px;
+    font-size: 11px;
+  }
+
+  .dictionary {
+    padding: 11px 12px;
+  }
+
+  .dictionary summary,
+  .dictionary p,
+  .refresh-note {
+    font-size: 10px;
+  }
+
+  .refresh-note {
+    margin-top: 14px;
+  }
+
+  .content {
+    padding: var(--image-content-pad-y) var(--image-content-pad-x) 20px;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: var(--image-tight-gap);
+    margin-bottom: var(--image-gap);
+  }
+
+  .kpi-card,
+  .panel {
+    border-color: var(--image-border);
+    background: var(--image-panel-bg);
+    box-shadow: 0 8px 22px rgba(15, 31, 55, 0.085);
+  }
+
+  .kpi-card:hover,
+  .panel:hover {
+    box-shadow: 0 11px 27px rgba(15, 31, 55, 0.12);
+  }
+
+  .kpi-card {
+    height: 102px;
+    min-height: 102px;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 12px 12px 13px;
+  }
+
+  .kpi-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+  }
+
+  .kpi-icon svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  .kpi-copy span {
+    font-size: 11px;
+    font-weight: 740;
+  }
+
+  .kpi-copy strong {
+    margin-top: 6px;
+    font-size: clamp(16px, 1.2vw, 20px);
+    font-weight: 800;
+    line-height: 1.05;
+  }
+
+  .kpi-copy p {
+    margin-top: 8px;
+    font-size: 9.5px;
+    line-height: 1.25;
+  }
+
+  .kpi-copy b {
+    margin-left: 8px;
+  }
+
+  .panel {
+    border-radius: 8px;
+    padding: 14px 15px;
+  }
+
+  .panel h2 {
+    font-size: 13px;
+    font-weight: 850;
+    line-height: 1.15;
+  }
+
+  .panel-title-meta,
+  .quadrant h2 span {
+    font-size: 10px;
+  }
+
+  .panel-title-row {
+    gap: 12px;
+  }
+
+  .chart-grid {
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.62fr) minmax(0, 1fr);
+    gap: var(--image-gap);
+  }
+
+  .chart-grid > .panel {
+    height: 316px;
+    min-height: 316px;
+    overflow: hidden;
+  }
+
+  .legend-inline {
+    gap: 17px;
+    margin-top: 11px;
+    font-size: 11px;
+  }
+
+  .legend-inline i {
+    width: 13px;
+    height: 3px;
+    margin-right: 6px;
+  }
+
+  .segmented button {
+    height: 26px;
+    padding: 0 9px;
+    font-size: 10px;
+  }
+
+  .trend-chart-wrap {
+    margin-top: 5px;
+  }
+
+  .trend-chart {
+    aspect-ratio: 760 / 348;
+  }
+
+  .axis-label {
+    font-size: 11px;
+    font-weight: 760;
+  }
+
+  .axis-title {
+    font-size: 12px;
+  }
+
+  .spend-line,
+  .conversion-line,
+  .revenue-line {
+    stroke-width: 2.6;
+  }
+
+  .spend-dot {
+    r: 3.4px;
+  }
+
+  .conversion-dot {
+    r: 3px;
+  }
+
+  .donut-layout {
+    gap: 12px;
+    padding-top: 8px;
+  }
+
+  .donut {
+    width: min(60%, 136px);
+  }
+
+  .donut-track,
+  .donut-segment {
+    stroke-width: 28;
+  }
+
+  .donut-legend {
+    gap: 7px;
+  }
+
+  .legend-row {
+    grid-template-columns: 11px minmax(62px, 1fr) minmax(62px, auto) 34px;
+    gap: 6px;
+    font-size: 10px;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .bar-list {
+    grid-template-rows: repeat(9, 22px) auto;
+    gap: 8px;
+    margin-top: 13px;
+  }
+
+  .bar-row {
+    grid-template-columns: minmax(124px, 1.18fr) minmax(104px, 1.5fr) 50px;
+    gap: 8px;
+    font-size: 10.5px;
+  }
+
+  .bar-track {
+    height: 14px;
+  }
+
+  .bar-row b,
+  .bar-axis {
+    font-size: 10.5px;
+  }
+
+  .bar-axis {
+    grid-template-columns: minmax(124px, 1.18fr) minmax(104px, 1.5fr) 50px;
+    gap: 8px;
+  }
+
+  .bar-footnote {
+    font-size: 9.5px;
+    line-height: 1.25;
+  }
+
+  .analytics-grid,
+  .bottom-grid {
+    margin-top: var(--image-gap);
+  }
+
+  .analytics-grid {
+    grid-template-columns: minmax(0, 1.62fr) minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: var(--image-gap);
+  }
+
+  .analytics-grid > .panel {
+    height: 240px;
+    min-height: 240px;
+    overflow: hidden;
+  }
+
+  .mini-trend-chart {
+    aspect-ratio: 760 / 260;
+    margin-top: 8px;
+  }
+
+  .quadrant-chart {
+    aspect-ratio: 760 / 282;
+    margin-top: 8px;
+  }
+
+  .chart-note,
+  .quadrant-note,
+  .quadrant-legend text {
+    font-size: 10px;
+  }
+
+  .quadrant-label {
+    font-size: 9px;
+  }
+
+  .opportunity-grid {
+    gap: 8px;
+    margin-top: 11px;
+  }
+
+  .opportunity-card {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 10px;
+    min-height: 56px;
+    padding: 7px 10px;
+  }
+
+  .opportunity-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .opportunity-card h3,
+  .opportunity-card strong {
+    font-size: 10.5px;
+    line-height: 1.15;
+  }
+
+  .opportunity-card p,
+  .opportunity-card span {
+    font-size: 10px;
+    line-height: 1.25;
+  }
+
+  .bottom-grid {
+    grid-template-columns: repeat(3, minmax(0, 0.82fr)) minmax(0, 2.65fr);
+    gap: var(--image-gap);
+    align-items: start;
+  }
+
+  .bottom-grid .breakdown-card {
+    padding: 11px 12px 10px;
+  }
+
+  .bottom-grid .leaderboard {
+    min-height: 225px;
+    padding: 11px 12px 10px;
+  }
+
+  .breakdown-table {
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .breakdown-head,
+  .breakdown-row {
+    grid-template-columns: minmax(70px, 1.2fr) repeat(3, minmax(48px, 0.8fr));
+    gap: 6px;
+  }
+
+  .breakdown-head {
+    font-size: 9px;
+  }
+
+  .breakdown-row {
+    font-size: 9.5px;
+    padding-top: 6px;
+  }
+
+  .leaderboard table,
+  .leaderboard-head,
+  .leaderboard-row {
+    font-size: 9.5px;
+  }
+
+  .leaderboard th,
+  .leaderboard td {
+    padding: 5px 6px;
+  }
+
+  .leaderboard-footer,
+  .pagination,
+  .rows-per-page,
+  .rows-per-page select {
+    font-size: 10px;
+  }
+
+  .pagination button {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border-radius: 4px;
+    font-size: 10px;
+  }
+
+  .rows-per-page select {
+    height: 26px;
+    min-width: 48px;
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1420px) {
+  .paramount-header-logo {
+    width: 128px;
+  }
+
+  .paramount-mountain-logo {
+    width: 34px;
+  }
+
+  .paramount-wordmark-logo {
+    width: 86px;
+  }
+
+  .topbar-control select {
+    max-width: 155px;
+  }
+
+  .kpi-card {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 10px;
+    padding-right: 10px;
+  }
+
+  .kpi-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 1279px) {
+  .dashboard-grid {
+    grid-template-columns: minmax(210px, 236px) minmax(0, 1fr);
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  }
+
+  .chart-grid,
+  .analytics-grid,
+  .bottom-grid,
+  .breakdown-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .topbar {
+    height: auto;
+    min-height: 64px;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .brand-lockup {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .paramount-header-logo {
+    width: 138px;
+    height: 40px;
+  }
+
+  .topbar-meta {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    min-height: auto;
+  }
+
+  .content {
+    padding: 12px;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -24,26 +24,8 @@ import {
 } from "lucide-react";
 
 const DATASETS = {
-  portfolio: {
-    label: "Portfolio multi-platform sample",
-    sourceName: "UnifiedPaidMedia_v2025-05-18.csv",
-    file: "/data/portfolio_campaign_daily.json",
-    csv: "/data/portfolio_campaign_daily.csv",
-    asOf: "May 18, 2025",
-    uploaded: "Uploaded May 18, 2025 9:41 AM",
-    realness: "Deterministic portfolio sample",
-  },
-  real_facebook_ads: {
-    label: "Real public Facebook ads",
-    sourceName: "RealFacebookAds_2017-08.csv",
-    file: "/data/real_facebook_ads_daily.json",
-    csv: "/data/real_facebook_ads_daily.csv",
-    asOf: "Aug 30, 2017",
-    uploaded: "Public anonymized dataset",
-    realness: "Real public Facebook campaign data",
-  },
   global_ads_performance: {
-    label: "Kaggle global ads performance",
+    label: "Kaggle Global Ads Performance",
     sourceName: "GlobalAdsPerformance_GoogleMetaTikTok.csv",
     file: "/data/global_ads_performance_daily.json",
     csv: "/data/global_ads_performance_daily.csv",
@@ -78,7 +60,6 @@ const DEFAULT_FILTERS = Object.freeze({
   country: "All Countries",
   industry: "All Industries",
   medium: "All Types",
-  includeTest: false,
 });
 
 const CHART_GRANULARITIES = ["day", "week", "month"];
@@ -111,8 +92,6 @@ const SOURCE_MEDIUM_LABELS = {
   youtube: "Paid Video",
   YouTube: "Paid Video",
 };
-
-const TEST_CAMPAIGN_PATTERN = /(^|[^a-z])test([^a-z]|$)/i;
 
 const CSV_HEADERS = [
   "date",
@@ -196,6 +175,12 @@ function labelDate(value, withYear = false) {
     day: "numeric",
     ...(withYear ? { year: "numeric" } : {}),
   }).format(parseDate(value));
+}
+
+function shortInputDate(value) {
+  if (!value) return "";
+  const [year, month, day] = value.split("-");
+  return `${month}/${day}/${year.slice(-2)}`;
 }
 
 function labelBucket(value, granularity) {
@@ -468,9 +453,9 @@ const KpiCard = memo(function KpiCard({ accent, delta, iconKey, label, value, su
 
 const LineComboChart = memo(function LineComboChart({ data, granularity }) {
   const [tooltip, setTooltip] = useState(null);
-  const width = 760;
-  const height = 350;
-  const pad = { top: 24, right: 62, bottom: 44, left: 84 };
+  const width = 850;
+  const height = 306;
+  const pad = { top: 16, right: 80, bottom: 38, left: 84 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const maxSpend = niceAxisMax(Math.max(...data.map((day) => day.spend), 1));
@@ -502,36 +487,36 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
       date: labelBucket(day.date, granularity),
       spend: day.spend,
       conversions: day.conversions,
-      x: (xPosition / width) * bounds.width,
-      y: (yPosition / height) * bounds.height,
+      x: Math.min(Math.max((xPosition / width) * bounds.width, 8), Math.max(8, bounds.width - 206)),
+      y: Math.max((yPosition / height) * bounds.height, 76),
     });
   };
 
   return (
     <div className="trend-chart-wrap" onMouseLeave={() => setTooltip(null)}>
-      <svg className="trend-chart" viewBox={`0 0 ${width} ${height}`} role="img" preserveAspectRatio="xMidYMid meet">
+      <svg className="trend-chart spend-conversion-chart" viewBox={`0 0 ${width} ${height}`} role="img" preserveAspectRatio="xMidYMid meet">
         {[0, 0.25, 0.5, 0.75, 1].map((tick) => {
           const y = pad.top + innerH - tick * innerH;
           return (
             <g key={tick}>
               <line x1={pad.left} x2={width - pad.right} y1={y} y2={y} className="grid-line" />
-              <text x={pad.left - 16} y={y + 4} textAnchor="end" className="axis-label">
+              <text x={pad.left - 10} y={y + 4} textAnchor="end" className="axis-label">
                 {formatCompactCurrency(maxSpend * tick)}
               </text>
-              <text x={width - pad.right + 16} y={y + 4} className="axis-label">
+              <text x={width - pad.right + 10} y={y + 4} className="axis-label">
                 {formatCompactNumber(maxConversions * tick)}
               </text>
             </g>
           );
         })}
-        <text x={10} y={svgCenterY} className="axis-title" transform={`rotate(-90 10 ${svgCenterY})`}>
+        <text x={6} y={svgCenterY} className="axis-title" transform={`rotate(-90 6 ${svgCenterY})`}>
           Spend (USD)
         </text>
         <text
-          x={width - 12}
+          x={width - 6}
           y={svgCenterY}
           className="axis-title conversions"
-          transform={`rotate(-90 ${width - 12} ${svgCenterY})`}
+          transform={`rotate(-90 ${width - 6} ${svgCenterY})`}
         >
           Conversions
         </text>
@@ -549,8 +534,8 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
               tabIndex="0"
             >
               <line x1={x(index)} x2={x(index)} y1={pad.top} y2={height - pad.bottom} className="trend-hover-line" />
-              <circle cx={x(index)} cy={ySpend(day.spend)} r="4" className={showDot ? "spend-dot" : "spend-dot trend-dot-muted"} />
-              <circle cx={x(index)} cy={yConversions(day.conversions)} r="3.5" className={showDot ? "conversion-dot" : "conversion-dot trend-dot-muted"} />
+              <circle cx={x(index)} cy={ySpend(day.spend)} r="3.1" className={showDot ? "spend-dot" : "spend-dot trend-dot-muted"} />
+              <circle cx={x(index)} cy={yConversions(day.conversions)} r="3" className={showDot ? "conversion-dot" : "conversion-dot trend-dot-muted"} />
               <circle cx={x(index)} cy={ySpend(day.spend)} r="12" className="trend-hit-dot" />
               <circle cx={x(index)} cy={yConversions(day.conversions)} r="12" className="trend-hit-dot" />
             </g>
@@ -577,48 +562,100 @@ const LineComboChart = memo(function LineComboChart({ data, granularity }) {
 });
 
 const RevenueTrendChart = memo(function RevenueTrendChart({ data }) {
-  const width = 760;
-  const height = 220;
-  const pad = { top: 22, right: 54, bottom: 38, left: 84 };
+  const [tooltip, setTooltip] = useState(null);
+  const width = 820;
+  const height = 266;
+  const pad = { top: 22, right: 78, bottom: 50, left: 100 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const maxValue = niceAxisMax(Math.max(...data.flatMap((day) => [day.spend, day.revenue]), 1));
+  const svgCenterY = height / 2;
   const x = (index) => pad.left + (index / Math.max(1, data.length - 1)) * innerW;
   const y = (value) => pad.top + innerH - (value / maxValue) * innerH;
   const spendPoints = data.map((day, index) => `${x(index)},${y(day.spend)}`).join(" ");
   const revenuePoints = data.map((day, index) => `${x(index)},${y(day.revenue)}`).join(" ");
-  const labelStep = Math.max(1, Math.ceil(data.length / 5));
+  const labelStep = Math.max(1, Math.ceil(data.length / 6));
+  const dotStep = data.length > 52 ? 4 : data.length > 26 ? 2 : 1;
   const labels = data
     .map((day, index) => ({ ...day, index }))
     .filter((_, index) => index % labelStep === 0 || index === data.length - 1);
+  const showTooltip = (event, day, index) => {
+    const bounds = event.currentTarget.ownerSVGElement.getBoundingClientRect();
+    const xPosition = x(index);
+    const yPosition = Math.min(y(day.spend), y(day.revenue));
+    setTooltip({
+      date: labelBucket(day.date, "week"),
+      spend: day.spend,
+      revenue: day.revenue,
+      x: Math.min(Math.max((xPosition / width) * bounds.width, 8), Math.max(8, bounds.width - 206)),
+      y: Math.max((yPosition / height) * bounds.height, 76),
+    });
+  };
 
   return (
-    <svg className="mini-trend-chart" viewBox={`0 0 ${width} ${height}`} role="img" preserveAspectRatio="xMidYMid meet">
-      {[0, 0.5, 1].map((tick) => {
-        const tickY = pad.top + innerH - tick * innerH;
-        return (
-          <g key={tick}>
-            <line x1={pad.left} x2={width - pad.right} y1={tickY} y2={tickY} className="grid-line" />
-            <text x={pad.left - 14} y={tickY + 4} textAnchor="end" className="axis-label">
-              {formatCompactCurrency(maxValue * tick)}
-            </text>
-          </g>
-        );
-      })}
-      <polyline points={spendPoints} fill="none" className="spend-line" pathLength="1" />
-      <polyline points={revenuePoints} fill="none" className="revenue-line" pathLength="1" />
-      {labels.map((day) => (
-        <text key={day.date} x={x(day.index)} y={height - 8} textAnchor="middle" className="axis-label">
-          {labelBucket(day.date, "month")}
+    <div className="trend-chart-wrap mini-trend-wrap" onMouseLeave={() => setTooltip(null)}>
+      <svg className="mini-trend-chart revenue-trend-chart" viewBox={`0 0 ${width} ${height}`} role="img" preserveAspectRatio="xMidYMid meet">
+        {[0, 0.25, 0.5, 0.75, 1].map((tick) => {
+          const tickY = pad.top + innerH - tick * innerH;
+          return (
+            <g key={tick}>
+              <line x1={pad.left} x2={width - pad.right} y1={tickY} y2={tickY} className="grid-line" />
+              <text x={pad.left - 12} y={tickY + 4} textAnchor="end" className="axis-label">
+                {formatCompactCurrency(maxValue * tick)}
+              </text>
+            </g>
+          );
+        })}
+        <text x={14} y={svgCenterY} className="axis-title" transform={`rotate(-90 14 ${svgCenterY})`}>
+          Spend (USD)
         </text>
-      ))}
-    </svg>
+        <text
+          x={width - 14}
+          y={svgCenterY}
+          className="axis-title revenue-axis"
+          transform={`rotate(-90 ${width - 14} ${svgCenterY})`}
+        >
+          Revenue (USD)
+        </text>
+        <polyline points={spendPoints} fill="none" className="spend-line" pathLength="1" />
+        <polyline points={revenuePoints} fill="none" className="revenue-line" pathLength="1" />
+        {data.map((day, index) => {
+          const showDot = dotStep === 1 || index % dotStep === 0 || index === data.length - 1;
+          return (
+            <g
+              className="trend-hover-target"
+              key={`${day.date}-${index}`}
+              onMouseMove={(event) => showTooltip(event, day, index)}
+              onFocus={(event) => showTooltip(event, day, index)}
+              onBlur={() => setTooltip(null)}
+              tabIndex="0"
+            >
+              <line x1={x(index)} x2={x(index)} y1={pad.top} y2={height - pad.bottom} className="trend-hover-line" />
+              <circle cx={x(index)} cy={y(day.spend)} r="3.6" className={showDot ? "spend-dot" : "spend-dot trend-dot-muted"} />
+              <circle cx={x(index)} cy={y(day.revenue)} r="3.6" className={showDot ? "revenue-dot" : "revenue-dot trend-dot-muted"} />
+              <circle cx={x(index)} cy={y(day.spend)} r="12" className="trend-hit-dot" />
+              <circle cx={x(index)} cy={y(day.revenue)} r="12" className="trend-hit-dot" />
+            </g>
+          );
+        })}
+        {labels.map((day) => (
+          <text key={day.date} x={x(day.index)} y={height - 13} textAnchor="middle" className="axis-label">
+            {labelBucket(day.date, "week")}
+          </text>
+        ))}
+      </svg>
+      {tooltip ? (
+        <div className="trend-tooltip" style={{ left: tooltip.x, top: tooltip.y }}>
+          <strong>{tooltip.date}</strong>
+          <span><i className="blue" /> Spend: {formatCurrency(tooltip.spend)}</span>
+          <span><i className="green" /> Revenue: {formatCurrency(tooltip.revenue)}</span>
+        </div>
+      ) : null}
+    </div>
   );
 });
 
 const BreakdownTable = memo(function BreakdownTable({ title, rows, labelHeader }) {
-  const linkLabel = labelHeader === "Country" ? "countries" : labelHeader === "Industry" ? "industries" : "types";
-
   return (
     <section className="breakdown-card panel">
       <h2>{title}</h2>
@@ -638,26 +675,27 @@ const BreakdownTable = memo(function BreakdownTable({ title, rows, labelHeader }
           </div>
         ))}
       </div>
-      <button className="breakdown-link" type="button">
-        View all {linkLabel} <ArrowRight size={14} />
-      </button>
     </section>
   );
 });
 
 const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
+  const [tooltip, setTooltip] = useState(null);
   const candidates = campaigns
     .filter((campaign) => campaign.spend > 0 && campaign.conversions > 0 && campaign.revenue > 0)
     .sort((a, b) => b.spend - a.spend)
     .slice(0, 36);
-  const width = 760;
-  const height = 238;
-  const pad = { top: 24, right: 158, bottom: 50, left: 72 };
+  const width = 840;
+  const height = 282;
+  const pad = { top: 26, right: 150, bottom: 62, left: 88 };
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const maxCpa = niceAxisMax(Math.max(...candidates.map((campaign) => campaign.cpa), 1));
   const maxRoas = niceAxisMax(Math.max(...candidates.map((campaign) => campaign.roas), 1));
   const maxSpend = Math.max(...candidates.map((campaign) => campaign.spend), 1);
+  const minSpend = Math.min(...candidates.map((campaign) => campaign.spend), maxSpend);
+  const minSpendLog = Math.log(Math.max(1, minSpend));
+  const spendLogRange = Math.max(0.001, Math.log(Math.max(1, maxSpend)) - minSpendLog);
   const medianCpa = median(candidates.map((campaign) => campaign.cpa)) || maxCpa / 2;
   const medianRoas = median(candidates.map((campaign) => campaign.roas)) || maxRoas / 2;
   const legendPlatforms = [...new Set(candidates.map((campaign) => campaign.platform))]
@@ -667,9 +705,37 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
   const y = (value) => pad.top + innerH - (value / maxRoas) * innerH;
   const thresholdX = x(Math.min(medianCpa, maxCpa));
   const thresholdY = y(Math.min(medianRoas, maxRoas));
+  const quadrantFor = (campaign) => {
+    const roasSide = campaign.roas >= medianRoas ? "High ROAS" : "Low ROAS";
+    const cpaSide = campaign.cpa <= medianCpa ? "Low CPA" : "High CPA";
+    return `${roasSide} / ${cpaSide}`;
+  };
+  const showTooltip = (event, campaign) => {
+    const bounds = event.currentTarget.closest(".quadrant").getBoundingClientRect();
+    const localX = event.clientX - bounds.left;
+    const localY = event.clientY - bounds.top;
+    const tooltipWidth = 216;
+    const tooltipHeightEstimate = 142;
+    const tooltipOffset = 12;
+    const placement = localY > bounds.height * 0.35 ? "above" : "below";
+    setTooltip({
+      campaign: campaign.campaign,
+      platform: campaign.platform,
+      cpa: campaign.cpa,
+      roas: campaign.roas,
+      spend: campaign.spend,
+      quadrant: quadrantFor(campaign),
+      placement,
+      x: Math.min(Math.max(localX, 8), Math.max(8, bounds.width - tooltipWidth - tooltipOffset - 8)),
+      y:
+        placement === "above"
+          ? Math.min(Math.max(localY, tooltipHeightEstimate + tooltipOffset), Math.max(8, bounds.height - 16))
+          : Math.min(Math.max(localY, 8), Math.max(8, bounds.height - tooltipHeightEstimate - tooltipOffset)),
+    });
+  };
 
   return (
-    <section className="quadrant panel">
+    <section className="quadrant panel" onMouseLeave={() => setTooltip(null)}>
       <div className="panel-title-row">
         <h2>Efficiency Quadrant <span>(Top 36)</span></h2>
       </div>
@@ -681,23 +747,15 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
             <g key={tick}>
               <line x1={pad.left} x2={width - pad.right} y1={gridY} y2={gridY} className="grid-line" />
               <line x1={gridX} x2={gridX} y1={pad.top} y2={height - pad.bottom} className="grid-line faint" />
-              <text x={pad.left - 12} y={gridY + 4} textAnchor="end" className="axis-label">{(maxRoas * tick).toFixed(1)}x</text>
-              <text x={gridX} y={height - 15} textAnchor="middle" className="axis-label">{formatCurrency(maxCpa * tick, 0)}</text>
+              <text x={pad.left - 10} y={gridY + 4} textAnchor="end" className="axis-label">{(maxRoas * tick).toFixed(1)}x</text>
+              <text x={gridX} y={height - 30} textAnchor="middle" className="axis-label">{formatCurrency(maxCpa * tick, 0)}</text>
             </g>
           );
         })}
         <line x1={thresholdX} x2={thresholdX} y1={pad.top} y2={height - pad.bottom} className="threshold-line" />
         <line x1={pad.left} x2={width - pad.right} y1={thresholdY} y2={thresholdY} className="threshold-line" />
-        <text x={pad.left + 14} y={pad.top + 18} className="quadrant-label">High ROAS</text>
-        <text x={pad.left + 14} y={pad.top + 33} className="quadrant-label">Low CPA</text>
-        <text x={thresholdX + 14} y={pad.top + 16} className="quadrant-label">High ROAS</text>
-        <text x={thresholdX + 14} y={pad.top + 31} className="quadrant-label">High CPA</text>
-        <text x={pad.left + 14} y={height - pad.bottom - 33} className="quadrant-label">Low ROAS</text>
-        <text x={pad.left + 14} y={height - pad.bottom - 18} className="quadrant-label">Low CPA</text>
-        <text x={thresholdX + 18} y={height - pad.bottom - 33} className="quadrant-label">Low ROAS</text>
-        <text x={thresholdX + 18} y={height - pad.bottom - 18} className="quadrant-label">High CPA</text>
-        <text x={18} y={pad.top + innerH / 2} className="axis-title" transform={`rotate(-90 18 ${pad.top + innerH / 2})`}>ROAS (x)</text>
-        <text x={pad.left + innerW / 2} y={height - 2} className="axis-title">CPA (USD)</text>
+        <text x={24} y={pad.top + innerH / 2} className="axis-title" transform={`rotate(-90 24 ${pad.top + innerH / 2})`}>ROAS (x)</text>
+        <text x={pad.left + innerW / 2} y={height - 12} className="axis-title">CPA (USD)</text>
         {candidates.map((campaign) => (
           <circle
             className="quadrant-dot"
@@ -705,21 +763,33 @@ const EfficiencyQuadrant = memo(function EfficiencyQuadrant({ campaigns }) {
             cy={y(campaign.roas)}
             fill={COLORS[campaign.platform] || COLORS.Other}
             key={`${campaign.campaign}-${campaign.platform}`}
-            r={3 + Math.sqrt(campaign.spend / maxSpend) * 7}
-          >
-            <title>{`${campaign.campaign} (${campaign.platform})\nCPA ${formatCurrency(campaign.cpa, 2)} | ROAS ${campaign.roas.toFixed(2)}x | Spend ${formatCurrency(campaign.spend)}`}</title>
-          </circle>
+            onMouseMove={(event) => showTooltip(event, campaign)}
+            onFocus={(event) => showTooltip(event, campaign)}
+            onBlur={() => setTooltip(null)}
+            r={3.5 + Math.pow((Math.log(Math.max(1, campaign.spend)) - minSpendLog) / spendLogRange, 0.85) * 12.5}
+            tabIndex="0"
+          />
         ))}
-        <g className="quadrant-legend" transform={`translate(${width - 132} 48)`}>
+        <g className="quadrant-legend" transform={`translate(${width - 130} 58)`}>
           {legendPlatforms.map((platform, index) => (
             <g key={platform} transform={`translate(0 ${index * 22})`}>
               <circle cx="0" cy="0" r="5" fill={COLORS[platform] || COLORS.Other} />
               <text x="14" y="4">{platform}</text>
             </g>
           ))}
+          <text x="0" y={legendPlatforms.length * 22 + 12} className="quadrant-note">Bubble size = Spend</text>
         </g>
-        <text x={width - 132} y={height - 20} className="quadrant-note">Bubble size = Spend</text>
       </svg>
+      {tooltip ? (
+        <div className={`trend-tooltip quadrant-tooltip is-${tooltip.placement}`} style={{ left: tooltip.x, top: tooltip.y }}>
+          <strong>{tooltip.campaign}</strong>
+          <span><i style={{ background: COLORS[tooltip.platform] || COLORS.Other }} /> {tooltip.platform}</span>
+          <span>Quadrant: {tooltip.quadrant}</span>
+          <span>CPA: {formatCurrency(tooltip.cpa, 2)}</span>
+          <span>ROAS: {tooltip.roas.toFixed(2)}x</span>
+          <span>Spend: {formatCurrency(tooltip.spend)}</span>
+        </div>
+      ) : null}
     </section>
   );
 });
@@ -888,33 +958,42 @@ const OpportunityPanel = memo(function OpportunityPanel({ campaigns, summary }) 
   return (
     <section className="opportunity-panel panel">
       <h2>Budget Opportunities</h2>
-      <div className="opportunity-grid">
-        {opportunities.map(({ Icon, ...item }) => (
-          <div className={`opportunity-card ${item.tone}`} key={item.label}>
-            <div className="opportunity-icon">
-              <Icon size={25} />
-            </div>
-            <div>
-              <strong>{item.label}</strong>
-              <p>{item.detail}</p>
-            </div>
-          </div>
-        ))}
-      </div>
       {expanded ? (
         <div className="opportunity-detail-list">
-          {opportunities.map((item) => (
-            <div key={item.label}>
-              <span>{item.label}</span>
-              {(item.rows.length ? item.rows.slice(0, 3) : viable.slice(0, 1)).map((campaign) => (
-                <p key={`${item.label}-${campaign.campaign}-${campaign.platform}`}>
-                  <b>{campaign.campaign}</b> {campaign.roas.toFixed(2)}x ROAS, {formatCurrency(campaign.cpa, 2)} CPA
+          {opportunities.map((item) => {
+            const campaign = item.rows[0];
+            return (
+              <div className="opportunity-detail-item" key={item.label}>
+                <span>{item.label}</span>
+                <p className="opportunity-detail-count">{formatNumber(item.rows.length)} matching campaigns</p>
+                <p className="opportunity-detail-example">
+                  {campaign ? (
+                    <>
+                      <b>{campaign.campaign}</b> {campaign.roas.toFixed(2)}x ROAS, {formatCurrency(campaign.cpa, 2)} CPA
+                    </>
+                  ) : (
+                    "No matching campaigns in the current filters."
+                  )}
                 </p>
-              ))}
+            </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="opportunity-grid">
+          {opportunities.map(({ Icon, ...item }) => (
+            <div className={`opportunity-card ${item.tone}`} key={item.label}>
+              <div className="opportunity-icon">
+                <Icon size={25} />
+              </div>
+              <div>
+                <strong>{item.label}</strong>
+                <p>{item.detail}</p>
+              </div>
             </div>
           ))}
         </div>
-      ) : null}
+      )}
       <button className="opportunity-link" type="button" onClick={() => setExpanded((value) => !value)}>
         {expanded ? "Hide opportunities" : "View full opportunities"} <ArrowRight size={15} />
       </button>
@@ -1091,17 +1170,7 @@ const Leaderboard = memo(function Leaderboard({
         >
           <ChevronRight size={16} />
         </button>
-        <label>
-          Rows per page:
-          <select
-            value={rowsPerPage}
-            onChange={(event) => onRowsPerPageChange(Number(event.target.value))}
-          >
-            <option>10</option>
-            <option>25</option>
-            <option>50</option>
-          </select>
-        </label>
+        <span className="rows-fixed">10 rows per page</span>
       </div>
     </section>
   );
@@ -1127,7 +1196,6 @@ const Sidebar = memo(function Sidebar({
   mediumOptions,
   platforms,
   setDateRange,
-  testCampaignCount,
 }) {
   const dataset = datasets[datasetId];
   return (
@@ -1174,17 +1242,27 @@ const Sidebar = memo(function Sidebar({
         <h3>FILTERS</h3>
         <label className="field-label">Date Range</label>
         <div className="date-range">
-          <input
-            type="date"
-            value={dateRange.start}
-            onChange={(event) => setDateRange((range) => ({ ...range, start: event.target.value }))}
-          />
+          <label className="date-field">
+            <span>{shortInputDate(dateRange.start)}</span>
+            <CalendarDays size={13} />
+            <input
+              aria-label="Start date"
+              type="date"
+              value={dateRange.start}
+              onChange={(event) => setDateRange((range) => ({ ...range, start: event.target.value }))}
+            />
+          </label>
           <span>→</span>
-          <input
-            type="date"
-            value={dateRange.end}
-            onChange={(event) => setDateRange((range) => ({ ...range, end: event.target.value }))}
-          />
+          <label className="date-field">
+            <span>{shortInputDate(dateRange.end)}</span>
+            <CalendarDays size={13} />
+            <input
+              aria-label="End date"
+              type="date"
+              value={dateRange.end}
+              onChange={(event) => setDateRange((range) => ({ ...range, end: event.target.value }))}
+            />
+          </label>
         </div>
         <label className="field-label">Platform</label>
         <select value={filters.platform} onChange={(event) => onFilterChange("platform", event.target.value)}>
@@ -1229,15 +1307,6 @@ const Sidebar = memo(function Sidebar({
             </option>
           ))}
         </select>
-        <label className="checkbox-row">
-          <input
-            type="checkbox"
-            disabled={!testCampaignCount}
-            checked={testCampaignCount > 0 && filters.includeTest}
-            onChange={(event) => onFilterChange("includeTest", event.target.checked)}
-          />
-          {testCampaignCount ? `Include Test Campaigns (${formatNumber(testCampaignCount)} rows)` : "No Test Campaigns Detected"}
-        </label>
         <a className="download-button" href={csvHref} download="filtered_campaign_daily.csv">
           <Download size={18} />
           Download Filtered CSV
@@ -1247,9 +1316,16 @@ const Sidebar = memo(function Sidebar({
       <details className="dictionary">
         <summary>
           <Database size={16} />
-          Data Dictionary
+          Metric Dictionary
         </summary>
-        <p>Spend, clicks, impressions, conversions, CTR, CPC, CPA, and CVR are computed from the selected CSV/JSON.</p>
+        <ul>
+          <li><b>Spend</b><span>Media cost</span></li>
+          <li><b>CPA</b><span>Spend / conv.</span></li>
+          <li><b>CTR</b><span>Clicks / imps.</span></li>
+          <li><b>CPC</b><span>Spend / clicks</span></li>
+          <li><b>ROAS</b><span>Revenue / spend</span></li>
+          <li><b>CVR</b><span>Conv. / clicks</span></li>
+        </ul>
       </details>
       <p className="refresh-note">
         <RefreshCw size={14} />
@@ -1344,10 +1420,6 @@ export default function App() {
     () => [...new Set(rows.map((row) => row.medium_label).filter(Boolean))].sort(),
     [rows],
   );
-  const testCampaignCount = useMemo(
-    () => rows.filter((row) => TEST_CAMPAIGN_PATTERN.test(row.campaign_name || "")).length,
-    [rows],
-  );
 
   const filteredRows = useMemo(() => {
     return rows.filter((row) => {
@@ -1358,14 +1430,13 @@ export default function App() {
       if (filters.country !== "All Countries" && row.segment !== filters.country) return false;
       if (filters.industry !== "All Industries" && row.campaign_name?.split(" ")?.[0] !== filters.industry) return false;
       if (filters.medium !== "All Types" && filters.medium !== "All" && row.medium_label !== filters.medium) return false;
-      if (!filters.includeTest && TEST_CAMPAIGN_PATTERN.test(row.campaign_name || "")) return false;
       return true;
     });
   }, [rows, dateRange, filters]);
 
   const availableGranularities = useMemo(() => getAvailableGranularities(filteredRows), [filteredRows]);
   const daily = useMemo(() => buildTimeSeries(filteredRows, granularity), [filteredRows, granularity]);
-  const monthly = useMemo(() => buildTimeSeries(filteredRows, "month"), [filteredRows]);
+  const weeklyRevenue = useMemo(() => buildTimeSeries(filteredRows, "week"), [filteredRows]);
   const campaigns = useMemo(() => buildCampaigns(filteredRows), [filteredRows]);
   const cpaConversionThreshold = useMemo(
     () => Math.max(1, campaigns.reduce((sum, campaign) => sum + campaign.conversions, 0) * 0.0025),
@@ -1410,7 +1481,7 @@ export default function App() {
     }),
     [filteredRows],
   );
-  const dataset = datasets[datasetId] ?? DATASETS.portfolio;
+  const dataset = datasets[datasetId] ?? DATASETS.global_ads_performance;
 
   useEffect(() => {
     if (filters.medium !== "All Types" && filters.medium !== "All" && !mediumOptions.includes(filters.medium)) {
@@ -1568,8 +1639,8 @@ export default function App() {
           </div>
           <div className="brand-divider" />
           <div>
-            <h1>Marketing Data Ops</h1>
-            <p>Unified Paid Media Analytics</p>
+            <h1>Global Ads Performance</h1>
+            <p>Media Analytics Dashboard</p>
           </div>
         </div>
         <div className="topbar-meta">
@@ -1632,7 +1703,6 @@ export default function App() {
           mediumOptions={mediumOptions}
           platforms={platforms}
           setDateRange={setDateRange}
-          testCampaignCount={testCampaignCount}
         />
         <section className="content">
           <div className="dataset-note">
@@ -1749,9 +1819,9 @@ export default function App() {
                     <span><i className="green" /> Revenue</span>
                   </div>
                 </div>
-                <span className="chart-note">Monthly view</span>
+                <span className="chart-note">Weekly view</span>
               </div>
-              <RevenueTrendChart data={monthly} />
+              <RevenueTrendChart data={weeklyRevenue} />
             </article>
             <EfficiencyQuadrant campaigns={campaigns} />
             <OpportunityPanel campaigns={campaigns} summary={summary} />
