@@ -44,6 +44,9 @@ const DATASETS = {
   },
 };
 
+const DASHBOARD_PASSCODE = "MediaOps2026!";
+const ACCESS_STORAGE_KEY = "global-ads-dashboard-access";
+
 const COLORS = {
   Meta: "#2563eb",
   "Google Ads": "#12b8ba",
@@ -1381,7 +1384,53 @@ const Sidebar = memo(function Sidebar({
   );
 });
 
-export default function App() {
+function AccessGate({ onUnlock }) {
+  const [passcode, setPasscode] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (passcode.trim() === DASHBOARD_PASSCODE) {
+      window.localStorage.setItem(ACCESS_STORAGE_KEY, "granted");
+      onUnlock();
+      return;
+    }
+    setError("That passcode did not match. Please try again.");
+  };
+
+  return (
+    <main className="access-page">
+      <section className="access-panel">
+        <div className="access-mark">
+          <Database size={30} />
+        </div>
+        <p className="access-eyebrow">Private portfolio dashboard</p>
+        <h1>Global Ads Performance</h1>
+        <p>
+          This dashboard is shared by invitation. Enter the passcode I provided to view the marketing analytics workspace.
+        </p>
+        <form onSubmit={handleSubmit} className="access-form">
+          <label htmlFor="dashboard-passcode">Passcode</label>
+          <input
+            id="dashboard-passcode"
+            type="password"
+            value={passcode}
+            onChange={(event) => {
+              setPasscode(event.target.value);
+              setError("");
+            }}
+            autoComplete="current-password"
+            autoFocus
+          />
+          {error ? <span className="access-error">{error}</span> : null}
+          <button type="submit">View Dashboard</button>
+        </form>
+      </section>
+    </main>
+  );
+}
+
+function DashboardApp() {
   const [datasetId, setDatasetId] = useState("global_ads_performance");
   const [rows, setRows] = useState([]);
   const [uploadedRows, setUploadedRows] = useState([]);
@@ -1903,4 +1952,17 @@ export default function App() {
       </div>
     </main>
   );
+}
+
+export default function App() {
+  const [unlocked, setUnlocked] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.localStorage.getItem(ACCESS_STORAGE_KEY) === "granted";
+  });
+
+  if (!unlocked) {
+    return <AccessGate onUnlock={() => setUnlocked(true)} />;
+  }
+
+  return <DashboardApp />;
 }

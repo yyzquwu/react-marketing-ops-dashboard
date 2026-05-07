@@ -30,6 +30,9 @@ async function firstBox(page, selector) {
 }
 
 test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem("global-ads-dashboard-access", "granted");
+  });
   await page.setViewportSize(TARGET.viewport);
   await page.goto("/");
   await page.waitForLoadState("networkidle");

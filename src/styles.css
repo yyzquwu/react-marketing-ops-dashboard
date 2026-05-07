@@ -71,6 +71,102 @@ button:disabled {
   font-weight: 700;
 }
 
+.access-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background:
+    radial-gradient(circle at top left, rgba(18, 184, 186, 0.16), transparent 34%),
+    linear-gradient(135deg, #061b3d, #0a2e63 48%, #071526);
+}
+
+.access-panel {
+  width: min(440px, 100%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  padding: 34px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 28px 70px rgba(0, 15, 43, 0.35);
+}
+
+.access-mark {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #0b56d9;
+  background: #e8f0ff;
+  margin-bottom: 22px;
+}
+
+.access-eyebrow {
+  margin: 0 0 8px;
+  color: #0b56d9;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.access-panel h1 {
+  margin: 0;
+  color: #071526;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.access-panel p:not(.access-eyebrow) {
+  margin: 14px 0 0;
+  color: #41516b;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.access-form {
+  display: grid;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.access-form label {
+  color: #152238;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.access-form input {
+  height: 44px;
+  border: 1px solid #b9c9df;
+  border-radius: 8px;
+  padding: 0 12px;
+  color: #0f172a;
+  background: #fff;
+}
+
+.access-form input:focus {
+  outline: 3px solid rgba(11, 86, 217, 0.16);
+  border-color: #0b56d9;
+}
+
+.access-error {
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.access-form button {
+  height: 44px;
+  border: 0;
+  border-radius: 8px;
+  margin-top: 4px;
+  color: #fff;
+  background: #0b56d9;
+  font-weight: 900;
+  box-shadow: 0 12px 28px rgba(11, 86, 217, 0.24);
+}
+
 .dashboard-shell {
   min-height: 100vh;
 }
