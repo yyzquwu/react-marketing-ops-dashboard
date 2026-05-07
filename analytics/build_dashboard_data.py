@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import csv
+import io
 import json
+import math
 import sqlite3
+import sys
 from pathlib import Path
 
 
@@ -36,6 +39,19 @@ DASHBOARD_HEADERS = [
     "roas",
     "dataset",
 ]
+
+
+def js_round(value: float | None, decimals: int) -> float | None:
+    if value is None:
+        return None
+    multiplier = 10**int(decimals)
+    return math.floor((float(value) + sys.float_info.epsilon) * multiplier + 0.5) / multiplier
+
+
+def normalize_number(value):
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+    return value
 
 
 def run_sql_file(connection: sqlite3.Connection, filename: str) -> None:
@@ -107,17 +123,18 @@ def load_raw_csv(connection: sqlite3.Connection) -> int:
 
 def export_dashboard_dataset(connection: sqlite3.Connection) -> int:
     rows = [
-        dict(row)
+        {key: normalize_number(value) for key, value in dict(row).items()}
         for row in connection.execute(
             f"select {', '.join(DASHBOARD_HEADERS)} from campaign_daily order by date, campaign_id",
         ).fetchall()
     ]
 
     OUTPUT_JSON.write_text(json.dumps(rows, indent=2), encoding="utf-8")
-    with OUTPUT_CSV.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=DASHBOARD_HEADERS)
-        writer.writeheader()
-        writer.writerows(rows)
+    csv_buffer = io.StringIO()
+    writer = csv.DictWriter(csv_buffer, fieldnames=DASHBOARD_HEADERS, lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(rows)
+    OUTPUT_CSV.write_text(csv_buffer.getvalue().rstrip("\n"), encoding="utf-8")
 
     return len(rows)
 
@@ -152,6 +169,7 @@ def main() -> None:
 
     connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
+    connection.create_function("js_round", 2, js_round)
     try:
         raw_count = load_raw_csv(connection)
         run_sql_file(connection, "01_campaign_daily.sql")
