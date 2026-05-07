@@ -7,11 +7,17 @@ import {
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
+  CircleArrowOutUpRight,
+  CircleDollarSign,
+  Coins,
+  Crosshair,
   DollarSign,
   Database,
   Download,
   FileUp,
+  Github,
   BarChart3,
+  MousePointerClick,
   MousePointer2,
   Percent,
   RefreshCw,
@@ -21,6 +27,8 @@ import {
   Target,
   TrendingUp,
   Users,
+  UsersRound,
+  Wallet,
 } from "lucide-react";
 
 const DATASETS = {
@@ -45,88 +53,14 @@ const COLORS = {
 };
 
 const KPI_ICONS = {
-  spend: DollarSign,
-  conversions: Users,
-  cpa: Target,
-  ctr: Percent,
-  cpc: MousePointer2,
-  revenue: BarChart3,
-  roas: TrendingUp,
+  spend: Wallet,
+  conversions: UsersRound,
+  cpa: Crosshair,
+  ctr: MousePointerClick,
+  cpc: CircleDollarSign,
+  revenue: Coins,
+  roas: CircleArrowOutUpRight,
 };
-
-function KpiArtwork({ type }) {
-  if (type === "spend") {
-    return (
-      <svg className="kpi-art" viewBox="0 0 48 48" role="img" aria-label="Wallet">
-        <path d="M13 15.6 32.4 10c2.1-.6 4.1.9 4.1 3.1V17H13v-1.4Z" />
-        <path d="M9 17h30c2.2 0 4 1.8 4 4v17c0 2.2-1.8 4-4 4H9c-2.2 0-4-1.8-4-4V21c0-2.2 1.8-4 4-4Z" />
-        <path className="kpi-art-cutout" d="M30 26h13v9H30c-2.5 0-4.5-2-4.5-4.5S27.5 26 30 26Z" />
-        <circle className="kpi-art-dot" cx="31" cy="30.5" r="1.8" />
-      </svg>
-    );
-  }
-
-  if (type === "conversions") {
-    return (
-      <svg className="kpi-art" viewBox="0 0 48 48" role="img" aria-label="Audience">
-        <circle cx="24" cy="15" r="6" />
-        <circle cx="12.5" cy="19" r="4.8" />
-        <circle cx="35.5" cy="19" r="4.8" />
-        <path d="M13.5 38c.6-7.2 4.1-11.1 10.5-11.1S34 30.8 34.6 38H13.5Z" />
-        <path d="M4.5 37c.5-5.3 3.3-8.2 8.4-8.2 1.3 0 2.5.2 3.6.7-2.1 1.9-3.5 4.4-4.1 7.5H4.5Z" />
-        <path d="M35.6 37c-.6-3.1-2-5.6-4.1-7.5 1.1-.5 2.3-.7 3.6-.7 5.1 0 7.9 2.9 8.4 8.2h-7.9Z" />
-      </svg>
-    );
-  }
-
-  if (type === "cpa") {
-    return (
-      <svg className="kpi-art" viewBox="0 0 48 48" role="img" aria-label="Target CPA">
-        <circle cx="24" cy="24" r="14" fill="none" stroke="currentColor" strokeWidth="3.4" />
-        <circle cx="24" cy="24" r="6.5" fill="none" stroke="currentColor" strokeWidth="3.4" />
-        <path d="M24 4v8M24 36v8M4 24h8M36 24h8" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="3.4" />
-        <circle cx="24" cy="24" r="2.2" />
-      </svg>
-    );
-  }
-
-  if (type === "ctr") {
-    return (
-      <svg className="kpi-art" viewBox="0 0 48 48" role="img" aria-label="Cursor CTR">
-        <path d="M14 7 35.5 26.1l-10 1.8 5.5 10.3-5.4 2.8-5.5-10.2-6.1 7V7Z" />
-        <path d="M31.4 5.7 29.6 12M39.2 12.8l-5.1 4M41.2 23.1l-6.3-.9M22.7 3.8l.8 6.2" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="3" />
-      </svg>
-    );
-  }
-
-  if (type === "cpc") {
-    return (
-      <svg className="kpi-art" viewBox="0 0 48 48" role="img" aria-label="Click cost">
-        <circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" strokeWidth="3.4" />
-        <path d="M24 13v22M29.6 17.2c-1.5-1.1-3.2-1.7-5.2-1.7-3.1 0-5.1 1.6-5.1 4 0 5.7 10.9 2.7 10.9 8.8 0 2.5-2.1 4.2-5.6 4.2-2.5 0-4.7-.8-6.3-2.2" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="3.2" />
-      </svg>
-    );
-  }
-
-  if (type === "revenue") {
-    return (
-      <svg className="kpi-art" viewBox="0 0 48 48" role="img" aria-label="Revenue coins">
-        <ellipse cx="24" cy="12" rx="11.5" ry="5" />
-        <path d="M12.5 12v7c0 2.8 5.1 5 11.5 5s11.5-2.2 11.5-5v-7" />
-        <path d="M12.5 20v7c0 2.8 5.1 5 11.5 5s11.5-2.2 11.5-5v-7" />
-        <path d="M12.5 28v7c0 2.8 5.1 5 11.5 5s11.5-2.2 11.5-5v-7" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg className="kpi-art" viewBox="0 0 48 48" role="img" aria-label="ROAS growth">
-      <circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" strokeWidth="3.4" />
-      <path d="M15 31 32 14M21 14h11v11" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3.8" />
-      <path d="M15 19v-4h4" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.8" opacity=".55" />
-    </svg>
-  );
-}
 
 const DEFAULT_FILTERS = Object.freeze({
   platform: "All Platforms",
@@ -502,12 +436,13 @@ function csvFromRows(rows) {
 }
 
 const KpiCard = memo(function KpiCard({ accent, delta, iconKey, label, value, suffix }) {
+  const Icon = KPI_ICONS[iconKey] || Sparkles;
   const positiveIsGood = iconKey !== "cpa" && iconKey !== "cpc";
   const good = positiveIsGood ? delta >= 0 : delta <= 0;
   return (
     <section className="kpi-card">
       <div className={`kpi-icon kpi-icon-${iconKey}`}>
-        <KpiArtwork type={iconKey} />
+        <Icon className="kpi-art" size={26} strokeWidth={2.35} />
       </div>
       <div className="kpi-copy">
         <span>{label}</span>
@@ -1404,6 +1339,10 @@ const Sidebar = memo(function Sidebar({
         <RefreshCw size={14} />
         Last refreshed: {dataset.asOf}
       </p>
+      <a className="github-follow" href="https://github.com/yyzquwu" target="_blank" rel="noreferrer">
+        <Github size={16} />
+        <span>Follow Me</span>
+      </a>
     </aside>
   );
 });

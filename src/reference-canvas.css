@@ -223,6 +223,11 @@
     margin-top: 13px;
   }
 
+  .github-follow {
+    font-size: 12px;
+    padding-top: 14px;
+  }
+
   .content {
     width: 100%;
     min-width: 0;
