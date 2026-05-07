@@ -7,12 +7,12 @@ const TARGET = {
   contentX: 236,
   firstCardX: 252,
   firstCardY: 72,
-  cardHeight: 102,
-  chartY: 188,
+  cardHeight: 122,
+  chartY: 208,
   chartHeight: 340,
-  analyticsY: 542,
+  analyticsY: 562,
   analyticsHeight: 260,
-  bottomY: 816,
+  bottomY: 836,
   bottomHeight: 244,
 };
 

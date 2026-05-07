@@ -553,13 +553,15 @@ button:disabled {
 }
 
 .kpi-card {
-  height: 112px;
-  min-height: 112px;
+  height: 128px;
+  min-height: 128px;
   border-radius: 8px;
-  padding: 14px;
+  padding: 12px 14px 10px;
   display: grid;
   grid-template-columns: 44px 1fr;
-  gap: 12px;
+  grid-template-rows: minmax(0, 1fr) 28px;
+  column-gap: 12px;
+  row-gap: 6px;
   align-items: center;
   animation: surfaceIn 420ms ease both;
 }
@@ -633,10 +635,10 @@ button:disabled {
 }
 
 .kpi-copy p {
-  margin: 10px 0 0;
+  margin: 7px 0 0;
   color: #27354d;
   font-size: 11px;
-  line-height: 1.35;
+  line-height: 1.2;
 }
 
 .kpi-copy b {
@@ -650,6 +652,54 @@ button:disabled {
 
 .delta-bad {
   color: #dc2626;
+}
+
+.kpi-sparkline {
+  display: block;
+  grid-column: 1 / -1;
+  height: 28px;
+  width: 100%;
+}
+
+.kpi-sparkline-spend {
+  color: #1f6bff;
+}
+
+.kpi-sparkline-conversions {
+  color: #13b7bc;
+}
+
+.kpi-sparkline-cpa {
+  color: #d8277c;
+}
+
+.kpi-sparkline-ctr {
+  color: #f59a00;
+}
+
+.kpi-sparkline-cpc {
+  color: #6f45d9;
+}
+
+.kpi-sparkline-revenue {
+  color: #12a59b;
+}
+
+.kpi-sparkline-roas {
+  color: #e6324b;
+}
+
+.kpi-sparkline polygon {
+  fill: currentColor;
+  opacity: 0.12;
+}
+
+.kpi-sparkline polyline {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.8;
 }
 
 .chart-grid {

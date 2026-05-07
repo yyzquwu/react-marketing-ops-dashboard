@@ -436,7 +436,32 @@ function csvFromRows(rows) {
   return `data:text/csv;charset=utf-8,${encodeURIComponent(`${CSV_HEADERS.join(",")}\n${body}`)}`;
 }
 
-const KpiCard = memo(function KpiCard({ accent, delta, iconKey, label, value, suffix }) {
+const KpiSparkline = memo(function KpiSparkline({ data = [], metric }) {
+  const points = data
+    .slice(-28)
+    .map((item) => Number(item[metric]) || 0)
+    .filter((value) => Number.isFinite(value));
+  if (points.length < 2) return null;
+
+  const width = 128;
+  const height = 28;
+  const max = Math.max(...points);
+  const min = Math.min(...points);
+  const range = Math.max(0.0001, max - min);
+  const x = (index) => (index / Math.max(1, points.length - 1)) * width;
+  const y = (value) => height - 3 - ((value - min) / range) * (height - 6);
+  const linePoints = points.map((point, index) => `${x(index).toFixed(2)},${y(point).toFixed(2)}`).join(" ");
+  const areaPoints = `0,${height} ${linePoints} ${width},${height}`;
+
+  return (
+    <svg className={`kpi-sparkline kpi-sparkline-${metric}`} viewBox={`0 0 ${width} ${height}`} aria-hidden="true" preserveAspectRatio="none">
+      <polygon points={areaPoints} />
+      <polyline points={linePoints} />
+    </svg>
+  );
+});
+
+const KpiCard = memo(function KpiCard({ accent, delta, iconKey, label, trendData, trendMetric, value, suffix }) {
   const Icon = KPI_ICONS[iconKey] || Sparkles;
   const positiveIsGood = iconKey !== "cpa" && iconKey !== "cpc";
   const good = positiveIsGood ? delta >= 0 : delta <= 0;
@@ -455,6 +480,7 @@ const KpiCard = memo(function KpiCard({ accent, delta, iconKey, label, value, su
           </b>
         </p>
       </div>
+      <KpiSparkline data={trendData} metric={trendMetric || iconKey} />
       {suffix ? <div className="kpi-suffix">{suffix}</div> : null}
     </section>
   );
@@ -1738,6 +1764,7 @@ export default function App() {
                 delta={deltas.spend}
                 iconKey="spend"
                 label="Total Spend"
+                trendData={weeklyRevenue}
                 value={formatCurrency(summary.spend)}
               />
               <KpiCard
@@ -1745,6 +1772,7 @@ export default function App() {
                 delta={deltas.conversions}
                 iconKey="conversions"
                 label="Conversions"
+                trendData={weeklyRevenue}
                 value={formatNumber(summary.conversions)}
               />
               <KpiCard
@@ -1752,6 +1780,7 @@ export default function App() {
                 delta={deltas.cpa}
                 iconKey="cpa"
                 label="CPA"
+                trendData={weeklyRevenue}
                 value={formatCurrency(summary.cpa, 2)}
               />
               <KpiCard
@@ -1759,6 +1788,7 @@ export default function App() {
                 delta={deltas.ctr}
                 iconKey="ctr"
                 label="CTR"
+                trendData={weeklyRevenue}
                 value={formatPercent(summary.ctr)}
               />
               <KpiCard
@@ -1766,6 +1796,7 @@ export default function App() {
                 delta={deltas.cpc}
                 iconKey="cpc"
                 label="CPC"
+                trendData={weeklyRevenue}
                 value={formatCurrency(summary.cpc, 2)}
               />
               <KpiCard
@@ -1773,6 +1804,7 @@ export default function App() {
                 delta={deltas.revenue}
                 iconKey="revenue"
                 label="Revenue"
+                trendData={weeklyRevenue}
                 value={formatCurrency(summary.revenue)}
               />
               <KpiCard
@@ -1780,6 +1812,7 @@ export default function App() {
                 delta={deltas.roas}
                 iconKey="roas"
                 label="ROAS"
+                trendData={weeklyRevenue}
                 value={`${summary.roas.toFixed(2)}x`}
               />
           </div>
